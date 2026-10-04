@@ -1,0 +1,1 @@
+A parent adds video links. A child watches only those: large cards, a kid-friendly player, a daily time limit. No search, no feed, no Shorts, no comments.

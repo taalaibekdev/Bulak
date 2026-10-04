@@ -1,0 +1,57 @@
+Bulak is a player where you, the parent, choose the videos.
+
+No algorithms and no recommendations: only the cartoons, songs and lessons you have added yourself. Your child opens the app and sees large, friendly cards — exactly your videos.
+
+HOW IT WORKS
+1. You find a suitable video on YouTube and copy the link.
+2. You enter the parental PIN and save the link in the app.
+3. Your child opens Bulak and watches only what you selected.
+
+WHAT YOUR CHILD SEES
+• Large thumbnails and clear cards
+• A full-screen player with big, child-friendly buttons
+• Collections with emoji and colour: Cartoons, Learning, Music
+• Favourites — a heart on a favourite video
+• Viewing history
+• A kind "That's all for today" screen when the daily limit runs out
+• A parental lock: leaving the player requires the PIN
+
+PARENT-ONLY FEATURES (BEHIND THE PIN)
+• Add a video by link
+• Rename a video
+• Delete a video
+• Sort videos into collections
+• Set a daily screen-time limit
+• Change the PIN
+• Reset all data
+
+WHAT THE APP DOES NOT HAVE
+• Search
+• Recommendations or an infinite feed
+• Shorts
+• Comments
+• Subscriptions and channels
+• Chats or any contact with other people
+• Our own advertising
+• Sign-up or accounts
+
+YOUR DATA STAYS WITH YOU
+The app does not collect personal data. The link list, titles, collections, favourites, viewing history and settings are stored only on your device. There are no accounts, no developer servers, no analytics, no trackers and no advertising SDKs. The PIN is stored as an irreversible hash. At any time you can tap "Reset everything" and delete all data.
+
+INTERNET IS REQUIRED
+Videos and thumbnails are loaded from YouTube servers, so watching is not possible without a network connection.
+
+FOR PARENTS
+Responsibility for which videos are added to the app rests with the parent. The app does not check, assess or filter video content — it shows exactly what you selected. Please review videos before making them available to your child.
+
+WHO IT IS FOR
+For children roughly 3 to 10 years old, and for parents who want calm viewing without accidental content.
+
+IMPORTANT INFORMATION ABOUT YOUTUBE
+YouTube is a trademark of Google LLC. The Bulak app is not affiliated with Google, is not sponsored by Google and is not endorsed by Google. The app does not download videos and does not store copies of them: playback uses official YouTube mechanisms. We do not show our own advertising and we do not include advertising SDKs in the app; however, the fallback embedded YouTube player may display advertising served by YouTube itself.
+
+Free. No in-app purchases and no subscriptions.
+
+Support: support@tlbk.kg
+Website: https://bulak.tlbk.kg
+Privacy policy: https://bulak.tlbk.kg/privacy

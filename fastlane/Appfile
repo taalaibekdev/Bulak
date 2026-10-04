@@ -1,0 +1,14 @@
+# Идентификаторы для Google Play и App Store Connect.
+#
+# Team ID (Apple Developer → Membership) и Apple ID разработчика.
+# Подставьте свои значения перед первой загрузкой.
+
+app_identifier("kg.tlbk.bulak")
+
+apple_id(ENV["APPLE_ID"])              # например: dev@tlbk.kg
+itc_team_id(ENV["ITC_TEAM_ID"])        # App Store Connect → Users and Access
+team_id(ENV["APPLE_TEAM_ID"])          # Apple Developer → Membership
+
+# JSON-ключ сервисного аккаунта Google Play.
+# Путь указывается через переменную окружения, чтобы ключ не попал в репозиторий.
+ENV["PLAY_STORE_JSON_KEY"] = ENV["PLAY_STORE_JSON_KEY"]

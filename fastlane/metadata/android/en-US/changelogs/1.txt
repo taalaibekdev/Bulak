@@ -1,0 +1,4 @@
+First release of Bulak.
+• A parent adds videos by link; a child sees only what was chosen.
+• Emoji collections, favourites and viewing history.
+• A large kid-friendly player, a parental PIN and a daily time limit.

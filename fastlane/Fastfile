@@ -1,0 +1,82 @@
+# Fastlane для приложения «Булак».
+#
+# Запускать из корня репозитория:
+#   fastlane android build      — собрать подписанный App Bundle
+#   fastlane android deploy     — загрузить в Google Play (внутренний трек)
+#   fastlane ios build          — собрать IPA (только macOS)
+#   fastlane ios beta           — загрузить сборку в TestFlight
+#
+# Тексты магазинов лежат в fastlane/metadata/ и являются копией документов
+# из docs/store/. Картинки (иконка, feature graphic, скриншоты) нужно
+# положить в соответствующие папки руками — см. fastlane/README.md.
+
+default_platform(:android)
+
+platform :android do
+  desc "Собрать подписанный App Bundle"
+  lane :build do
+    sh("flutter", "build", "appbundle", "--release")
+  end
+
+  desc "Загрузить сборку и метаданные в Google Play (внутренний трек)"
+  lane :deploy do
+    build
+
+    supply(
+      aab: "build/app/outputs/bundle/release/app-release.aab",
+      metadata_path: "fastlane/metadata/android",
+      track: "internal",
+      # JSON-ключ сервисного аккаунта Google Play.
+      # Локально: PLAY_STORE_JSON_KEY=./play-service-account.json fastlane android deploy
+      json_key: ENV["PLAY_STORE_JSON_KEY"],
+      # Тексты и картинки загружаем, но не затираем то, что уже настроено вручную.
+      skip_upload_images: false,
+      skip_upload_screenshots: false,
+      # Публикацию в продакшн делаем руками, из консоли.
+      skip_upload_apk: true
+    )
+  end
+
+  desc "Загрузить только метаданные и картинки"
+  lane :metadata do
+    supply(
+      metadata_path: "fastlane/metadata/android",
+      track: "internal",
+      json_key: ENV["PLAY_STORE_JSON_KEY"],
+      skip_upload_aab: true,
+      skip_upload_apk: true,
+      skip_upload_changelogs: false
+    )
+  end
+end
+
+platform :ios do
+  desc "Собрать IPA для App Store"
+  lane :build do
+    sh("flutter", "build", "ipa", "--release",
+       "--export-options-plist=ios/ExportOptions.plist")
+  end
+
+  desc "Загрузить сборку в TestFlight"
+  lane :beta do
+    build
+
+    upload_to_testflight(
+      skip_waiting_for_build_processing: true,
+      # Ключ App Store Connect API (рекомендуемый способ в CI).
+      api_key_path: ENV["APPSTORE_API_KEY_PATH"]
+    )
+  end
+
+  desc "Загрузить метаданные и скриншоты в App Store Connect"
+  lane :metadata do
+    deliver(
+      metadata_path: "fastlane/metadata/ios",
+      screenshots_path: "fastlane/screenshots",
+      api_key_path: ENV["APPSTORE_API_KEY_PATH"],
+      # Сборку при этом не отправляем — только описание, ключевые слова и картинки.
+      skip_binary_upload: true,
+      force: true
+    )
+  end
+end
