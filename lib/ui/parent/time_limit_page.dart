@@ -74,7 +74,9 @@ class TimeLimitPage extends StatelessWidget {
                     for (var index = 0; index < options.length; index++)
                       ChoiceChip(
                         label: Text(
-                          options[index] == 0 ? '∞' : '${options[index]} мин',
+                          options[index] == 0
+                              ? '∞'
+                              : strings.minutesShort(options[index]),
                         ),
                         selected: index == currentIndex,
                         onSelected: (_) =>
@@ -115,8 +117,10 @@ class TimeLimitPage extends StatelessWidget {
                 Text(
                   settings.hasDailyLimit
                       ? '${(settings.watchedSecondsToday / 60).floor()} / '
-                            '${settings.dailyLimitMinutes} мин'
-                      : '${(settings.watchedSecondsToday / 60).floor()} мин',
+                            '${strings.minutesShort(settings.dailyLimitMinutes)}'
+                      : strings.minutesShort(
+                          (settings.watchedSecondsToday / 60).floor(),
+                        ),
                   style: theme.textTheme.bodyMedium,
                 ),
                 if (settings.isLimitReached) ...[

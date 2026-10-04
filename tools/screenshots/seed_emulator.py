@@ -19,6 +19,7 @@ text` невозможно — эта команда понимает тольк
 from __future__ import annotations
 
 import json
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -41,32 +42,31 @@ ADB = str(
 )
 
 # Коллекции, которые должны появиться в приложении.
-COLLECTIONS = [
-    {
-        "id": "demo-toons",
-        "title": "Мультики",
-        "emoji": "🧸",
-        "colorIndex": 0,
-        "sortOrder": 0,
-        "createdAt": "2026-09-20T10:00:00.000",
-    },
-    {
-        "id": "demo-music",
-        "title": "Музыка",
-        "emoji": "🎵",
-        "colorIndex": 1,
-        "sortOrder": 1,
-        "createdAt": "2026-09-21T10:00:00.000",
-    },
-    {
-        "id": "demo-favourite",
-        "title": "Любимое",
-        "emoji": "⭐",
-        "colorIndex": 4,
-        "sortOrder": 2,
-        "createdAt": "2026-09-22T10:00:00.000",
-    },
-]
+def collections_for(locale: str) -> list[dict]:
+    titles = (
+        [
+            ("demo-toons", "Мультики", "🧸", 0),
+            ("demo-music", "Музыка", "🎵", 1),
+            ("demo-favourite", "Любимое", "⭐", 4),
+        ]
+        if locale == "ru"
+        else [
+            ("demo-toons", "Cartoons", "🧸", 0),
+            ("demo-music", "Music", "🎵", 1),
+            ("demo-favourite", "Favourites", "⭐", 4),
+        ]
+    )
+    return [
+        {
+            "id": item_id,
+            "title": title,
+            "emoji": emoji,
+            "colorIndex": color,
+            "sortOrder": order,
+            "createdAt": f"2026-09-2{order}T10:00:00.000",
+        }
+        for order, (item_id, title, emoji, color) in enumerate(titles)
+    ]
 
 # Настройки: дневной лимит, чтобы на главной был виден баннер с остатком.
 SETTINGS_EXTRA = {
@@ -95,6 +95,10 @@ def main() -> int:
     # это нужно, чтобы снять экран приветствия.
     reset_onboarding = "--reset-onboarding" in sys.argv
 
+    # --locale en переключает интерфейс на английский — для английского
+    # листинга нужны снимки именно на том языке, который увидит пользователь.
+    locale = "en" if "--locale" in sys.argv and "en" in sys.argv else None
+
     adb("root")
     adb("shell", "am", "force-stop", PACKAGE)
 
@@ -103,32 +107,44 @@ def main() -> int:
         print("Не удалось прочитать настройки приложения. Запустите его один раз.")
         return 1
 
+    def unescape(value: str) -> str:
+        return (
+            value.replace("&quot;", '"')
+            .replace("&apos;", "'")
+            .replace("&lt;", "<")
+            .replace("&gt;", ">")
+            .replace("&amp;", "&")
+        )
+
+    # Читаем все сохранённые значения: список видео и прочие ключи трогать
+    # нельзя, иначе библиотека, собранная вручную, будет потеряна.
+    stored: dict[str, str] = {}
+    for match in re.finditer(
+        r'<string name="flutter\.([^"]+)">(.*?)</string>', raw, re.DOTALL
+    ):
+        stored[match.group(1)] = unescape(match.group(2))
+
     # Достаём текущие настройки, чтобы не потерять PIN-код родителя.
-    start = raw.find(">", raw.find("bulak.settings.v1")) + 1
-    end = raw.find("</string>", start)
-    settings = json.loads(
-        raw[start:end]
-        .replace("&quot;", '"')
-        .replace("&amp;", "&")
-        .replace("&lt;", "<")
-        .replace("&gt;", ">")
-        .replace("&apos;", "'")
-    )
+    settings = json.loads(stored.get("bulak.settings.v1", "{}"))
     settings.update(SETTINGS_EXTRA)
     settings["onboardingCompleted"] = not reset_onboarding
+    if locale is not None:
+        settings["localeCode"] = locale
 
-    def entry(name: str, value: str) -> str:
-        return f'    <string name="flutter.{name}">{escape(value)}</string>'
+    stored["bulak.settings.v1"] = json.dumps(settings, ensure_ascii=False)
+    stored["bulak.collections.v1"] = json.dumps(
+        collections_for(locale or settings.get("localeCode") or "ru"),
+        ensure_ascii=False,
+    )
 
     xml = "\n".join(
         [
             "<?xml version='1.0' encoding='utf-8' standalone='yes' ?>",
             "<map>",
-            entry("bulak.settings.v1", json.dumps(settings, ensure_ascii=False)),
-            entry(
-                "bulak.collections.v1",
-                json.dumps(COLLECTIONS, ensure_ascii=False),
-            ),
+            *[
+                f'    <string name="flutter.{name}">{escape(value)}</string>'
+                for name, value in stored.items()
+            ],
             "</map>",
             "",
         ]

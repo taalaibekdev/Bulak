@@ -323,6 +323,9 @@ class AppStrings {
   String timeLimitMinutes(int minutes) => _isEn
       ? '$minutes minutes a day'
       : '$minutes ${plural(minutes, 'минута', 'минуты', 'минут')} в день';
+
+  /// Короткая подпись «30 мин» / «30 min» — для кнопок и счётчиков.
+  String minutesShort(int minutes) => _isEn ? '$minutes min' : '$minutes мин';
   String get timeLimitTodayUsed =>
       _pick('Сегодня просмотрено', 'Watched today');
   String get timeLimitResetToday =>

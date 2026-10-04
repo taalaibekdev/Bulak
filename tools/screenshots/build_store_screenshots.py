@@ -25,7 +25,6 @@ BULAK_SHOTS (по умолчанию — `screenshots/raw` внутри репо
 
 from __future__ import annotations
 
-import os
 import sys
 from pathlib import Path
 
@@ -37,7 +36,7 @@ for stream in (sys.stdout, sys.stderr):
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 
-RAW_DIR = Path(os.environ.get("BULAK_SHOTS", REPO_ROOT / "screenshots" / "raw"))
+DEFAULT_RAW_DIR = REPO_ROOT / "screenshots" / "raw"
 
 # Соответствие «имя файла-исходника → подпись под номером в магазине».
 # Порядок в списке — это порядок скриншотов в листинге.
@@ -151,13 +150,19 @@ def ios_resize(raw: Image.Image) -> Image.Image:
 
 
 def main() -> int:
-    if not RAW_DIR.exists():
-        print(f"Не найден каталог с исходными снимками: {RAW_DIR}")
-        print("Снимите экраны эмулятора и положите их туда — см. docs/store/screenshots-plan.md")
-        return 1
+    # Для каждой локали — свой каталог исходников: интерфейс на английском
+    # листинге должен быть английским, а не переведённой картинкой.
+    locales = (
+        ("ru-RU", "ru", DEFAULT_RAW_DIR),
+        ("en-US", "en-US", REPO_ROOT / "screenshots" / "raw-en"),
+    )
 
     created = 0
-    for locale_android, locale_ios in (("ru-RU", "ru"), ("en-US", "en-US")):
+    for locale_android, locale_ios, raw_dir in locales:
+        if not raw_dir.exists():
+            print(f"Нет каталога с исходниками для {locale_android}: {raw_dir}")
+            continue
+
         android_dir = (
             REPO_ROOT
             / "fastlane"
@@ -171,12 +176,10 @@ def main() -> int:
         android_dir.mkdir(parents=True, exist_ok=True)
         ios_dir.mkdir(parents=True, exist_ok=True)
 
-        # Для английской локали используются те же снимки: интерфейс
-        # переключается языком устройства, отдельная съёмка не нужна.
         for index, (filename, _ru_caption, _en_caption) in enumerate(
             SCREENSHOTS, start=1
         ):
-            source = RAW_DIR / filename
+            source = raw_dir / filename
             if not source.exists():
                 print(f"  пропускаю (нет файла): {filename}")
                 continue

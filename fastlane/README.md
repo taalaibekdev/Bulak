@@ -57,28 +57,32 @@ fastlane/
 Либо примите `docs/store/` за единственный источник правды и копируйте оттуда скриптом.
 Разошедшиеся копии — самая частая причина, по которой в стор уходит старая формулировка.
 
-## Что нужно доложить руками
+## Что уже готово, а что нужно доложить руками
 
-Скрипт подготовил только **текст**. Картинки в репозитории не лежат — их нужно изготовить и положить
-в соответствующие папки (в каждой уже есть `README.md` с точной спецификацией размера и содержания):
+Тексты и **вся обязательная графика** уже лежат в репозитории:
 
-| Что | Куда | Требование |
+| Что | Куда | Готово? |
 |---|---|---|
-| Иконка Play | `metadata/android/<locale>/images/icon/icon.png` | 512 × 512 PNG, без альфа-канала, ≤ 1 МБ |
-| Feature graphic | `metadata/android/<locale>/images/featureGraphic/featureGraphic.png` | 1024 × 500, центр свободен под кнопку видео |
-| Скриншоты телефона | `metadata/android/<locale>/images/phoneScreenshots/1..8.png` | 1080 × 1920, 6–8 штук |
-| Скриншоты 10" планшета | `metadata/android/<locale>/images/tenInchScreenshots/1..6.png` | 1920 × 1200 (или 1600 × 2560) |
-| Скриншоты iOS | `fastlane/screenshots/<locale>/` | iPhone 1320 × 2868 и 1290 × 2796, iPad 2064 × 2752 |
+| Иконка Play | `metadata/android/<locale>/images/icon/icon.png` | ✅ 512 × 512, без альфа-канала, собирается скриптом `tools/icon/build_assets.py` |
+| Feature graphic | `metadata/android/<locale>/images/featureGraphic/featureGraphic.png` | ✅ 1024 × 500, тот же скрипт |
+| Скриншоты телефона | `metadata/android/<locale>/images/phoneScreenshots/01..08.png` | ✅ 1080 × 1920, сняты с реальной сборки, собираются из сырых снимков скриптом `tools/screenshots/build_store_screenshots.py` |
+| Скриншоты iOS | `fastlane/screenshots/<locale>/01..08.png` | ✅ 1290 × 2796 (6,7″), из тех же снимков |
+| Скриншоты 10″ планшета | `metadata/android/<locale>/images/tenInchScreenshots/` | ⬜ нужны снимки планшетного эмулятора |
+| Скриншоты iPad | `fastlane/screenshots/<locale>/` | ⬜ нужны снимки iPad-симулятора |
 
-Скриншоты снимаются **с реальной сборки 1.0.0**, подписи накладываются в графическом редакторе.
+Русская и английская версии скриншотов сняты с интерфейса на соответствующем языке.
+Переснять: положить новые снимки экрана в `screenshots/raw/` (русские) и `screenshots/raw-en/`
+(английские) и запустить `python tools/screenshots/build_store_screenshots.py`.
+Данные для съёмки (коллекции, лимит времени) кладутся на эмулятор скриптом
+`tools/screenshots/seed_emulator.py`.
+
 Полный план кадров, подписи RU/EN, палитра и список запрещённого — в `docs/store/screenshots-plan.md`
-и `docs/store/google-play/store-assets.md`. 7" планшетные скриншоты Play считает желательными
-(папка в формате supply — `images/sevenInchScreenshots/`), в этом наборе они не заведены.
+и `docs/store/google-play/store-assets.md`.
 
 ## Проверка перед загрузкой
 
 - [ ] Повторная проверка длин (внешним скриптом) подтверждает: ни один текстовый файл не превышает лимит магазина.
 - [ ] Все файлы в UTF-8 **без BOM**, перевод строки в конце файла.
 - [ ] В `full_description.txt` и `description.txt` нет Markdown: ни `#`, ни `**`, ни `- ` в начале строки.
-- [ ] Картинки разложены по папкам и совпадают с реальной сборкой.
+- [ ] Скриншоты совпадают с реальной сборкой (после правок интерфейса пересобрать их).
 - [ ] Правки внесены и в `docs/store/...`, и в `fastlane/...`.
