@@ -105,7 +105,7 @@ class _AppShellState extends State<AppShell> {
         ),
         bottomNavigationBar: SafeArea(
           top: false,
-          minimum: const EdgeInsets.fromLTRB(14, 0, 14, 10),
+          minimum: const EdgeInsets.fromLTRB(8, 0, 8, 8),
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(28),

@@ -99,6 +99,57 @@ void main() {
     expect(find.text('Начать настройку'), findsOneWidget);
   });
 
+  testWidgets('мастер настройки сохраняет PIN и ведёт к добавлению видео', (
+    tester,
+  ) async {
+    seed();
+    await pumpApp(tester);
+
+    await tester.tap(find.text('Начать настройку'));
+    await tester.pumpAndSettle();
+    expect(find.text('Придумайте PIN-код'), findsOneWidget);
+
+    // Клавиатура должна очищаться между шагами: без этого вторая четвёрка
+    // цифр не принимается и пользователь застревает на подтверждении.
+    await tapDigits(tester, '4821');
+    expect(find.text('Повторите PIN-код'), findsOneWidget);
+
+    await tapDigits(tester, '4821');
+    expect(find.text('Добавить видео'), findsOneWidget);
+    expect(settings.hasPin, isTrue);
+    expect(settings.verifyPin('4821'), isTrue);
+  });
+
+  testWidgets('несовпадающий PIN возвращает к первому шагу', (tester) async {
+    seed();
+    await pumpApp(tester);
+
+    await tester.tap(find.text('Начать настройку'));
+    await tester.pumpAndSettle();
+
+    await tapDigits(tester, '4821');
+    await tapDigits(tester, '1111');
+
+    expect(find.text('PIN-коды не совпали'), findsOneWidget);
+    expect(find.text('Придумайте PIN-код'), findsOneWidget);
+    expect(settings.hasPin, isFalse);
+  });
+
+  testWidgets('слишком простой PIN не принимается', (tester) async {
+    seed();
+    await pumpApp(tester);
+
+    await tester.tap(find.text('Начать настройку'));
+    await tester.pumpAndSettle();
+
+    await tapDigits(tester, '1234');
+    expect(
+      find.text('Такой PIN-код слишком простой. Выберите другой.'),
+      findsOneWidget,
+    );
+    expect(find.text('Придумайте PIN-код'), findsOneWidget);
+  });
+
   testWidgets('после мастера видно пустую библиотеку', (tester) async {
     seed(onboarding: true);
     await pumpApp(tester);

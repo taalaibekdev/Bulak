@@ -72,3 +72,8 @@ __pycache__/
 
 # Графика для магазинов (`fastlane/**/images/`) намеренно НЕ игнорируется:
 # fastlane supply и deliver загружают её прямо из репозитория.
+
+# Сырые снимки экрана с эмулятора — промежуточные файлы, из них собираются
+# готовые скриншоты командой tools/screenshots/build_store_screenshots.py
+/screenshots/raw/
+/.shots/

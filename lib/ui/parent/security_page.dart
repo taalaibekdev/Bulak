@@ -152,6 +152,8 @@ class _ChangePinPageState extends State<ChangePinPage> {
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 420),
             child: PinPad(
+              // Каждый шаг смены PIN-кода начинается с чистого ввода.
+              key: ValueKey<_Step>(_step),
               emoji: emoji,
               title: title,
               subtitle: subtitle,

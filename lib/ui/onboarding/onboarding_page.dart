@@ -29,24 +29,30 @@ class _OnboardingPageState extends State<OnboardingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: DecoratedBox(
-        decoration: const BoxDecoration(gradient: AppColors.brandGradient),
-        child: SafeArea(
-          child: switch (_step) {
-            _Step.welcome => _WelcomeStep(onStart: _goToPin),
-            _Step.createPin => _pinStep(
-              emoji: '🔐',
-              title: AppStrings.of(context).parentSetupTitle,
-              subtitle: AppStrings.of(context).parentSetupBody,
-              step: AppStrings.of(context).onboardPinStep,
-            ),
-            _Step.repeatPin => _pinStep(
-              emoji: '🔁',
-              title: AppStrings.of(context).parentSetupRepeat,
-              subtitle: null,
-              step: AppStrings.of(context).onboardPinStep,
-            ),
-          },
+      // Градиент обязан закрывать весь экран: SizedBox.expand задаёт жёсткие
+      // ограничения, иначе DecoratedBox сжимается по высоте содержимого
+      // и снизу проступает фон Scaffold.
+      backgroundColor: AppColors.violet,
+      body: SizedBox.expand(
+        child: DecoratedBox(
+          decoration: const BoxDecoration(gradient: AppColors.brandGradient),
+          child: SafeArea(
+            child: switch (_step) {
+              _Step.welcome => _WelcomeStep(onStart: _goToPin),
+              _Step.createPin => _pinStep(
+                emoji: '🔐',
+                title: AppStrings.of(context).parentSetupTitle,
+                subtitle: AppStrings.of(context).parentSetupBody,
+                step: AppStrings.of(context).onboardPinStep,
+              ),
+              _Step.repeatPin => _pinStep(
+                emoji: '🔁',
+                title: AppStrings.of(context).parentSetupRepeat,
+                subtitle: null,
+                step: AppStrings.of(context).onboardPinStep,
+              ),
+            },
+          ),
         ),
       ),
     );
@@ -94,6 +100,10 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   borderRadius: BorderRadius.circular(30),
                 ),
                 child: PinPad(
+                  // Ключ зависит от шага: без него состояние клавиатуры
+                  // сохраняется, введённые цифры «переезжают» на следующий
+                  // шаг и блокируют ввод новых.
+                  key: ValueKey<_Step>(_step),
                   emoji: emoji,
                   title: title,
                   subtitle: subtitle,

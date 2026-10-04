@@ -22,11 +22,15 @@ class ManageCollectionsPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(title: Text(strings.collectionsTitle)),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => _openEditor(context),
-        icon: const Icon(Icons.add_rounded),
-        label: Text(strings.collectionNew),
-      ),
+      // Плавающая кнопка нужна только когда список уже есть: на пустом
+      // экране её роль выполняет кнопка внутри подсказки.
+      floatingActionButton: collections.isEmpty
+          ? null
+          : FloatingActionButton.extended(
+              onPressed: () => _openEditor(context),
+              icon: const Icon(Icons.add_rounded),
+              label: Text(strings.collectionNew),
+            ),
       body: collections.isEmpty
           ? EmptyState(
               emoji: '🗂️',

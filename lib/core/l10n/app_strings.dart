@@ -92,6 +92,12 @@ class AppStrings {
   String videosCount(int count) =>
       _isEn ? '$count ${count == 1 ? 'video' : 'videos'}' : '$count видео';
 
+  /// «3 коллекции», «1 коллекция», «5 коллекций».
+  String collectionsCount(int count) {
+    if (_isEn) return '$count ${count == 1 ? 'playlist' : 'playlists'}';
+    return '$count ${plural(count, 'коллекция', 'коллекции', 'коллекций')}';
+  }
+
   // --- Плеер -------------------------------------------------------------
 
   String get playerLock => _pick('Заблокировать', 'Lock');

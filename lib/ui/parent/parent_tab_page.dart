@@ -82,6 +82,9 @@ class _PinSetupFlowState extends State<_PinSetupFlow> {
                 ? strings.parentSetupRepeat
                 : strings.parentSetupTitle,
             subtitle: isRepeat ? null : strings.parentSetupBody,
+            // Смена шага (ввод → подтверждение) должна очищать клавиатуру,
+            // иначе ранее введённые цифры блокируют новый ввод.
+            key: ValueKey<bool>(_firstCode == null),
             errorText: _error,
             length: AppConfig.pinLength,
             onCompleted: _handleCode,
@@ -205,7 +208,7 @@ class _ParentHome extends StatelessWidget {
         const SizedBox(height: 12),
         _Tile(
           title: strings.collectionsTitle,
-          subtitle: strings.videosCount(library.collections.length),
+          subtitle: strings.collectionsCount(library.collections.length),
           icon: Icons.folder_copy_rounded,
           onTap: () =>
               Navigator.of(context).push(ManageCollectionsPage.route()),

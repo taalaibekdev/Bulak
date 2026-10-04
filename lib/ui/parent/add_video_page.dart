@@ -174,14 +174,18 @@ class _AddVideoPageState extends State<AddVideoPage> {
             ),
           ),
           const SizedBox(height: 12),
-          Row(
+          // Wrap, а не Row: на узких экранах кнопка и счётчик переносятся
+          // на вторую строку вместо переполнения.
+          Wrap(
+            spacing: 12,
+            runSpacing: 8,
+            crossAxisAlignment: WrapCrossAlignment.center,
             children: [
               FilledButton.tonalIcon(
                 onPressed: _pasteFromClipboard,
                 icon: const Icon(Icons.content_paste_go_rounded),
                 label: Text(strings.addVideoPaste),
               ),
-              const SizedBox(width: 12),
               if (_ids.isNotEmpty)
                 Chip(
                   avatar: const Icon(Icons.check_rounded, size: 18),
@@ -202,7 +206,7 @@ class _AddVideoPageState extends State<AddVideoPage> {
             _Message(
               icon: Icons.copy_all_rounded,
               color: AppColors.sunny,
-              text: '$strings.addVideoDuplicate ($_duplicates)',
+              text: '${strings.addVideoDuplicate} ($_duplicates)',
             ),
           ],
           if (_ids.isNotEmpty) ...[
@@ -232,7 +236,7 @@ class _AddVideoPageState extends State<AddVideoPage> {
                       child: CircularProgressIndicator(strokeWidth: 2),
                     )
                   : const Icon(Icons.check_rounded),
-              label: Text('$strings.actionAdd · ${_ids.length}'),
+              label: Text('${strings.actionAdd} · ${_ids.length}'),
             ),
           ],
         ],

@@ -185,7 +185,7 @@ class AppTheme {
         shape: const StadiumBorder(),
       ),
       navigationBarTheme: NavigationBarThemeData(
-        height: 72,
+        height: 68,
         elevation: 0,
         backgroundColor: isDark ? AppColors.darkSurface : Colors.white,
         surfaceTintColor: Colors.transparent,
@@ -193,7 +193,12 @@ class AppTheme {
         labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
         labelTextStyle: WidgetStateProperty.resolveWith((states) {
           final selected = states.contains(WidgetState.selected);
+          // Размер подобран так, чтобы пять подписей — «Главная»,
+          // «Коллекции», «Избранное», «История», «Родителям» — не слипались
+          // даже на узких экранах.
           return (text.labelMedium ?? const TextStyle()).copyWith(
+            fontSize: 11,
+            letterSpacing: -0.1,
             fontWeight: selected ? FontWeight.w800 : FontWeight.w600,
             color: selected ? scheme.primary : scheme.onSurfaceVariant,
           );
@@ -201,7 +206,7 @@ class AppTheme {
         iconTheme: WidgetStateProperty.resolveWith((states) {
           final selected = states.contains(WidgetState.selected);
           return IconThemeData(
-            size: 26,
+            size: 24,
             color: selected ? scheme.primary : scheme.onSurfaceVariant,
           );
         }),
