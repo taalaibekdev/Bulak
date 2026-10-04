@@ -55,6 +55,9 @@ app.*.map.json
 /android/app/*.keystore
 /ios/Runner/GoogleService-Info.plist
 /ios/fastlane/report.xml
+# Рабочий ExportOptions.plist создаётся из .example и содержит ваш Team ID.
+# В репозитории лежит только образец.
+/ios/ExportOptions.plist
 *.mobileprovision
 *.p12
 *.cer
