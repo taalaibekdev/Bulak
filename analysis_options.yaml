@@ -1,0 +1,46 @@
+# Настройки статического анализа для приложения «Булак».
+#
+# Запуск: flutter analyze
+# Требование проекта — ноль замечаний. Если правило мешает по объективной
+# причине, оно отключается здесь с объяснением, а не «глушится» на месте.
+
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  exclude:
+    - build/**
+    - android/**
+    - ios/**
+    - web/**
+    - windows/**
+    - macos/**
+    - linux/**
+
+  errors:
+    # Забытый `await` в этом проекте почти всегда означает потерю данных:
+    # запись в хранилище или постановку видео на паузу.
+    unawaited_futures: warning
+    # Печатать в консоль в релизной сборке незачем.
+    avoid_print: warning
+
+linter:
+  rules:
+    # Явные типы возвращают читаемость там, где важна сигнатура.
+    always_declare_return_types: true
+    # Порядок импортов и отсутствие лишних зависимостей.
+    directives_ordering: true
+    # Пустые catch-блоки скрывают настоящие проблемы.
+    empty_catches: true
+    # Лишние скобки и устаревшие конструкции.
+    unnecessary_lambdas: true
+    use_super_parameters: true
+    # Согласованность именования констант.
+    constant_identifier_names: false
+
+    # Отключено осознанно.
+    #
+    # Контроллеры принимают зависимости именованными параметрами с приватными
+    # полями (`required Repository repository`) — так видны имена аргументов
+    # на месте вызова. Dart не разрешает `this._field` в именованных
+    # параметрах, поэтому правило здесь неприменимо.
+    prefer_initializing_formals: false

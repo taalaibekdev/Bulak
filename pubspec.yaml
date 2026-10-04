@@ -1,0 +1,100 @@
+name: bulak
+description: "Bulak — безопасный видеоплеер для детей: только видео, которые отобрали родители."
+publish_to: "none"
+
+# Версия приложения. Для Android это versionName/versionCode,
+# для iOS — CFBundleShortVersionString/CFBundleVersion.
+# Подробности в docs/publishing/versioning.md
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.13.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  # Состояние и внедрение зависимостей.
+  provider: ^6.1.5
+
+  # Локальное хранение (на устройстве, без серверов).
+  shared_preferences: ^2.5.5
+  path_provider: ^2.1.6
+
+  # Сеть и разбор ссылок YouTube.
+  http: ^1.6.0
+  youtube_explode_dart: ^3.1.0
+
+  # Воспроизведение.
+  video_player: ^2.14.1
+  webview_flutter: ^4.14.1
+
+  # UI-мелочи.
+  cached_network_image: ^4.0.4
+  cupertino_icons: ^1.0.9
+
+  # PIN-код родителя и служебное.
+  crypto: ^3.0.7
+  url_launcher: ^6.3.3
+  webview_flutter_android: ^4.14.1
+  webview_flutter_wkwebview: ^3.27.0
+  wakelock_plus: ^1.8.1
+  package_info_plus: ^10.2.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+  # Генерация иконки и splash-экрана.
+  flutter_launcher_icons: ^0.14.4
+  flutter_native_splash: ^2.4.6
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/icon/
+
+  fonts:
+    - family: Nunito
+      fonts:
+        - asset: assets/fonts/Nunito-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Nunito-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Nunito-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Nunito-ExtraBold.ttf
+          weight: 800
+    - family: Comfortaa
+      fonts:
+        - asset: assets/fonts/Comfortaa-Bold.ttf
+          weight: 700
+
+# Настройки иконки приложения. Пересобрать: dart run flutter_launcher_icons
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icon/app_icon.png"
+  adaptive_icon_background: "assets/icon/app_icon_background.png"
+  adaptive_icon_foreground: "assets/icon/app_icon_foreground.png"
+  adaptive_icon_monochrome: "assets/icon/app_icon_monochrome.png"
+  remove_alpha_ios: true
+  min_sdk_android: 23
+
+# Настройки splash-экрана. Пересобрать: dart run flutter_native_splash:create
+flutter_native_splash:
+  color: "#0E1B3A"
+  image: "assets/icon/splash_logo.png"
+  color_dark: "#0E1B3A"
+  image_dark: "assets/icon/splash_logo.png"
+  android_12:
+    color: "#0E1B3A"
+    image: "assets/icon/splash_logo_android12.png"
+    icon_background_color: "#0E1B3A"
+  android: true
+  ios: true
+  fullscreen: true
