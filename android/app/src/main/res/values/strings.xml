@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Имя приложения на домашнем экране. Значение по умолчанию — русское,
+     английская локализация лежит в values-en/strings.xml. -->
+<resources>
+    <string name="app_name">Булак</string>
+</resources>

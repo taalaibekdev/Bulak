@@ -1,0 +1,14 @@
+# Параметры подписи Android.
+#
+# 1. Скопируйте этот файл в `android/key.properties`
+# 2. Подставьте свои значения (как создать keystore — см. docs/publishing/signing.md)
+# 3. Файл `android/key.properties` уже добавлен в .gitignore и в репозиторий не попадёт
+#
+# Если файла нет, `flutter build apk --release` соберётся debug-подписью —
+# этого достаточно для локальной проверки, но НЕ для публикации в Google Play.
+
+storePassword=ВАШ_ПАРОЛЬ_ОТ_KEYSTORE
+keyPassword=ВАШ_ПАРОЛЬ_КЛЮЧА
+keyAlias=bulak-release
+# Путь указывается относительно каталога android/
+storeFile=bulak-release.jks

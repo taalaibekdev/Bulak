@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Английская локализация имени приложения — для устройств с английским
+     языком интерфейса. -->
+<resources>
+    <string name="app_name">Bulak</string>
+</resources>
