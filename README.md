@@ -155,7 +155,7 @@ flutter build ipa --release
 
 ```bash
 flutter analyze   # статический анализ
-flutter test      # 86 тестов
+flutter test      # 93 теста
 ```
 
 | Файл | Что проверяется |
@@ -164,7 +164,13 @@ flutter test      # 86 тестов
 | [`test/library_controller_test.dart`](test/library_controller_test.dart) | Библиотека, дубли, коллекции, избранное, прогресс, история, сохранение между запусками |
 | [`test/settings_controller_test.dart`](test/settings_controller_test.dart) | PIN-код, смена суток, дневной лимит, тема и язык, сброс |
 | [`test/formatters_test.dart`](test/formatters_test.dart) | Форматирование длительности, дат, склонения |
-| [`test/app_smoke_test.dart`](test/app_smoke_test.dart) | Мастер первого запуска, пустая библиотека, вход в родительский режим по PIN, экран лимита |
+| [`test/app_smoke_test.dart`](test/app_smoke_test.dart) | Мастер первого запуска, создание и подтверждение PIN, пустая библиотека, вход в родительский режим, экран лимита |
+| [`test/pin_code_test.dart`](test/pin_code_test.dart) | Хэширование PIN, соль, отклонение простых кодов |
+| [`test/add_video_page_test.dart`](test/add_video_page_test.dart) | Добавление ссылок: предпросмотр, повторы, некорректные ссылки, подпись кнопки |
+
+Отдельно стоит сказать про `test/app_smoke_test.dart`: он проверяет весь путь первого
+запуска до создания PIN. Именно этот сценарий сломался в первой сборке — клавиатура
+не очищалась между шагами, и пользователь не мог завершить настройку.
 
 ## Структура проекта
 
@@ -194,7 +200,7 @@ lib/
 
 ## Ассеты и генераторы
 
-Шрифты и иконка собираются скриптами — их не нужно готовить руками.
+Шрифты, иконка и скриншоты магазинов собираются скриптами — их не нужно готовить руками.
 
 ### Шрифты
 
@@ -209,14 +215,32 @@ python tools/fonts/build_fonts.py
 
 ### Иконка и splash
 
-Иконка рисуется кодом (Python + Pillow), затем из неё собираются все размеры
-для Android и iOS:
+Знак «капля-родник с кнопкой воспроизведения» описан формулами в
+[`tools/icon/build_assets.py`](tools/icon/build_assets.py) и разворачивается сразу
+во все нужные размеры: иконку приложения, adaptive и monochrome иконки Android,
+splash-экраны и графику для Google Play.
 
 ```bash
-python tools/icon/generate_concepts.py   # концепты в assets/icon/concepts/
-dart run flutter_launcher_icons          # иконки Android/iOS
+python tools/icon/build_assets.py        # весь комплект графики
+dart run flutter_launcher_icons          # размеры для Android и iOS
 dart run flutter_native_splash:create    # splash-экран
 ```
+
+### Скриншоты для магазинов
+
+Готовые наборы уже лежат в репозитории: `fastlane/metadata/android/*/images/phoneScreenshots/`
+(Google Play, 1080 × 1920) и `fastlane/screenshots/*/` (App Store, 1290 × 2796) —
+по 8 кадров на русском и английском, снятых с реальной сборки.
+
+Пересобрать из новых снимков экрана:
+
+```bash
+python tools/screenshots/seed_emulator.py            # данные для съёмки на эмуляторе
+python tools/screenshots/build_store_screenshots.py  # сборка кадров для сторов
+```
+
+`build_store_screenshots.py` вписывает вытянутый экран телефона (1:2,17) в холст
+9:16, который требует Google Play, и масштабирует тот же снимок под 6,7″ для App Store.
 
 ## Документация
 
