@@ -41,6 +41,13 @@ ADB = str(
     / "adb.exe"
 )
 
+# Если подключено несколько устройств, нужно указать нужное: --serial emulator-5554
+SERIAL_ARGS: list[str] = []
+if "--serial" in sys.argv:
+    index = sys.argv.index("--serial")
+    if index + 1 < len(sys.argv):
+        SERIAL_ARGS.extend(["-s", sys.argv[index + 1]])
+
 # Коллекции, которые должны появиться в приложении.
 def collections_for(locale: str) -> list[dict]:
     titles = (
@@ -77,7 +84,7 @@ SETTINGS_EXTRA = {
 
 def adb(*args: str, check: bool = True) -> subprocess.CompletedProcess[str]:
     result = subprocess.run(
-        [ADB, *args],
+        [ADB, *SERIAL_ARGS, *args],
         capture_output=True,
         text=True,
         encoding="utf-8",
