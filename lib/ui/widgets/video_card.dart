@@ -106,6 +106,26 @@ class VideoGridCard extends StatelessWidget {
                               background: AppColors.mint,
                             ),
                           ),
+                        // Значок «скачано»: родитель сразу видит, что видео
+                        // сыграет без интернета.
+                        if (video.isDownloaded && !video.isFinished)
+                          Positioned(
+                            left: 8,
+                            top: 6,
+                            child: Container(
+                              width: 30,
+                              height: 30,
+                              decoration: BoxDecoration(
+                                color: Colors.black.withValues(alpha: 0.42),
+                                shape: BoxShape.circle,
+                              ),
+                              child: const Icon(
+                                Icons.download_done_rounded,
+                                size: 17,
+                                color: AppColors.mint,
+                              ),
+                            ),
+                          ),
                         if (showFavoriteButton && onFavorite != null)
                           Positioned(
                             right: 6,

@@ -121,12 +121,13 @@ WHY THE APP COMPLIES WITH THE KIDS CATEGORY REQUIREMENTS
 ABOUT YOUTUBE AND THIRD-PARTY CONTENT
 
 YouTube is a trademark of Google LLC. Bulak is not affiliated with, sponsored
-by or endorsed by Google. The app does not download videos and does not store
-copies of them: playback uses official YouTube mechanisms (a direct video
-stream, or the official embedded YouTube player loaded from
-youtube-nocookie.com as a fallback). The app is not a distributor of video
-content. Responsibility for which links are added rests with the parent, as
-stated in the Terms of Use.
+by or endorsed by Google. In the build submitted for review, video downloading
+is disabled at compile time (`--dart-define=BULAK_DISABLE_DOWNLOADS=true`): the
+app does not download videos and does not store copies of them. Playback uses
+official YouTube mechanisms (a direct video stream, or the official embedded
+YouTube player loaded from youtube-nocookie.com as a fallback). The app is not
+a distributor of video content. Responsibility for which links are added rests
+with the parent, as stated in the Terms of Use.
 
 Thumbnails are cached locally on the device so the grid loads quickly. Video
 files are never cached: playback is always streamed.
@@ -201,7 +202,7 @@ https://bulak.tlbk.kg
 
 | Возможный вопрос | Рекомендуемый ответ |
 |---|---|
-| «Приложение использует YouTube. Есть ли у вас разрешение?» | Приложение не скачивает и не хранит копии видео, не является распространителем контента. Воспроизведение выполняется через официальные механизмы YouTube. Ответственность за выбор ссылок закреплена за родителем в Пользовательском соглашении |
+| «Приложение использует YouTube. Есть ли у вас разрешение?» | В отправленной на ревью сборке скачивание видео отключено на этапе компиляции (`--dart-define=BULAK_DISABLE_DOWNLOADS=true`): приложение не сохраняет копии видео и не является распространителем контента. Воспроизведение выполняется через официальные механизмы YouTube. Ответственность за выбор ссылок закреплена за родителем в Пользовательском соглашении |
 | «Почему в детском приложении есть доступ к youtube.com?» | Доступ закрыт родительским PIN-кодом и нужен только как резервный способ воспроизведения, когда прямое воспроизведение недоступно. Используется домен `youtube-nocookie.com` (режим повышенной приватности), а навигация внутри плеера ограничена доменами YouTube и Google. Свободного браузинга нет: открывается конкретное видео, без адресной строки. Приложение не запускает внешний браузер |
 | «Показывается ли реклама детям?» | Собственной рекламы и рекламных SDK нет. Рекламу может показывать только официальный встроенный плеер YouTube, и этот режим закрыт родительским PIN-кодом |
 | «Собираете ли вы данные о детях?» | Нет. Раздел App Privacy заполнен как Data Not Collected для всех категорий. Все данные хранятся локально и удаляются пользователем |

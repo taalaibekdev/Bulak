@@ -5,8 +5,10 @@ import 'app.dart';
 import 'core/app_config.dart';
 import 'data/repositories/library_repository.dart';
 import 'data/repositories/settings_repository.dart';
+import 'data/services/download_service.dart';
 import 'data/services/youtube_service.dart';
 import 'data/storage/key_value_store.dart';
+import 'state/download_controller.dart';
 import 'state/library_controller.dart';
 import 'state/settings_controller.dart';
 
@@ -33,15 +35,31 @@ Future<void> main() async {
 
   final settings = SettingsController(repository: SettingsRepository(store));
   final youtube = YouTubeService();
+  final downloads = DownloadService(source: youtube);
   final library = LibraryController(
     repository: LibraryRepository(store),
     youtube: youtube,
   );
+  final downloadController = DownloadController(
+    service: downloads,
+    library: library,
+  );
 
   await settings.load();
   await library.load();
+  // Если файлы загрузок пропали (например, очистили данные приложения),
+  // снимаем отметки «скачано», иначе плеер будет искать несуществующий файл.
+  await downloadController.reconcileWithDisk();
 
-  runApp(BulakApp(settings: settings, library: library, youtube: youtube));
+  runApp(
+    BulakApp(
+      settings: settings,
+      library: library,
+      youtube: youtube,
+      downloads: downloads,
+      downloadController: downloadController,
+    ),
+  );
 }
 
 /// Имя приложения для системных диалогов.

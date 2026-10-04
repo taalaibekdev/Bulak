@@ -218,7 +218,7 @@ class _WelcomeStep extends StatelessWidget {
           ),
           const SizedBox(height: 18),
           Text(
-            '${strings.aboutVersion} 1.0.0 · ${AppConfig.applicationId}',
+            '${strings.aboutVersion} ${AppConfig.versionName} · ${AppConfig.applicationId}',
             style: TextStyle(
               color: Colors.white.withValues(alpha: 0.7),
               fontSize: 12,

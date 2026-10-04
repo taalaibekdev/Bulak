@@ -48,7 +48,7 @@ class AboutPage extends StatelessWidget {
                   builder: (context, snapshot) {
                     final info = snapshot.data;
                     final version = info == null
-                        ? '1.0.0'
+                        ? AppConfig.versionName
                         : '${info.version} (${info.buildNumber})';
                     return PillBadge(
                       label: '${strings.aboutVersion} $version',

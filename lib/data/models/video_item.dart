@@ -3,8 +3,9 @@ import '../../core/utils/youtube_link.dart';
 /// Одно видео в библиотеке ребёнка.
 ///
 /// Храним минимум: идентификатор YouTube, понятное название, автора,
-/// длительность и привязку к коллекции. Превью не сохраняем — оно
-/// подгружается по адресу `i.ytimg.com` и кэшируется на устройстве.
+/// длительность, привязку к коллекции и — если родитель скачал видео —
+/// имя локального файла. Превью не сохраняем: оно подгружается по адресу
+/// `i.ytimg.com` и кэшируется на устройстве.
 class VideoItem {
   const VideoItem({
     required this.id,
@@ -16,6 +17,10 @@ class VideoItem {
     this.favorite = false,
     this.watchedSeconds = 0,
     this.lastWatchedAt,
+    this.localFileName,
+    this.downloadedAt,
+    this.fileSizeBytes,
+    this.downloadQuality,
   });
 
   /// Идентификатор видео на YouTube (11 символов).
@@ -45,6 +50,21 @@ class VideoItem {
   /// Когда видео смотрели в последний раз.
   final DateTime? lastWatchedAt;
 
+  /// Имя скачанного файла в каталоге загрузок приложения.
+  ///
+  /// Храним именно имя, а не полный путь: на iOS путь к контейнеру
+  /// приложения меняется после обновления, и абсолютный путь стал бы битым.
+  final String? localFileName;
+
+  /// Когда видео скачали на устройство.
+  final DateTime? downloadedAt;
+
+  /// Размер скачанного файла в байтах.
+  final int? fileSizeBytes;
+
+  /// Качество скачанного файла, например `360p`.
+  final String? downloadQuality;
+
   Duration? get duration =>
       durationSeconds == null ? null : Duration(seconds: durationSeconds!);
 
@@ -61,6 +81,9 @@ class VideoItem {
   /// Есть ли что продолжать: начато, но не закончено.
   bool get isInProgress => watchedSeconds > 15 && !isFinished;
 
+  /// Видео лежит на устройстве и может играть без интернета.
+  bool get isDownloaded => localFileName != null && localFileName!.isNotEmpty;
+
   /// Ссылка на превью в максимальном качестве.
   String get thumbnailUrl => YouTubeLink.maxThumbnail(id);
 
@@ -75,6 +98,10 @@ class VideoItem {
     bool? favorite,
     int? watchedSeconds,
     Object? lastWatchedAt = _sentinel,
+    Object? localFileName = _sentinel,
+    Object? downloadedAt = _sentinel,
+    Object? fileSizeBytes = _sentinel,
+    Object? downloadQuality = _sentinel,
   }) {
     return VideoItem(
       id: id,
@@ -90,6 +117,18 @@ class VideoItem {
       lastWatchedAt: lastWatchedAt == _sentinel
           ? this.lastWatchedAt
           : lastWatchedAt as DateTime?,
+      localFileName: localFileName == _sentinel
+          ? this.localFileName
+          : localFileName as String?,
+      downloadedAt: downloadedAt == _sentinel
+          ? this.downloadedAt
+          : downloadedAt as DateTime?,
+      fileSizeBytes: fileSizeBytes == _sentinel
+          ? this.fileSizeBytes
+          : fileSizeBytes as int?,
+      downloadQuality: downloadQuality == _sentinel
+          ? this.downloadQuality
+          : downloadQuality as String?,
     );
   }
 
@@ -104,6 +143,10 @@ class VideoItem {
     'watchedSeconds': watchedSeconds,
     if (lastWatchedAt != null)
       'lastWatchedAt': lastWatchedAt!.toIso8601String(),
+    if (localFileName != null) 'localFileName': localFileName,
+    if (downloadedAt != null) 'downloadedAt': downloadedAt!.toIso8601String(),
+    if (fileSizeBytes != null) 'fileSizeBytes': fileSizeBytes,
+    if (downloadQuality != null) 'downloadQuality': downloadQuality,
   };
 
   static VideoItem? fromJson(Object? raw) {
@@ -127,6 +170,16 @@ class VideoItem {
           ? (raw['watchedSeconds'] as num).toInt()
           : 0,
       lastWatchedAt: _parseDate(raw['lastWatchedAt']),
+      localFileName: raw['localFileName'] is String
+          ? raw['localFileName'] as String
+          : null,
+      downloadedAt: _parseDate(raw['downloadedAt']),
+      fileSizeBytes: raw['fileSizeBytes'] is num
+          ? (raw['fileSizeBytes'] as num).toInt()
+          : null,
+      downloadQuality: raw['downloadQuality'] is String
+          ? raw['downloadQuality'] as String
+          : null,
     );
   }
 
@@ -146,7 +199,8 @@ class VideoItem {
       other.durationSeconds == durationSeconds &&
       other.collectionId == collectionId &&
       other.favorite == favorite &&
-      other.watchedSeconds == watchedSeconds;
+      other.watchedSeconds == watchedSeconds &&
+      other.localFileName == localFileName;
 
   @override
   int get hashCode => Object.hash(
@@ -157,5 +211,6 @@ class VideoItem {
     collectionId,
     favorite,
     watchedSeconds,
+    localFileName,
   );
 }

@@ -6,7 +6,9 @@ import 'core/app_config.dart';
 import 'core/l10n/app_strings.dart';
 import 'core/theme/app_theme.dart';
 import 'data/models/app_settings.dart';
+import 'data/services/download_service.dart';
 import 'data/services/youtube_service.dart';
+import 'state/download_controller.dart';
 import 'state/library_controller.dart';
 import 'state/settings_controller.dart';
 import 'ui/onboarding/onboarding_page.dart';
@@ -19,11 +21,19 @@ class BulakApp extends StatelessWidget {
     required this.settings,
     required this.library,
     required this.youtube,
+    this.downloads,
+    this.downloadController,
   });
 
   final SettingsController settings;
   final LibraryController library;
   final YouTubeService youtube;
+
+  /// Сервис загрузок. Необязателен: в тестах интерфейса он не нужен.
+  final DownloadService? downloads;
+
+  /// Очередь загрузок. Необязательна по той же причине.
+  final DownloadController? downloadController;
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +42,12 @@ class BulakApp extends StatelessWidget {
         ChangeNotifierProvider<SettingsController>.value(value: settings),
         ChangeNotifierProvider<LibraryController>.value(value: library),
         Provider<YouTubeService>.value(value: youtube),
+        if (downloads != null)
+          Provider<DownloadService>.value(value: downloads!),
+        if (downloadController != null)
+          ChangeNotifierProvider<DownloadController>.value(
+            value: downloadController!,
+          ),
       ],
       child: Consumer<SettingsController>(
         builder: (context, settingsController, _) {

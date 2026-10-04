@@ -4,12 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
+import '../../core/app_config.dart';
 import '../../core/l10n/app_strings.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/utils/formatters.dart';
 import '../../data/models/video_collection.dart';
+import '../../data/models/video_item.dart';
 import '../../data/services/youtube_service.dart';
+import '../../state/download_controller.dart';
 import '../../state/library_controller.dart';
+import '../../state/settings_controller.dart';
 import '../widgets/common.dart';
 import '../widgets/thumbnail_image.dart';
 
@@ -101,6 +105,7 @@ class _AddVideoPageState extends State<AddVideoPage> {
   Future<void> _save() async {
     final strings = AppStrings.of(context);
     final library = context.read<LibraryController>();
+    final settings = context.read<SettingsController>();
     setState(() => _saving = true);
 
     final result = await library.addVideos(
@@ -120,6 +125,16 @@ class _AddVideoPageState extends State<AddVideoPage> {
         icon: Icons.info_outline_rounded,
       );
       return;
+    }
+
+    // Если родитель включил автоскачивание, сразу сохраняем видео
+    // на устройство — тогда просмотр не зависит от интернета.
+    if (AppConfig.downloadsEnabled &&
+        settings.settings.autoDownload &&
+        result.added > 0) {
+      final downloads = context.read<DownloadController>();
+      final added = _ids.map(library.byId).whereType<VideoItem>().toList();
+      downloads.enqueueAll(added);
     }
 
     Navigator.of(context).pop();

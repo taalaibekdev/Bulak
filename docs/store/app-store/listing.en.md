@@ -119,7 +119,7 @@ WHO IT IS FOR
 For children roughly 3 to 10 years old, and for parents who want calm viewing without accidental content.
 
 IMPORTANT INFORMATION ABOUT YOUTUBE
-YouTube is a trademark of Google LLC. The Bulak app is not affiliated with Google, is not sponsored by Google and is not endorsed by Google. The app does not download videos and does not store copies of them: playback uses official YouTube mechanisms. We do not show our own advertising and we do not include advertising SDKs in the app; however, the fallback embedded YouTube player may display advertising served by YouTube itself.
+YouTube is a trademark of Google LLC. The Bulak app is not affiliated with Google, is not sponsored by Google and is not endorsed by Google. In this build the app does not download videos and does not store copies of them: playback uses official YouTube mechanisms. We do not show our own advertising and we do not include advertising SDKs in the app; however, the fallback embedded YouTube player may display advertising served by YouTube itself.
 
 Free. No in-app purchases and no subscriptions.
 

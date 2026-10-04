@@ -98,6 +98,123 @@ class AppStrings {
     return '$count ${plural(count, 'коллекция', 'коллекции', 'коллекций')}';
   }
 
+  // --- Скачивание на устройство ------------------------------------------
+
+  String get downloadsTitle => _pick('Загрузки', 'Downloads');
+  String get downloadsSubtitle => _pick(
+    'Скачанные видео играют без интернета',
+    'Downloaded videos play without internet',
+  );
+  String get downloadAction => _pick('Скачать', 'Download');
+  String get downloadAllAction => _pick('Скачать все', 'Download all');
+  String get downloadRemove => _pick('Удалить загрузку', 'Delete download');
+  String get downloadRemoveAll =>
+      _pick('Удалить все загрузки', 'Delete all downloads');
+  String get downloadCancelled =>
+      _pick('Загрузка отменена', 'Download cancelled');
+  String get downloadFailed => _pick(
+    'Не удалось скачать видео. Проверьте интернет и попробуйте снова.',
+    'Could not download the video. Check your connection and try again.',
+  );
+  String get downloadDone => _pick('Видео скачано', 'Video downloaded');
+  String downloadQueued(int count) => _isEn
+      ? '$count in the download queue'
+      : 'В очереди на скачивание: $count';
+  String get downloadInProgress => _pick('Скачиваем…', 'Downloading…');
+  String get downloadPlaying => _pick('Играет без интернета', 'Plays offline');
+  String get downloadBadge => _pick('Скачано', 'Saved');
+  String get downloadStorageTitle =>
+      _pick('Занято на устройстве', 'Used on this device');
+  String get downloadEmpty => _pick(
+    'Скачанных видео пока нет. Нажмите «Скачать» у видео — оно сохранится '
+        'на устройстве и будет играть без интернета.',
+    'No downloaded videos yet. Tap Download next to a video to save it on '
+        'this device so it plays without internet.',
+  );
+  String get downloadAutoTitle =>
+      _pick('Скачивать сразу при добавлении', 'Download right after adding');
+  String get downloadAutoBody => _pick(
+    'Как только вы добавите ссылку, приложение само сохранит видео '
+        'на устройстве.',
+    'As soon as you add a link, the app saves the video on this device.',
+  );
+  String get downloadPreferLocalTitle =>
+      _pick('Играть сохранённое видео', 'Play the saved copy');
+  String get downloadPreferLocalBody => _pick(
+    'Если видео скачано, плеер берёт файл с устройства — так просмотр '
+        'не прерывается.',
+    'If a video is downloaded, the player uses the local file so playback '
+        'never stalls.',
+  );
+  String get downloadLegalNote => _pick(
+    'Скачивание сохраняет видео на этот телефон. Используйте функцию для '
+        'личного просмотра и не передавайте скачанные файлы другим: это '
+        'может нарушать права авторов видео.',
+    'Downloading saves the video to this phone. Use it for personal viewing '
+        'and do not pass downloaded files to others: that may infringe the '
+        'rights of the video authors.',
+  );
+  String get downloadSizeUnknown => _pick('размер неизвестен', 'size unknown');
+  String get downloadWifiHint => _pick(
+    'Скачивание расходует интернет-трафик. Лучше делать это по Wi-Fi.',
+    'Downloading uses mobile data. Wi-Fi is recommended.',
+  );
+
+  // --- Обмен подборками --------------------------------------------------
+
+  String get shareTitle => _pick('Обмен подборками', 'Share playlists');
+  String get shareSubtitle => _pick(
+    'Отправьте список ссылок другому родителю',
+    'Send a list of links to another parent',
+  );
+  String get shareExportSection => _pick('Поделиться', 'Share');
+  String get shareExportAll => _pick('Вся библиотека', 'Whole library');
+  String get shareExportCollection => _pick('Коллекция', 'Playlist');
+  String get shareExportAsText => _pick('Отправить ссылками', 'Send as links');
+  String get shareExportAsFile => _pick('Отправить файлом', 'Send as a file');
+  String get shareExportHint => _pick(
+    'Получатель вставит этот список в приложении «Булак» и скачает те же '
+        'видео себе.',
+    'The other person pastes this list into Bulak and downloads the same '
+        'videos.',
+  );
+  String get shareExportEmpty =>
+      _pick('В библиотеке пока нет видео', 'There are no videos yet');
+  String get shareCopied => _pick('Скопировано', 'Copied');
+  String get shareImportSection => _pick('Получить подборку', 'Import a list');
+  String get shareImportHint => _pick(
+    'Вставьте список ссылок или файл подборки',
+    'Paste a list of links or a playlist file',
+  );
+  String get shareImportPaste => _pick('Вставить', 'Paste');
+  String get shareImportCheck => _pick('Проверить', 'Check');
+  String get shareImportInvalid => _pick(
+    'Здесь нет ссылок на видео. Проверьте, что скопировали всё сообщение '
+        'или файл целиком.',
+    'No video links found. Make sure you copied the whole message or file.',
+  );
+  String shareImportFound(int count) =>
+      _isEn ? 'Found: $count' : 'Найдено: $count';
+  String shareImportNew(int count) => _isEn ? 'New: $count' : 'Новых: $count';
+  String shareImportDuplicates(int count) => _isEn
+      ? 'Already in the library: $count'
+      : 'Уже есть в библиотеке: $count';
+  String get shareImportTargetNew =>
+      _pick('Создать коллекцию', 'Create a playlist');
+  String get shareImportTargetExisting =>
+      _pick('В существующую коллекцию', 'Into an existing playlist');
+  String get shareImportTargetNone => _pick('Без коллекции', 'No playlist');
+  String get shareImportAction =>
+      _pick('Добавить в библиотеку', 'Add to library');
+  String get shareImportTitleLabel =>
+      _pick('Название коллекции', 'Playlist name');
+  String shareImportDone(int count) =>
+      _isEn ? 'Added: $count' : 'Добавлено видео: $count';
+  String get shareImportDownloadAfter =>
+      _pick('Скачать добавленные видео', 'Download the added videos');
+  String get shareImportNothingNew =>
+      _pick('Новых видео нет — всё уже в библиотеке', 'Nothing new to add');
+
   // --- Плеер -------------------------------------------------------------
 
   String get playerLock => _pick('Заблокировать', 'Lock');

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../core/app_config.dart';
 import '../../core/l10n/app_strings.dart';
 import '../../data/models/video_item.dart';
 import '../../state/library_controller.dart';
 import '../widgets/common.dart';
+import '../widgets/download_button.dart';
 import '../widgets/video_card.dart';
 
 /// Управление библиотекой: переименовать, перенести, удалить.
@@ -89,10 +91,17 @@ class _ManageVideosPageState extends State<ManageVideosPage> {
                             '${collection.emoji} ${collection.title}',
                         ].join(' · '),
                         onTap: () => _openEditor(context, video),
-                        trailing: IconButton(
-                          tooltip: strings.actionEdit,
-                          icon: const Icon(Icons.edit_outlined),
-                          onPressed: () => _openEditor(context, video),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            if (AppConfig.downloadsEnabled)
+                              DownloadButton(video: video),
+                            IconButton(
+                              tooltip: strings.actionEdit,
+                              icon: const Icon(Icons.edit_outlined),
+                              onPressed: () => _openEditor(context, video),
+                            ),
+                          ],
                         ),
                       );
                     },

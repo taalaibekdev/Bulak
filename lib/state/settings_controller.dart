@@ -142,6 +142,14 @@ class SettingsController extends ChangeNotifier {
   Future<void> setShowHistory(bool value) =>
       _apply(_settings.copyWith(showHistory: value));
 
+  /// Скачивать видео сразу при добавлении в библиотеку.
+  Future<void> setAutoDownload(bool value) =>
+      _apply(_settings.copyWith(autoDownload: value));
+
+  /// Играть скачанный файл, даже когда есть интернет.
+  Future<void> setPreferLocalPlayback(bool value) =>
+      _apply(_settings.copyWith(preferLocalPlayback: value));
+
   Future<void> completeOnboarding() =>
       _apply(_settings.copyWith(onboardingCompleted: true));
 

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../core/app_config.dart';
 import '../../core/l10n/app_strings.dart';
+import '../../core/utils/formatters.dart';
 import '../../core/utils/pin_code.dart';
 import '../../state/library_controller.dart';
 import '../../state/settings_controller.dart';
@@ -12,9 +13,11 @@ import '../widgets/pin_pad.dart';
 import 'about_page.dart';
 import 'add_video_page.dart';
 import 'appearance_page.dart';
+import 'downloads_page.dart';
 import 'manage_collections_page.dart';
 import 'manage_videos_page.dart';
 import 'security_page.dart';
+import 'share_library_page.dart';
 import 'time_limit_page.dart';
 
 /// Вкладка «Родителям».
@@ -213,6 +216,25 @@ class _ParentHome extends StatelessWidget {
           onTap: () =>
               Navigator.of(context).push(ManageCollectionsPage.route()),
         ),
+        if (AppConfig.downloadsEnabled) ...[
+          const SizedBox(height: 12),
+          _Tile(
+            title: strings.downloadsTitle,
+            subtitle: library.downloaded.isEmpty
+                ? strings.downloadsSubtitle
+                : '${strings.videosCount(library.downloaded.length)} · '
+                      '${Formatters.bytes(library.downloadedBytes)}',
+            icon: Icons.download_for_offline_rounded,
+            onTap: () => Navigator.of(context).push(DownloadsPage.route()),
+          ),
+        ],
+        const SizedBox(height: 12),
+        _Tile(
+          title: strings.shareTitle,
+          subtitle: strings.shareSubtitle,
+          icon: Icons.ios_share_rounded,
+          onTap: () => Navigator.of(context).push(ShareLibraryPage.route()),
+        ),
         const SizedBox(height: 12),
         _Tile(
           title: strings.parentTimeLimit,
@@ -239,7 +261,7 @@ class _ParentHome extends StatelessWidget {
         const SizedBox(height: 12),
         _Tile(
           title: strings.parentAbout,
-          subtitle: '${strings.aboutVersion} 1.0.0',
+          subtitle: '${strings.aboutVersion} ${AppConfig.versionName}',
           icon: Icons.info_rounded,
           onTap: () => Navigator.of(context).push(AboutPage.route()),
         ),

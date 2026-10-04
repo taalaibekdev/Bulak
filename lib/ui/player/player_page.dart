@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,6 +12,7 @@ import '../../core/theme/app_colors.dart';
 import '../../data/models/app_settings.dart';
 import '../../data/models/playback_result.dart';
 import '../../data/models/video_item.dart';
+import '../../data/services/download_service.dart';
 import '../../data/services/youtube_service.dart';
 import '../../state/library_controller.dart';
 import '../../state/settings_controller.dart';
@@ -22,13 +24,13 @@ import 'widgets/time_up_dialog.dart';
 
 /// Экран просмотра видео.
 ///
-/// Два режима:
-/// * прямой поток — чистый экран без интерфейса и рекламы YouTube
-///   (качество до 360p, как отдаёт сам YouTube);
+/// Три источника, в порядке предпочтения:
+/// * скачанный файл на устройстве — играет без интернета и не прерывается;
+/// * прямой поток YouTube — чистый экран без рекламы (качество до 360p);
 /// * встроенный плеер YouTube — выше качество, но со своим интерфейсом.
 ///
-/// Выбор режима хранится в настройках, а в режиме «автоматически»
-/// приложение само переключается на встроенный плеер, если поток не отдался.
+/// Выбор хранится в настройках, а в режиме «автоматически» приложение само
+/// переключается на встроенный плеер, если поток не отдался.
 class PlayerPage extends StatefulWidget {
   const PlayerPage({super.key, required this.video});
 
@@ -60,11 +62,15 @@ class _PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
   bool _finished = false;
   bool _limitDialogShown = false;
 
+  /// Играем файл с устройства, а не сетевой поток.
+  bool _isLocalPlayback = false;
+
   int _secondsSinceSave = 0;
 
   late SettingsController _settings;
   late LibraryController _library;
   late YouTubeService _youtube;
+  late DownloadService _downloads;
 
   VideoItem get _video => widget.video;
 
@@ -76,6 +82,7 @@ class _PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
     _settings = context.read<SettingsController>();
     _library = context.read<LibraryController>();
     _youtube = context.read<YouTubeService>();
+    _downloads = context.read<DownloadService>();
 
     _mode = _settings.settings.playbackMode == PlaybackMode.embed
         ? _PlayerMode.embed
@@ -126,16 +133,30 @@ class _PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
       _error = null;
     });
 
-    final url = await _youtube.resolveStreamUrl(_video.id);
+    // Сначала пробуем файл на устройстве: он не зависит ни от интернета,
+    // ни от того, отдаёт ли YouTube поток прямо сейчас.
+    File? localFile;
+    if (_settings.settings.preferLocalPlayback && _video.isDownloaded) {
+      localFile = await _downloads.localFileFor(_video);
+      if (!mounted) return;
+      if (localFile == null) {
+        // Родитель удалил файл вручную — снимаем отметку и идём в сеть.
+        unawaited(_library.clearDownload(_video.id));
+      }
+    }
+
+    final controller = localFile != null
+        ? VideoPlayerController.file(localFile)
+        : await _networkController();
     if (!mounted) return;
 
-    if (url == null) {
+    if (controller == null) {
       await _handleFailure(PlaybackFailureReason.notPlayable);
       return;
     }
 
-    final controller = VideoPlayerController.networkUrl(url);
     _controller = controller;
+    _isLocalPlayback = localFile != null;
     controller.addListener(_onControllerChanged);
 
     try {
@@ -160,6 +181,13 @@ class _PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
       if (!mounted) return;
       await _handleFailure(PlaybackFailureReason.playerError);
     }
+  }
+
+  /// Готовит плеер для сетевого потока или возвращает `null`, если потока нет.
+  Future<VideoPlayerController?> _networkController() async {
+    final url = await _youtube.resolveStreamUrl(_video.id);
+    if (url == null) return null;
+    return VideoPlayerController.networkUrl(url);
   }
 
   /// Решает, что делать при неудаче: в авторежиме уходим на встроенный плеер.
@@ -603,6 +631,7 @@ class _PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
                     Expanded(
                       child: _PortraitPanel(
                         video: _video,
+                        isLocal: _isLocalPlayback,
                         onNext: hasNext ? _playNext : null,
                         onFullscreen: _toggleFullscreen,
                       ),
@@ -676,12 +705,16 @@ class _PortraitPanel extends StatelessWidget {
   const _PortraitPanel({
     required this.video,
     required this.onFullscreen,
+    this.isLocal = false,
     this.onNext,
   });
 
   final VideoItem video;
   final VoidCallback onFullscreen;
   final VoidCallback? onNext;
+
+  /// Играем файл с устройства — можно смотреть без интернета.
+  final bool isLocal;
 
   @override
   Widget build(BuildContext context) {
@@ -691,6 +724,27 @@ class _PortraitPanel extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          if (isLocal) ...[
+            Row(
+              children: [
+                const Icon(
+                  Icons.download_done_rounded,
+                  size: 18,
+                  color: AppColors.mint,
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  strings.downloadPlaying,
+                  style: const TextStyle(
+                    color: AppColors.mint,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+          ],
           Text(
             video.title,
             style: const TextStyle(

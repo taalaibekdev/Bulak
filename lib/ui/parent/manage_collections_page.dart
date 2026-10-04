@@ -6,6 +6,7 @@ import '../../core/theme/app_colors.dart';
 import '../../data/models/video_collection.dart';
 import '../../state/library_controller.dart';
 import '../widgets/common.dart';
+import 'share_library_page.dart';
 
 /// Управление коллекциями: создать, переименовать, сменить значок и цвет.
 class ManageCollectionsPage extends StatelessWidget {
@@ -53,6 +54,9 @@ class ManageCollectionsPage extends StatelessWidget {
                   collection: collection,
                   videoCount: library.countOf(collection.id),
                   onEdit: () => _openEditor(context, collection: collection),
+                  onShare: () =>
+                      Navigator.of(context)
+                          .push(ShareLibraryPage.route(collection: collection)),
                   onDelete: () => _delete(context, collection),
                 );
               },
@@ -91,12 +95,14 @@ class _CollectionRow extends StatelessWidget {
     required this.collection,
     required this.videoCount,
     required this.onEdit,
+    required this.onShare,
     required this.onDelete,
   });
 
   final VideoCollection collection;
   final int videoCount;
   final VoidCallback onEdit;
+  final VoidCallback onShare;
   final VoidCallback onDelete;
 
   @override
@@ -141,6 +147,11 @@ class _CollectionRow extends StatelessWidget {
                 ),
               ],
             ),
+          ),
+          IconButton(
+            tooltip: strings.shareExportSection,
+            onPressed: onShare,
+            icon: const Icon(Icons.ios_share_rounded),
           ),
           IconButton(
             tooltip: strings.actionEdit,

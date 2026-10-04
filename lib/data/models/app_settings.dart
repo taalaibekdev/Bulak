@@ -24,6 +24,8 @@ class AppSettings {
     this.onboardingCompleted = false,
     this.watchedSecondsToday = 0,
     this.dayKey = '',
+    this.autoDownload = false,
+    this.preferLocalPlayback = true,
   });
 
   /// Хэш PIN-кода родителя (SHA-256 от соли и кода). Сам код не хранится.
@@ -58,6 +60,16 @@ class AppSettings {
 
   /// День, к которому относится счётчик (формат `ГГГГ-ММ-ДД`).
   final String dayKey;
+
+  /// Скачивать видео на устройство сразу при добавлении в библиотеку.
+  final bool autoDownload;
+
+  /// Играть скачанный файл, даже когда есть интернет.
+  ///
+  /// Так видео не «зависает» на середине из-за того, что YouTube перестал
+  /// отдавать поток: скачанный файл играется с диска. Отключать смысла мало,
+  /// но пусть будет возможность сравнить качество.
+  final bool preferLocalPlayback;
 
   bool get hasPin =>
       (pinHash?.isNotEmpty ?? false) && (pinSalt?.isNotEmpty ?? false);
@@ -102,6 +114,8 @@ class AppSettings {
     bool? onboardingCompleted,
     int? watchedSecondsToday,
     String? dayKey,
+    bool? autoDownload,
+    bool? preferLocalPlayback,
   }) {
     return AppSettings(
       pinHash: pinHash == _sentinel ? this.pinHash : pinHash as String?,
@@ -118,6 +132,8 @@ class AppSettings {
       onboardingCompleted: onboardingCompleted ?? this.onboardingCompleted,
       watchedSecondsToday: watchedSecondsToday ?? this.watchedSecondsToday,
       dayKey: dayKey ?? this.dayKey,
+      autoDownload: autoDownload ?? this.autoDownload,
+      preferLocalPlayback: preferLocalPlayback ?? this.preferLocalPlayback,
     );
   }
 
@@ -134,6 +150,8 @@ class AppSettings {
     'onboardingCompleted': onboardingCompleted,
     'watchedSecondsToday': watchedSecondsToday,
     'dayKey': dayKey,
+    'autoDownload': autoDownload,
+    'preferLocalPlayback': preferLocalPlayback,
   };
 
   static AppSettings fromJson(Object? raw) {
@@ -157,6 +175,8 @@ class AppSettings {
           ? (raw['watchedSecondsToday'] as num).toInt()
           : 0,
       dayKey: raw['dayKey'] is String ? raw['dayKey'] as String : '',
+      autoDownload: raw['autoDownload'] == true,
+      preferLocalPlayback: raw['preferLocalPlayback'] != false,
     );
   }
 

@@ -1,8 +1,8 @@
 # Terms of Use for the Bulak Application
 
 **Effective date:** January 1, 2025
-**Last updated:** January 1, 2025
-**Document version:** 1.0
+**Last updated:** October 5, 2026
+**Document version:** 1.1
 
 **Location:** https://bulak.tlbk.kg/terms
 **Privacy Policy:** https://bulak.tlbk.kg/privacy
@@ -30,9 +30,13 @@
 
 2.2. The application contains no search, no recommendations, no infinite feed, no short vertical videos (Shorts), no comments, no subscriptions and no channels. The application does not provide any video content of its own.
 
-2.3. All application data — the link list, titles, collections, favourites, viewing history, settings and the PIN hash — is stored exclusively locally on the User's device. Details are set out in the Privacy Policy.
+2.3. All application data — the link list, titles, collections, favourites, viewing history, settings, the PIN hash and downloaded video files — is stored exclusively locally on the User's device. Details are set out in the Privacy Policy.
 
-2.4. An internet connection is required to display thumbnails and play videos: the application contacts YouTube servers (Google LLC) directly. Without network access, videos and thumbnails will not load.
+2.4. An internet connection is required to display thumbnails and play videos from the network: the application contacts YouTube servers (Google LLC) directly. Without network access, videos and thumbnails will not load; however, **a video previously downloaded to the device is played back from device storage without contacting YouTube**.
+
+2.5. **Downloading videos.** The application may offer a download feature: the parent taps the download icon on a video or the "Download all" button on the "Downloads" screen, and the application saves the video file to the application's private directory on the device. The highest quality available for such a file is 360p: that is a limitation of YouTube itself, which does not serve "muxed" streams at higher quality. The file is inaccessible to other applications, does not appear in the device gallery or shared storage, is not included in Android backups, and can be deleted by the User at any time. The feature can be disabled entirely at build time with the `BULAK_DISABLE_DOWNLOADS=true` flag.
+
+2.6. **Sharing collections.** A parent can pass another person a list of video links — as plain text or as a file with the `.bulak` extension — through the system "Share" menu. The recipient pastes the list into their own application and the videos are added to their library. **Only links and captions are transferred: the video files themselves are never sent, under any circumstances.** The transfer goes wherever the User directs it, and the Developer takes no part in it, receives no copy of the list and cannot cancel it.
 
 ---
 
@@ -46,6 +50,7 @@
 
 - install the application on devices you own;
 - use all features of the application as intended, including parental mode;
+- download videos to the device and share collections of links — **provided that the User has the right to save those videos** (see clause 4.6);
 - make backup copies of the application for personal use only.
 
 3.4. The licence **prohibits** you from:
@@ -54,6 +59,8 @@
 - decompiling, disassembling, modifying the application or creating derivative works based on it, except where expressly permitted by applicable law;
 - removing or altering copyright and trademark notices;
 - using the application to build a competing product, or to extract its source code or design;
+- distributing downloaded video files, publishing them, passing them to third parties or using them for commercial purposes;
+- using the collection-sharing feature for the mass distribution of third-party link collections;
 - using the application in any manner that violates the law, the rights of third parties, or the terms of service of Google and YouTube.
 
 3.5. All rights not expressly granted by these Terms remain with the Developer. The application is licensed, not sold.
@@ -77,11 +84,28 @@
 
 4.5. The Developer may, but is not obliged to, restrict the operation of the application or individual features at its own discretion if it receives reliable information that the application is being systematically used for unlawful purposes. Because the application transmits no data to the Developer, we generally have no technical means of detecting such use — see section 7.
 
+4.6. **The User's responsibility for downloaded content.** By using the download feature, the User confirms and warrants that they:
+
+- **have the right to save these videos to the device** — for example, they are the rights holder, have obtained the rights holder's permission, are using a video distributed under a free licence (including Creative Commons), or are saving the video to the extent expressly permitted by applicable law or by the YouTube service itself;
+- **have read the YouTube Terms of Service** (https://www.youtube.com/t/terms) and understand that downloading videos from YouTube, other than where YouTube expressly provides that capability (for example, the download button in the service itself or a Creative Commons licence), is **not permitted by the YouTube Terms of Service**;
+- **will not distribute the downloaded files** — neither by passing them to third parties, nor by publishing them, nor by using them for commercial purposes;
+- **will not use the application to build and distribute libraries of third-party content.**
+
+4.7. **The Developer is not liable for any infringement of third-party rights committed by the User in downloading, storing or distributing videos.** The Developer does not verify whether the User has the right to save a particular video, receives neither links nor downloaded files from the User, and has no technical means of monitoring them. All risks associated with saving videos to the device, including claims by rights holders, rest with the User. The Developer provides a technical capability but does not initiate, approve or encourage the downloading of content to which the User holds no rights.
+
+4.8. **Responsibility for sharing collections.** The User alone decides to whom and which list of links is sent. The User is responsible for ensuring that such distribution does not infringe the rights of third parties or applicable law. The Developer is not a party to the exchange, does not receive the list being shared and does not act as its distributor.
+
 ---
 
 ## 5. YouTube Content and Third Parties
 
-5.1. The application works with YouTube video content. The application **does not download video files**, does not create copies of them, does not store them on the device and does not distribute them. Playback uses official YouTube mechanisms: either a direct video-stream link or the official embedded YouTube player.
+5.1. The application works with YouTube video content. Playback uses official YouTube mechanisms: either a direct video-stream link or the official embedded YouTube player. In addition, the application may **save a video file to the User's device** (section 2.5) — in the application's private directory, inaccessible to other applications. Downloaded files are not transmitted to the Developer, are not distributed by the application, and are deleted by the User.
+
+5.1.1. Downloading videos from YouTube, other than where YouTube expressly provides that capability, is **not permitted by the YouTube Terms of Service**. We state this plainly to the User and do not claim that such downloading is approved by the service. By using the download feature the User accepts the associated risks — see clauses 4.6 and 4.7.
+
+5.1.2. The download feature can be disabled entirely at build time with the `BULAK_DISABLE_DOWNLOADS=true` flag; such a build has no download buttons and no "Downloads" screen, and creates no copies of videos on the device.
+
+5.1.3. The collection-sharing feature transfers to another person **only a list of links and captions** — as text or a `.bulak` file — at the User's choice and through the system "Share" menu. Video files are not transferred by this feature.
 
 5.2. By using the application you also accept the Google terms and policies that apply to the YouTube service:
 
@@ -95,7 +119,7 @@
 
 5.5. The Bulak application is **not affiliated with Google LLC or Apple Inc.** and is not sponsored, supported or endorsed by either company. The names YouTube, Google Play, App Store and other services are used solely for descriptive purposes, to explain honestly which services the application works with.
 
-5.6. If you are a rights holder and believe the application infringes your rights, contact us at support@tlbk.kg. Please note that the application does not store or distribute video content; requests to remove a specific video should therefore be addressed to YouTube as the operator of the service hosting that content.
+5.6. If you are a rights holder and believe the application infringes your rights, contact us at support@tlbk.kg. Please note that the application does not host or distribute video content; requests to remove a specific video from YouTube should therefore be addressed to YouTube as the operator of the service hosting that content. If a complaint concerns a downloaded file, note that such a file exists only in the private directory of the device of the User who saved it; the Developer has no access to it and cannot delete it remotely. On receiving such a request we will issue a demand to delete the links and files and, if we had published the download feature in an app store, disable it in the nearest update.
 
 ---
 
@@ -140,6 +164,8 @@
 - the acts or omissions of Google LLC and other third parties, including YouTube service unavailability, changes to how those services operate, video removals, advertising display and any restrictions imposed by those services;
 - inability to use the application due to lack of internet access, internet-provider outages, operating-system restrictions or device malfunction;
 - data loss caused by uninstalling the application, resetting the device, device failure, operating-system updates or use of the "Reset everything" feature;
+- downloaded video content, its lawfulness, its subsequent use, and any claims by rights holders relating to the saving of videos to the device at the User's initiative (see clauses 4.6 and 4.7);
+- the consequences of the User passing a list of links to third parties through the "Share" feature;
 - loss or compromise of the PIN where the device was accessible to third parties;
 - the consequences of using the application in a manner contrary to these Terms or to law.
 

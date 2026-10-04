@@ -144,6 +144,54 @@ class LibraryController extends ChangeNotifier {
     return List.unmodifiable(list.take(12).toList());
   }
 
+  /// Видео, которые лежат на устройстве и играют без интернета.
+  List<VideoItem> get downloaded {
+    final list = _videos.where((video) => video.isDownloaded).toList()
+      ..sort((a, b) {
+        final aDate = a.downloadedAt ?? a.addedAt;
+        final bDate = b.downloadedAt ?? b.addedAt;
+        return bDate.compareTo(aDate);
+      });
+    return List.unmodifiable(list);
+  }
+
+  /// Сколько байт занимают скачанные видео — по данным библиотеки.
+  int get downloadedBytes =>
+      _videos.fold(0, (total, video) => total + (video.fileSizeBytes ?? 0));
+
+  /// Отмечает видео как скачанное на устройство.
+  Future<void> markDownloaded(
+    String id, {
+    required String fileName,
+    required int sizeBytes,
+    String quality = '',
+  }) async {
+    final video = byId(id);
+    if (video == null) return;
+    await updateVideo(
+      video.copyWith(
+        localFileName: fileName,
+        downloadedAt: DateTime.now(),
+        fileSizeBytes: sizeBytes,
+        downloadQuality: quality,
+      ),
+    );
+  }
+
+  /// Снимает отметку о скачанном файле (сам файл удаляет сервис загрузок).
+  Future<void> clearDownload(String id) async {
+    final video = byId(id);
+    if (video == null) return;
+    await updateVideo(
+      video.copyWith(
+        localFileName: null,
+        downloadedAt: null,
+        fileSizeBytes: null,
+        downloadQuality: null,
+      ),
+    );
+  }
+
   /// Видео, рекомендованное к показу после текущего: следующее в той же
   /// коллекции, иначе — следующее в библиотеке. Порядок всегда предсказуем,
   /// никаких «рекомендаций» из сети.

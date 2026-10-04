@@ -16,6 +16,13 @@ class AppConfig {
   /// Идентификатор пакета Android и bundle id iOS.
   static const String applicationId = 'kg.tlbk.bulak';
 
+  /// Версия для показа там, где нельзя дождаться ответа платформы
+  /// (например, на экране приветствия).
+  ///
+  /// Держите в соответствии с `version:` в `pubspec.yaml`: оттуда версию берут
+  /// сторы, а на экране «О приложении» она читается через `package_info_plus`.
+  static const String versionName = '1.1.0';
+
   /// Куда писать родителям.
   static const String supportEmail = 'support@tlbk.kg';
 
@@ -42,4 +49,18 @@ class AppConfig {
 
   /// Сколько последних просмотров хранить в истории.
   static const int maxHistoryEntries = 200;
+
+  /// Включено ли скачивание видео на устройство.
+  ///
+  /// Функция включена по умолчанию, но её можно выключить при сборке:
+  ///
+  ///     flutter build appbundle --release \
+  ///       --dart-define=BULAK_DISABLE_DOWNLOADS=true
+  ///
+  /// Это важно для публикации: Google Play и App Store считают скачивание
+  /// видео с YouTube нарушением своих правил и могут отклонить приложение.
+  /// Подробности — в `docs/legal/youtube-compliance.md`.
+  static const bool downloadsEnabled = !bool.fromEnvironment(
+    'BULAK_DISABLE_DOWNLOADS',
+  );
 }
