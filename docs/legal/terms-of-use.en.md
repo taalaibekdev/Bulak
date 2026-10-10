@@ -2,7 +2,7 @@
 
 **Effective date:** January 1, 2025
 **Last updated:** October 5, 2026
-**Document version:** 1.1
+**Document version:** 1.2
 
 **Location:** https://bulak.tlbk.kg/terms
 **Privacy Policy:** https://bulak.tlbk.kg/privacy
@@ -32,9 +32,15 @@
 
 2.3. All application data — the link list, titles, collections, favourites, viewing history, settings, the PIN hash and downloaded video files — is stored exclusively locally on the User's device. Details are set out in the Privacy Policy.
 
-2.4. An internet connection is required to display thumbnails and play videos from the network: the application contacts YouTube servers (Google LLC) directly. Without network access, videos and thumbnails will not load; however, **a video previously downloaded to the device is played back from device storage without contacting YouTube**.
+2.4. An internet connection is required to display thumbnails and play videos from the network: the application contacts YouTube servers (Google LLC) directly. Without network access, videos and thumbnails will not load; however, **a video previously saved to the device is played back from device storage without contacting YouTube**. In the build distributed through the app stores downloading is disabled, so there a network connection is always required for playback.
 
-2.5. **Downloading videos.** The application may offer a download feature: the parent taps the download icon on a video or the "Download all" button on the "Downloads" screen, and the application saves the video file to the application's private directory on the device. The highest quality available for such a file is 360p: that is a limitation of YouTube itself, which does not serve "muxed" streams at higher quality. The file is inaccessible to other applications, does not appear in the device gallery or shared storage, is not included in Android backups, and can be deleted by the User at any time. The feature can be disabled entirely at build time with the `BULAK_DISABLE_DOWNLOADS=true` flag.
+2.5. **Saving videos and the order of playback.** The application is released in two builds, and they behave differently.
+
+In the **personal build** a video is saved to the device first and only then played. A copy is created when the parent adds a link with the "Download as soon as added" setting enabled, when the parent taps the download icon on a video or the "Download all" button on the "Downloads" screen, and also automatically when a child opens a video that is not yet on the phone: in that case the application shows the **"Preparing video"** screen, downloads the file with a progress indicator and starts the player itself once the file is ready. The highest quality available for such a file is 360p: that is a limitation of YouTube itself, which does not serve "muxed" streams at higher quality. The file is inaccessible to other applications, does not appear in the device gallery or shared storage, is not included in Android backups, and can be deleted by the User at any time. Streaming in the personal build is enabled manually: **"Parents → Downloads → Where to play video → Stream if not downloaded"**; "Downloaded only" is selected by default.
+
+In the **Google Play and App Store build** downloading is absent entirely: it is compiled with the `BULAK_DISABLE_DOWNLOADS=true` flag, and it has no "Downloads" section, no download buttons, no automatic downloading, no "Preparing video" screen and no "Downloaded only" mode. Since that build has no other way to play anything, the application is **forced into streaming mode** and plays video from YouTube servers, just as version 1.0 did. No copies of videos are created on the device in that build.
+
+2.5.1. Downloading videos from YouTube, other than where YouTube expressly provides that capability, is **not permitted by the YouTube Terms of Service**. In the personal build a copy is created by default, during ordinary viewing, rather than as a separate decision of the User. We state this plainly and do not claim that such downloading is approved by the service. By using the personal build the User accepts the associated risks — see clauses 4.6, 4.7 and 5.1.1.
 
 2.6. **Sharing collections.** A parent can pass another person a list of video links — as plain text or as a file with the `.bulak` extension — through the system "Share" menu. The recipient pastes the list into their own application and the videos are added to their library. **Only links and captions are transferred: the video files themselves are never sent, under any circumstances.** The transfer goes wherever the User directs it, and the Developer takes no part in it, receives no copy of the list and cannot cancel it.
 
@@ -50,7 +56,7 @@
 
 - install the application on devices you own;
 - use all features of the application as intended, including parental mode;
-- download videos to the device and share collections of links — **provided that the User has the right to save those videos** (see clause 4.6);
+- download videos to the device and share collections of links — **in the personal build, and provided that the User has the right to save those videos** (see clause 4.6);
 - make backup copies of the application for personal use only.
 
 3.4. The licence **prohibits** you from:
@@ -84,7 +90,7 @@
 
 4.5. The Developer may, but is not obliged to, restrict the operation of the application or individual features at its own discretion if it receives reliable information that the application is being systematically used for unlawful purposes. Because the application transmits no data to the Developer, we generally have no technical means of detecting such use — see section 7.
 
-4.6. **The User's responsibility for downloaded content.** By using the download feature, the User confirms and warrants that they:
+4.6. **The User's responsibility for downloaded content.** In the personal build of the application a video is saved to the device **before** it is played and by default, so this clause applies to ordinary use of that build rather than to a rare case. By using the personal build, the User confirms and warrants that they:
 
 - **have the right to save these videos to the device** — for example, they are the rights holder, have obtained the rights holder's permission, are using a video distributed under a free licence (including Creative Commons), or are saving the video to the extent expressly permitted by applicable law or by the YouTube service itself;
 - **have read the YouTube Terms of Service** (https://www.youtube.com/t/terms) and understand that downloading videos from YouTube, other than where YouTube expressly provides that capability (for example, the download button in the service itself or a Creative Commons licence), is **not permitted by the YouTube Terms of Service**;
@@ -99,11 +105,11 @@
 
 ## 5. YouTube Content and Third Parties
 
-5.1. The application works with YouTube video content. Playback uses official YouTube mechanisms: either a direct video-stream link or the official embedded YouTube player. In addition, the application may **save a video file to the User's device** (section 2.5) — in the application's private directory, inaccessible to other applications. Downloaded files are not transmitted to the Developer, are not distributed by the application, and are deleted by the User.
+5.1. The application works with YouTube video content. Playback uses official YouTube mechanisms: either a direct video-stream link or the official embedded YouTube player. In the personal build the application additionally **saves a video file to the User's device before playback** (section 2.5) — in the application's private directory, inaccessible to other applications. Downloaded files are not transmitted to the Developer, are not distributed by the application, and are deleted by the User. In the Google Play and App Store build no saving takes place at all, and playback is always streamed.
 
-5.1.1. Downloading videos from YouTube, other than where YouTube expressly provides that capability, is **not permitted by the YouTube Terms of Service**. We state this plainly to the User and do not claim that such downloading is approved by the service. By using the download feature the User accepts the associated risks — see clauses 4.6 and 4.7.
+5.1.1. Downloading videos from YouTube, other than where YouTube expressly provides that capability, is **not permitted by the YouTube Terms of Service**. In the personal build a copy is created by default, during ordinary viewing. We state this plainly to the User and do not claim that such downloading is approved by the service. By using the personal build the User accepts the associated risks — see clauses 2.5.1, 4.6 and 4.7.
 
-5.1.2. The download feature can be disabled entirely at build time with the `BULAK_DISABLE_DOWNLOADS=true` flag; such a build has no download buttons and no "Downloads" screen, and creates no copies of videos on the device.
+5.1.2. In the Google Play and App Store build downloading is disabled at compile time with the `BULAK_DISABLE_DOWNLOADS=true` flag: such a build has no download buttons, no "Downloads" screen and no automatic downloading, and playback is forced to stream because that build has no other way to play anything. No copies of videos are created on the device.
 
 5.1.3. The collection-sharing feature transfers to another person **only a list of links and captions** — as text or a `.bulak` file — at the User's choice and through the system "Share" menu. Video files are not transferred by this feature.
 
@@ -119,7 +125,7 @@
 
 5.5. The Bulak application is **not affiliated with Google LLC or Apple Inc.** and is not sponsored, supported or endorsed by either company. The names YouTube, Google Play, App Store and other services are used solely for descriptive purposes, to explain honestly which services the application works with.
 
-5.6. If you are a rights holder and believe the application infringes your rights, contact us at support@tlbk.kg. Please note that the application does not host or distribute video content; requests to remove a specific video from YouTube should therefore be addressed to YouTube as the operator of the service hosting that content. If a complaint concerns a downloaded file, note that such a file exists only in the private directory of the device of the User who saved it; the Developer has no access to it and cannot delete it remotely. On receiving such a request we will issue a demand to delete the links and files and, if we had published the download feature in an app store, disable it in the nearest update.
+5.6. If you are a rights holder and believe the application infringes your rights, contact us at support@tlbk.kg. Please note that the application does not host or distribute video content; requests to remove a specific video from YouTube should therefore be addressed to YouTube as the operator of the service hosting that content. If a complaint concerns a downloaded file, note that in the personal build such a file is created by default during ordinary viewing and exists only in the private directory of the device of the User who uses it; the Developer has no access to it and cannot delete it remotely. In the build distributed through the app stores downloaded files never exist: downloading there is disabled at compile time. On receiving such a request we will issue a demand to delete the links and files and will stop distributing the build that downloads.
 
 ---
 
@@ -164,7 +170,7 @@
 - the acts or omissions of Google LLC and other third parties, including YouTube service unavailability, changes to how those services operate, video removals, advertising display and any restrictions imposed by those services;
 - inability to use the application due to lack of internet access, internet-provider outages, operating-system restrictions or device malfunction;
 - data loss caused by uninstalling the application, resetting the device, device failure, operating-system updates or use of the "Reset everything" feature;
-- downloaded video content, its lawfulness, its subsequent use, and any claims by rights holders relating to the saving of videos to the device at the User's initiative (see clauses 4.6 and 4.7);
+- downloaded video content, its lawfulness, its subsequent use, and any claims by rights holders relating to the saving of videos to the device in the personal build (see clauses 4.6 and 4.7);
 - the consequences of the User passing a list of links to third parties through the "Share" feature;
 - loss or compromise of the PIN where the device was accessible to third parties;
 - the consequences of using the application in a manner contrary to these Terms or to law.

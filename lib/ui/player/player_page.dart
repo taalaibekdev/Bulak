@@ -705,8 +705,10 @@ class _PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
                         child: VideoPlayer(controller),
                       ),
                     ),
-                    finishedOverlay,
-                    controls,
+                    // Когда видео закончилось, показываем только экран
+                    // «Ещё раз / Следующее»: элементы управления поверх него
+                    // накладывались друг на друга и мешали нажимать.
+                    if (_finished) finishedOverlay else controls,
                   ],
                 ),
         );

@@ -90,12 +90,13 @@ How it works:
 • Chats or any contact with other people
 • Our own advertising
 • Sign-up or accounts
+• Downloading videos or offline viewing — this build has neither
 
 🔐 Your data stays with you
 The app does not collect personal data. The link list, titles, collections, favourites, viewing history and settings are stored only on your device. There are no accounts, no developer servers, no analytics, no trackers and no advertising SDKs. The PIN is stored as an irreversible hash. At any time you can tap "Reset everything" and delete all data.
 
 📶 Internet is required
-Videos and thumbnails are loaded from YouTube servers, so watching is not possible without a network connection.
+In this build videos and thumbnails are loaded from YouTube servers, so watching is not possible without a network connection: downloading videos and offline viewing are disabled here, and video is always streamed.
 
 👨‍👩‍👧 For parents
 Responsibility for which videos are added to the app rests with the parent. The app does not check, assess or filter video content — it shows exactly what you selected. Please review videos before making them available to your child.
@@ -104,7 +105,7 @@ Responsibility for which videos are added to the app rests with the parent. The 
 For children roughly 3 to 10 years old, and for parents who want calm viewing without accidental content.
 
 ℹ️ Important information about YouTube
-YouTube is a trademark of Google LLC. The Bulak app is not affiliated with Google, is not sponsored by Google and is not endorsed by Google. In this build the app does not download videos and does not store copies of them: playback uses official YouTube mechanisms. We do not show our own advertising and we do not include advertising SDKs in the app; however, the fallback embedded YouTube player may display advertising served by YouTube itself.
+YouTube is a trademark of Google LLC. The Bulak app is not affiliated with Google, is not sponsored by Google and is not endorsed by Google. In this build the app does not download videos and does not store copies of them: downloading is disabled at build time and playback is always streamed through official YouTube mechanisms. We do not show our own advertising and we do not include advertising SDKs in the app; however, the fallback embedded YouTube player may display advertising served by YouTube itself.
 
 Free. No in-app purchases and no subscriptions.
 
@@ -113,7 +114,7 @@ Website: https://bulak.tlbk.kg
 Privacy policy: https://bulak.tlbk.kg/privacy
 ```
 
-**Actual length: 2 725 characters** — comfortably within the 4000-character limit. Play Console may show a slightly different figure because emoji count as several code units. Watch the remaining-characters counter if you extend the text.
+**Actual length: 2 956 characters** — comfortably within the 4000-character limit. Play Console may show a slightly different figure because emoji count as several code units. Watch the remaining-characters counter if you extend the text.
 
 ---
 
@@ -234,6 +235,8 @@ These answers must **exactly match** the Data safety form and the app's actual b
 - [ ] The full description fits within 4000 characters and contains no "TODO".
 - [ ] The description includes the YouTube and Google disclaimer.
 - [ ] The description does not claim the app is "completely ad-free".
+- [ ] The description promises no downloading, no offline mode, no "Downloads" screen and no "downloaded" badges: this build has none of them.
+- [ ] The wording is scoped to the store build ("in this build…") and does not contradict the product description on the website.
 - [ ] Advertising and purchase answers match the Data safety section.
 - [ ] The privacy policy URL opens and includes a children's section.
 - [ ] `support@tlbk.kg` is live and monitored.
