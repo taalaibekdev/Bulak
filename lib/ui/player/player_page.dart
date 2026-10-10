@@ -9,6 +9,7 @@ import 'package:wakelock_plus/wakelock_plus.dart';
 
 import '../../core/l10n/app_strings.dart';
 import '../../core/theme/app_colors.dart';
+import '../../core/utils/formatters.dart';
 import '../../data/models/app_settings.dart';
 import '../../data/models/playback_result.dart';
 import '../../data/models/video_item.dart';
@@ -18,6 +19,7 @@ import '../../state/library_controller.dart';
 import '../../state/settings_controller.dart';
 import '../parent/widgets/pin_dialog.dart';
 import '../widgets/common.dart';
+import 'prepare_video_page.dart';
 import 'widgets/embed_player_view.dart';
 import 'widgets/player_controls.dart';
 import 'widgets/time_up_dialog.dart';
@@ -133,16 +135,37 @@ class _PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
       _error = null;
     });
 
-    // Сначала пробуем файл на устройстве: он не зависит ни от интернета,
-    // ни от того, отдаёт ли YouTube поток прямо сейчас.
+    // Сначала всегда пробуем файл на устройстве: он не зависит ни от
+    // интернета, ни от того, отдаёт ли YouTube поток прямо сейчас.
+    //
+    // Отметку о загрузке читаем из библиотеки, а не из переданного объекта:
+    // видео могло скачаться уже после того, как его открыли.
+    final current = context.read<LibraryController>().byId(_video.id) ?? _video;
+
     File? localFile;
-    if (_settings.settings.preferLocalPlayback && _video.isDownloaded) {
-      localFile = await _downloads.localFileFor(_video);
+    if (current.isDownloaded &&
+        (_settings.settings.preferLocalPlayback ||
+            _settings.settings.requiresDownloadFirst)) {
+      localFile = await _downloads.localFileFor(current);
       if (!mounted) return;
       if (localFile == null) {
-        // Родитель удалил файл вручную — снимаем отметку и идём в сеть.
-        unawaited(_library.clearDownload(_video.id));
+        // Файл пропал с устройства — снимаем отметку и сообщаем об этом,
+        // чтобы родитель увидел понятную причину, а не пустой экран.
+        unawaited(_library.clearDownload(current.id));
+        if (_settings.settings.requiresDownloadFirst) {
+          setState(() => _preparing = false);
+          await _handleFailure(PlaybackFailureReason.notDownloaded);
+          return;
+        }
       }
+    }
+
+    // Режим «только скачанное»: если файла нет, в сеть не идём вообще,
+    // иначе теряется весь смысл такого режима.
+    if (localFile == null && _settings.settings.requiresDownloadFirst) {
+      setState(() => _preparing = false);
+      await _handleFailure(PlaybackFailureReason.notDownloaded);
+      return;
     }
 
     final controller = localFile != null
@@ -191,9 +214,17 @@ class _PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
   }
 
   /// Решает, что делать при неудаче: в авторежиме уходим на встроенный плеер.
+  ///
+  /// Но только не тогда, когда родитель выбрал «играть лишь скачанное»:
+  /// молча уйти на YouTube в этом режиме — значит обойти его же настройку
+  /// и вернуть ребёнку интерфейс с рекламой.
   Future<void> _handleFailure(PlaybackFailureReason reason) async {
     final isAuto = _settings.settings.playbackMode == PlaybackMode.auto;
-    if (isAuto && _mode == _PlayerMode.direct) {
+    final canFallBackToEmbed =
+        !_settings.settings.requiresDownloadFirst &&
+        reason != PlaybackFailureReason.notDownloaded;
+
+    if (isAuto && canFallBackToEmbed && _mode == _PlayerMode.direct) {
       setState(() {
         _mode = _PlayerMode.embed;
         _preparing = false;
@@ -522,6 +553,29 @@ class _PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
 
     final error = _error;
     if (error != null) {
+      // Отдельный случай: приложение настроено играть только скачанное,
+      // а файла нет. Здесь нечего «повторять» и незачем предлагать плеер
+      // YouTube — правильное действие одно: скачать видео.
+      if (error == PlaybackFailureReason.notDownloaded) {
+        return _BlackMessage(
+          title: strings.playerNotDownloaded,
+          body: strings.prepareBody,
+          icon: Icons.download_for_offline_rounded,
+          actions: [
+            FilledButton.icon(
+              onPressed: () async {
+                await Navigator.of(context)
+                    .push(PrepareVideoPage.route(_video));
+                if (!mounted) return;
+                await _retryDirect();
+              },
+              icon: const Icon(Icons.download_rounded),
+              label: Text(strings.downloadAction),
+            ),
+          ],
+        );
+      }
+
       return _BlackMessage(
         title: strings.playerErrorTitle,
         body: strings.playerErrorBody,
@@ -632,6 +686,10 @@ class _PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
                       child: _PortraitPanel(
                         video: _video,
                         isLocal: _isLocalPlayback,
+                        position: value.position,
+                        duration: value.duration,
+                        showLock: _settings.settings.kidLockEnabled,
+                        onLock: _toggleLock,
                         onNext: hasNext ? _playNext : null,
                         onFullscreen: _toggleFullscreen,
                       ),
@@ -705,87 +763,254 @@ class _PortraitPanel extends StatelessWidget {
   const _PortraitPanel({
     required this.video,
     required this.onFullscreen,
-    this.isLocal = false,
+    required this.position,
+    required this.duration,
     this.onNext,
+    this.onLock,
+    this.isLocal = false,
+    this.showLock = false,
   });
 
   final VideoItem video;
   final VoidCallback onFullscreen;
+  final Duration position;
+  final Duration duration;
   final VoidCallback? onNext;
+  final VoidCallback? onLock;
 
   /// Играем файл с устройства — можно смотреть без интернета.
   final bool isLocal;
 
+  /// Показывать ли «замочек»: он есть только если родитель его включил.
+  final bool showLock;
+
   @override
   Widget build(BuildContext context) {
     final strings = AppStrings.of(context);
-    return SingleChildScrollView(
-      padding: const EdgeInsets.fromLTRB(22, 22, 22, 28),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (isLocal) ...[
-            Row(
+    final collection = video.collectionId == null
+        ? null
+        : context.watch<LibraryController>().collectionById(
+            video.collectionId!,
+          );
+
+    final total = duration.inMilliseconds;
+    final progress = total <= 0
+        ? 0.0
+        : (position.inMilliseconds / total).clamp(0.0, 1.0);
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        // Блок с названием и действиями центрируем по вертикали: на высоких
+        // экранах иначе внизу остаётся большое чёрное поле.
+        return SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(20, 18, 20, 22),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minHeight: constraints.maxHeight - 40),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Icon(
-                  Icons.download_done_rounded,
-                  size: 18,
-                  color: AppColors.mint,
-                ),
-                const SizedBox(width: 8),
-                Text(
-                  strings.downloadPlaying,
-                  style: const TextStyle(
-                    color: AppColors.mint,
-                    fontSize: 13,
-                    fontWeight: FontWeight.w700,
+                // Полоса просмотра и время: понятно, сколько уже прошло и сколько
+                // осталось, не открывая элементы управления поверх видео.
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(6),
+                  child: LinearProgressIndicator(
+                    value: progress,
+                    minHeight: 6,
+                    backgroundColor: Colors.white24,
+                    color: AppColors.greenLight,
                   ),
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      Formatters.clock(position),
+                      style: const TextStyle(
+                        color: Colors.white70,
+                        fontSize: 13,
+                      ),
+                    ),
+                    Text(
+                      Formatters.clock(duration),
+                      style: const TextStyle(
+                        color: Colors.white70,
+                        fontSize: 13,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 18),
+
+                Text(
+                  video.title,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w800,
+                    height: 1.25,
+                  ),
+                ),
+                const SizedBox(height: 10),
+
+                // Метаданные собраны в чипы: они переносятся по строкам и не
+                // разъезжаются на узких экранах.
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: [
+                    if (isLocal)
+                      _MetaChip(
+                        icon: Icons.download_done_rounded,
+                        label: strings.downloadPlaying,
+                        color: AppColors.greenLight,
+                      ),
+                    if (collection != null)
+                      _MetaChip(
+                        label: '${collection.emoji} ${collection.title}',
+                      ),
+                    if (video.author != null)
+                      _MetaChip(
+                        icon: Icons.person_outline_rounded,
+                        label: video.author!,
+                      ),
+                  ],
+                ),
+                const SizedBox(height: 22),
+
+                // Действия: три равные ячейки с крупной иконкой и подписью.
+                // Раньше здесь была пара кнопок разной ширины, которые прыгали
+                // при переносе строки; ровный ряд читается сразу и не «ездит».
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: _PanelAction(
+                        icon: Icons.fullscreen_rounded,
+                        label: strings.playerFullscreen,
+                        onTap: onFullscreen,
+                      ),
+                    ),
+                    if (showLock && onLock != null)
+                      Expanded(
+                        child: _PanelAction(
+                          icon: Icons.lock_outline_rounded,
+                          label: strings.playerLock,
+                          onTap: onLock!,
+                        ),
+                      ),
+                    if (onNext != null)
+                      Expanded(
+                        child: _PanelAction(
+                          icon: Icons.skip_next_rounded,
+                          label: strings.playerNext,
+                          onTap: onNext!,
+                          emphasized: true,
+                        ),
+                      ),
+                  ],
                 ),
               ],
             ),
-            const SizedBox(height: 12),
+          ),
+        );
+      },
+    );
+  }
+}
+
+/// Действие под плеером: крупная иконка в квадрате и подпись под ней.
+class _PanelAction extends StatelessWidget {
+  const _PanelAction({
+    required this.icon,
+    required this.label,
+    required this.onTap,
+    this.emphasized = false,
+  });
+
+  final IconData icon;
+  final String label;
+  final VoidCallback onTap;
+
+  /// Главное действие выделяем цветом и плотностью.
+  final bool emphasized;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(20),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+        child: Column(
+          children: [
+            Container(
+              width: 56,
+              height: 56,
+              decoration: BoxDecoration(
+                color: emphasized
+                    ? Colors.white
+                    : Colors.white.withValues(alpha: 0.14),
+                borderRadius: BorderRadius.circular(19),
+              ),
+              child: Icon(
+                icon,
+                size: 28,
+                color: emphasized ? AppColors.midnight : Colors.white,
+              ),
+            ),
+            const SizedBox(height: 9),
+            Text(
+              label,
+              textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                color: emphasized ? Colors.white : Colors.white70,
+                fontSize: 12.5,
+                fontWeight: emphasized ? FontWeight.w800 : FontWeight.w600,
+                height: 1.2,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Короткая подпись-«таблетка»: «скачано», коллекция, автор.
+class _MetaChip extends StatelessWidget {
+  const _MetaChip({required this.label, this.icon, this.color});
+
+  final String label;
+  final IconData? icon;
+  final Color? color;
+
+  @override
+  Widget build(BuildContext context) {
+    final foreground = color ?? Colors.white70;
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 6),
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.10),
+        borderRadius: BorderRadius.circular(14),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (icon != null) ...[
+            Icon(icon, size: 15, color: foreground),
+            const SizedBox(width: 6),
           ],
           Text(
-            video.title,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 18,
-              fontWeight: FontWeight.w800,
-              height: 1.25,
+            label,
+            style: TextStyle(
+              color: foreground,
+              fontSize: 12.5,
+              fontWeight: FontWeight.w700,
             ),
-          ),
-          if (video.author != null) ...[
-            const SizedBox(height: 8),
-            Text(
-              video.author!,
-              style: const TextStyle(color: Colors.white60, fontSize: 14),
-            ),
-          ],
-          const SizedBox(height: 22),
-          Wrap(
-            spacing: 12,
-            runSpacing: 12,
-            children: [
-              FilledButton.icon(
-                onPressed: onFullscreen,
-                icon: const Icon(Icons.fullscreen_rounded),
-                label: Text(strings.playerFullscreen),
-                style: FilledButton.styleFrom(
-                  backgroundColor: Colors.white.withValues(alpha: 0.16),
-                  foregroundColor: Colors.white,
-                ),
-              ),
-              if (onNext != null)
-                FilledButton.icon(
-                  onPressed: onNext,
-                  icon: const Icon(Icons.skip_next_rounded),
-                  label: Text(strings.playerNext),
-                  style: FilledButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    foregroundColor: AppColors.midnight,
-                  ),
-                ),
-            ],
           ),
         ],
       ),

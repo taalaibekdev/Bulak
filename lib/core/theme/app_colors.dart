@@ -9,16 +9,29 @@ class AppColors {
 
   // --- Бренд -------------------------------------------------------------
 
-  /// Небесный — начало градиента бренда.
+  /// Светлый фирменный зелёный — начало градиента бренда.
+  ///
+  /// Иконка и логотип повторяют форму иконки YouTube (скруглённый квадрат
+  /// с треугольником воспроизведения), но в зелёном: это спокойнее для
+  /// детского приложения и не копирует чужой товарный знак.
+  static const Color greenLight = Color(0xFF4ADE80);
+
+  /// Средний фирменный зелёный.
+  static const Color greenMid = Color(0xFF22C55E);
+
+  /// Глубокий фирменный зелёный — конец градиента бренда.
+  static const Color greenDark = Color(0xFF16A34A);
+
+  /// Небесный — используется в оформлении разделов и коллекций.
   static const Color sky = Color(0xFF2AD1FF);
 
-  /// Основной синий бренда.
+  /// Основной синий интерфейса: кнопки, нижнее меню, ссылки.
   static const Color blue = Color(0xFF2A6BFF);
 
-  /// Глубокий фиолетово-синий — конец градиента бренда.
+  /// Глубокий фиолетово-синий — для декоративных градиентов.
   static const Color violet = Color(0xFF6C4BFF);
 
-  /// Тёмная «ночная» основа (совпадает с фоном splash-экрана).
+  /// Тёмная «ночная» основа: splash и тёмная тема.
   static const Color midnight = Color(0xFF0E1B3A);
 
   // --- Акценты -----------------------------------------------------------
@@ -56,8 +69,27 @@ class AppColors {
 
   // --- Градиенты ---------------------------------------------------------
 
-  /// Основной градиент бренда: небо → синий → фиолетовый.
+  /// Основной градиент бренда: зелёный, как у иконки приложения.
+  /// Используется для логотипа и декоративных кругов без текста.
   static const LinearGradient brandGradient = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [greenLight, greenMid, greenDark],
+  );
+
+  /// Тёмный зелёный градиент для поверхностей с белым текстом.
+  ///
+  /// Светлый фирменный зелёный не даёт нужного контраста с белым, поэтому
+  /// там, где на плашке есть подписи, берём эти тона.
+  static const LinearGradient brandGradientDeep = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [Color(0xFF16A34A), Color(0xFF15803D)],
+  );
+
+  /// Фон первого экрана: синий градиент, на котором зелёный логотип
+  /// хорошо читается.
+  static const LinearGradient heroGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
     colors: [sky, blue, violet],

@@ -5,7 +5,7 @@ publish_to: "none"
 # Версия приложения. Для Android это versionName/versionCode,
 # для iOS — CFBundleShortVersionString/CFBundleVersion.
 # Подробности в docs/publishing/versioning.md
-version: 1.1.0+2
+version: 1.2.0+3
 
 environment:
   sdk: ^3.13.0
@@ -89,14 +89,15 @@ flutter_launcher_icons:
 
 # Настройки splash-экрана. Пересобрать: dart run flutter_native_splash:create
 flutter_native_splash:
-  color: "#0E1B3A"
+  # Светлый мятный фон: зелёный логотип читается на нём лучше всего.
+  color: "#F1FBF4"
   image: "assets/icon/splash_logo.png"
-  color_dark: "#0E1B3A"
+  color_dark: "#0B1F16"
   image_dark: "assets/icon/splash_logo.png"
   android_12:
-    color: "#0E1B3A"
+    color: "#F1FBF4"
     image: "assets/icon/splash_logo_android12.png"
-    icon_background_color: "#0E1B3A"
+    icon_background_color: "#F1FBF4"
   android: true
   ios: true
   fullscreen: true

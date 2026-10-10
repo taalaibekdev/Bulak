@@ -4,6 +4,8 @@ import '../../core/theme/app_colors.dart';
 
 /// Логотип приложения, нарисованный кодом.
 ///
+/// Форма повторяет иконку приложения и иконку YouTube: скруглённый квадрат
+/// с белым треугольником воспроизведения, только в фирменном зелёном.
 /// Векторный знак всегда резкий на любом экране и не требует картинки
 /// в ассетах, поэтому его можно ставить в шапку без опаски.
 class BrandMark extends StatelessWidget {
@@ -19,13 +21,13 @@ class BrandMark extends StatelessWidget {
       height: size,
       decoration: BoxDecoration(
         gradient: AppColors.brandGradient,
-        borderRadius: BorderRadius.circular(size * 0.32),
+        borderRadius: BorderRadius.circular(size * 0.235),
         boxShadow: showShadow
             ? [
                 BoxShadow(
-                  color: AppColors.blue.withValues(alpha: 0.35),
-                  blurRadius: size * 0.35,
-                  offset: Offset(0, size * 0.12),
+                  color: AppColors.greenDark.withValues(alpha: 0.32),
+                  blurRadius: size * 0.3,
+                  offset: Offset(0, size * 0.1),
                 ),
               ]
             : null,
@@ -38,18 +40,13 @@ class BrandMark extends StatelessWidget {
 class _BrandMarkPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    final unit = size.width / 100;
+    final unit = size.width;
 
-    // Капля-родник: мягкий блик в левом верхнем углу.
-    final gloss = Paint()
-      ..color = Colors.white.withValues(alpha: 0.22)
-      ..style = PaintingStyle.fill;
-    canvas.drawCircle(Offset(32 * unit, 28 * unit), 18 * unit, gloss);
-
-    // Треугольник «играть» — оптически сдвинут вправо, иначе кажется смещённым.
-    final center = Offset(53 * unit, size.height / 2);
-    final width = 30 * unit;
-    final height = 36 * unit;
+    // Треугольник воспроизведения: ширина 30 %, высота 34 % — пропорции
+    // иконки YouTube. Оптически сдвинут вправо, иначе кажется смещённым.
+    final center = Offset(unit * (0.5 + 0.022), unit * 0.5);
+    final width = unit * 0.30;
+    final height = unit * 0.34;
 
     final triangle = <Offset>[
       Offset(center.dx - width / 2, center.dy - height / 2),
@@ -57,16 +54,10 @@ class _BrandMarkPainter extends CustomPainter {
       Offset(center.dx - width / 2, center.dy + height / 2),
     ];
 
-    final rounded = _roundedPolygon(triangle, radius: 9 * unit);
-
     canvas.drawPath(
-      rounded,
-      Paint()
-        ..color = Colors.black.withValues(alpha: 0.14)
-        ..maskFilter = MaskFilter.blur(BlurStyle.normal, 2.5 * unit),
+      _roundedPolygon(triangle, radius: unit * 0.055),
+      Paint()..color = Colors.white,
     );
-
-    canvas.drawPath(rounded, Paint()..color = Colors.white);
   }
 
   /// Строит многоугольник со скруглёнными углами.

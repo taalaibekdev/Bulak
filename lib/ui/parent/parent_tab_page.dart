@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../core/app_config.dart';
 import '../../core/l10n/app_strings.dart';
+import '../../core/theme/app_colors.dart';
 import '../../core/utils/formatters.dart';
 import '../../core/utils/pin_code.dart';
 import '../../state/library_controller.dart';
@@ -297,11 +298,7 @@ class _PrimaryTile extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          gradient: const LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [Color(0xFF2AD1FF), Color(0xFF2A6BFF)],
-          ),
+          gradient: AppColors.brandGradientDeep,
           borderRadius: BorderRadius.circular(24),
           boxShadow: [
             BoxShadow(

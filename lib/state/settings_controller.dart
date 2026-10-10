@@ -150,6 +150,10 @@ class SettingsController extends ChangeNotifier {
   Future<void> setPreferLocalPlayback(bool value) =>
       _apply(_settings.copyWith(preferLocalPlayback: value));
 
+  /// Откуда брать видео: из скачанного файла или потоком.
+  Future<void> setPlaybackSource(PlaybackSource source) =>
+      _apply(_settings.copyWith(playbackSource: source));
+
   Future<void> completeOnboarding() =>
       _apply(_settings.copyWith(onboardingCompleted: true));
 

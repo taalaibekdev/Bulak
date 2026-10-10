@@ -102,9 +102,13 @@ def main() -> int:
     # это нужно, чтобы снять экран приветствия.
     reset_onboarding = "--reset-onboarding" in sys.argv
 
-    # --locale en переключает интерфейс на английский — для английского
-    # листинга нужны снимки именно на том языке, который увидит пользователь.
-    locale = "en" if "--locale" in sys.argv and "en" in sys.argv else None
+    # --locale ru|en переключает интерфейс приложения: и русскому, и
+    # английскому листингу нужны снимки на своём языке.
+    locale = None
+    if "--locale" in sys.argv:
+        index = sys.argv.index("--locale")
+        if index + 1 < len(sys.argv) and sys.argv[index + 1] in ("ru", "en"):
+            locale = sys.argv[index + 1]
 
     adb("root")
     adb("shell", "am", "force-stop", PACKAGE)

@@ -241,6 +241,50 @@ class AppStrings {
   String get playerReplay => _pick('Ещё раз', 'Watch again');
   String get playerNext => _pick('Следующее', 'Next video');
   String get playerFullscreen => _pick('Во весь экран', 'Fullscreen');
+
+  /// Экран подготовки: видео сначала скачивается, потом играет.
+  String get prepareTitle => _pick('Готовим видео', 'Getting it ready');
+  String get prepareBody => _pick(
+    'Скачиваем видео на телефон — потом оно будет играть из памяти '
+        'устройства, без интернета.',
+    'Downloading the video to this phone — after that it plays from local '
+        'storage, without internet.',
+  );
+  String get prepareWaitingForQueue =>
+      _pick('Ждём очередь…', 'Waiting in the queue…');
+  String get prepareCancel => _pick('Отменить', 'Cancel');
+  String get prepareFailedTitle =>
+      _pick('Не удалось скачать видео', 'Could not download the video');
+  String get prepareFailedBody => _pick(
+    'Проверьте интернет и попробуйте ещё раз.',
+    'Check your connection and try again.',
+  );
+  String get prepareRetry => _pick('Попробовать снова', 'Try again');
+  String get prepareAlmostDone => _pick('Почти готово…', 'Almost done…');
+  String get prepareReady => _pick('Готово! Включаем', 'Ready! Starting');
+  String get playerNotDownloaded =>
+      _pick('Видео ещё не скачано', 'Video is not downloaded yet');
+
+  // --- Источник воспроизведения ------------------------------------------
+
+  String get playbackSourceTitle =>
+      _pick('Откуда играть видео', 'Where to play from');
+  String get playbackSourceDownloaded =>
+      _pick('Только скачанное', 'Downloaded only');
+  String get playbackSourceDownloadedBody => _pick(
+    'Видео сначала сохраняется на телефон и только потом играет. '
+        'Просмотр не зависит от интернета и не обрывается.',
+    'The video is saved to this phone first and only then plays. Playback '
+        'does not depend on the internet and never stalls.',
+  );
+  String get playbackSourceStream =>
+      _pick('Потоком, если не скачано', 'Stream when not downloaded');
+  String get playbackSourceStreamBody => _pick(
+    'Если файла нет, видео играет сразу из сети. Так быстрее начать, но '
+        'просмотр может прерваться.',
+    'If there is no file, the video streams right away. It starts faster, '
+        'but playback may stall.',
+  );
   String get playerSecondsBack => _pick('Назад', 'Back');
   String get playerSecondsForward => _pick('Вперёд', 'Forward');
 

@@ -8,6 +8,7 @@ import '../../core/theme/app_theme.dart';
 import '../../core/utils/pin_code.dart';
 import '../../state/settings_controller.dart';
 import '../parent/add_video_page.dart';
+import '../widgets/brand_mark.dart';
 import '../widgets/pin_pad.dart';
 
 /// Первый запуск: коротко объясняем идею, создаём PIN и предлагаем сразу
@@ -32,10 +33,10 @@ class _OnboardingPageState extends State<OnboardingPage> {
       // Градиент обязан закрывать весь экран: SizedBox.expand задаёт жёсткие
       // ограничения, иначе DecoratedBox сжимается по высоте содержимого
       // и снизу проступает фон Scaffold.
-      backgroundColor: AppColors.violet,
+      backgroundColor: AppColors.blue,
       body: SizedBox.expand(
         child: DecoratedBox(
-          decoration: const BoxDecoration(gradient: AppColors.brandGradient),
+          decoration: const BoxDecoration(gradient: AppColors.heroGradient),
           child: SafeArea(
             child: switch (_step) {
               _Step.welcome => _WelcomeStep(onStart: _goToPin),
@@ -172,17 +173,12 @@ class _WelcomeStep extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const SizedBox(height: 24),
-          Container(
-            width: 132,
-            height: 132,
-            decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.16),
-              borderRadius: BorderRadius.circular(38),
-            ),
-            alignment: Alignment.center,
-            child: Text(strings.appName, style: AppTheme.brandStyle(size: 38)),
-          ),
-          const SizedBox(height: 26),
+          // Логотип тот же, что и иконка приложения: скруглённый зелёный
+          // квадрат с треугольником воспроизведения.
+          const BrandMark(size: 116),
+          const SizedBox(height: 18),
+          Text(strings.appName, style: AppTheme.brandStyle(size: 34)),
+          const SizedBox(height: 22),
           Text(
             strings.onboardTitle,
             textAlign: TextAlign.center,

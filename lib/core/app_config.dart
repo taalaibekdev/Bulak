@@ -21,7 +21,7 @@ class AppConfig {
   ///
   /// Держите в соответствии с `version:` в `pubspec.yaml`: оттуда версию берут
   /// сторы, а на экране «О приложении» она читается через `package_info_plus`.
-  static const String versionName = '1.1.0';
+  static const String versionName = '1.2.0';
 
   /// Куда писать родителям.
   static const String supportEmail = 'support@tlbk.kg';

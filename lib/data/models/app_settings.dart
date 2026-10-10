@@ -1,3 +1,5 @@
+import '../../core/app_config.dart';
+
 /// Как оформлено приложение.
 enum AppThemeChoice { system, light, dark }
 
@@ -8,6 +10,19 @@ enum AppThemeChoice { system, light, dark }
 /// * [direct] — только прямой поток (чистая картинка, качество до 360p);
 /// * [embed] — только официальный встроенный плеер YouTube.
 enum PlaybackMode { auto, direct, embed }
+
+/// Откуда брать видео для просмотра.
+enum PlaybackSource {
+  /// Сначала скачать на устройство, потом играть файл.
+  ///
+  /// Так просмотр не зависит ни от интернета, ни от того, отдаёт ли YouTube
+  /// поток прямо сейчас: ссылки на поток живут ограниченное время, и на
+  /// длинном видео просмотр из-за этого обрывается.
+  downloaded,
+
+  /// Играть потоком, если файла нет. Быстрее начать, но менее надёжно.
+  stream,
+}
 
 /// Настройки приложения. Всё хранится на устройстве.
 class AppSettings {
@@ -25,6 +40,7 @@ class AppSettings {
     this.watchedSecondsToday = 0,
     this.dayKey = '',
     this.autoDownload = false,
+    this.playbackSource = PlaybackSource.downloaded,
     this.preferLocalPlayback = true,
   });
 
@@ -64,12 +80,27 @@ class AppSettings {
   /// Скачивать видео на устройство сразу при добавлении в библиотеку.
   final bool autoDownload;
 
+  /// Откуда брать видео: из скачанного файла или потоком.
+  final PlaybackSource playbackSource;
+
   /// Играть скачанный файл, даже когда есть интернет.
   ///
   /// Так видео не «зависает» на середине из-за того, что YouTube перестал
   /// отдавать поток: скачанный файл играется с диска. Отключать смысла мало,
   /// но пусть будет возможность сравнить качество.
   final bool preferLocalPlayback;
+
+  /// Источник воспроизведения с учётом того, как собрано приложение.
+  ///
+  /// В сборке для магазинов скачивание отключено (`BULAK_DISABLE_DOWNLOADS`),
+  /// поэтому там остаётся только поток — иначе приложение не смогло бы
+  /// проиграть вообще ничего.
+  PlaybackSource get effectivePlaybackSource =>
+      AppConfig.downloadsEnabled ? playbackSource : PlaybackSource.stream;
+
+  /// Нужно ли сначала скачать видео, прежде чем показывать его.
+  bool get requiresDownloadFirst =>
+      effectivePlaybackSource == PlaybackSource.downloaded;
 
   bool get hasPin =>
       (pinHash?.isNotEmpty ?? false) && (pinSalt?.isNotEmpty ?? false);
@@ -115,6 +146,7 @@ class AppSettings {
     int? watchedSecondsToday,
     String? dayKey,
     bool? autoDownload,
+    PlaybackSource? playbackSource,
     bool? preferLocalPlayback,
   }) {
     return AppSettings(
@@ -132,6 +164,7 @@ class AppSettings {
       onboardingCompleted: onboardingCompleted ?? this.onboardingCompleted,
       watchedSecondsToday: watchedSecondsToday ?? this.watchedSecondsToday,
       dayKey: dayKey ?? this.dayKey,
+      playbackSource: playbackSource ?? this.playbackSource,
       autoDownload: autoDownload ?? this.autoDownload,
       preferLocalPlayback: preferLocalPlayback ?? this.preferLocalPlayback,
     );
@@ -150,6 +183,7 @@ class AppSettings {
     'onboardingCompleted': onboardingCompleted,
     'watchedSecondsToday': watchedSecondsToday,
     'dayKey': dayKey,
+    'playbackSource': playbackSource.name,
     'autoDownload': autoDownload,
     'preferLocalPlayback': preferLocalPlayback,
   };
@@ -175,8 +209,16 @@ class AppSettings {
           ? (raw['watchedSecondsToday'] as num).toInt()
           : 0,
       dayKey: raw['dayKey'] is String ? raw['dayKey'] as String : '',
+      playbackSource: _playbackSource(raw['playbackSource']),
       autoDownload: raw['autoDownload'] == true,
       preferLocalPlayback: raw['preferLocalPlayback'] != false,
+    );
+  }
+
+  static PlaybackSource _playbackSource(Object? raw) {
+    return PlaybackSource.values.firstWhere(
+      (source) => source.name == raw,
+      orElse: () => PlaybackSource.downloaded,
     );
   }
 

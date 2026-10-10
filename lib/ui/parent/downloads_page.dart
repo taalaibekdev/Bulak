@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../core/l10n/app_strings.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/utils/formatters.dart';
+import '../../data/models/app_settings.dart';
 import '../../data/models/video_item.dart';
 import '../../state/download_controller.dart';
 import '../../state/library_controller.dart';
@@ -73,8 +74,10 @@ class _DownloadsPageState extends State<DownloadsPage> {
           _SettingsCard(
             autoDownload: settings.settings.autoDownload,
             preferLocal: settings.settings.preferLocalPlayback,
+            playbackSource: settings.settings.playbackSource,
             onAutoDownload: settings.setAutoDownload,
             onPreferLocal: settings.setPreferLocalPlayback,
+            onPlaybackSource: settings.setPlaybackSource,
           ),
           const SizedBox(height: 14),
           _LegalNote(text: strings.downloadLegalNote),
@@ -240,49 +243,168 @@ class _SettingsCard extends StatelessWidget {
   const _SettingsCard({
     required this.autoDownload,
     required this.preferLocal,
+    required this.playbackSource,
     required this.onAutoDownload,
     required this.onPreferLocal,
+    required this.onPlaybackSource,
   });
 
   final bool autoDownload;
   final bool preferLocal;
+  final PlaybackSource playbackSource;
   final ValueChanged<bool> onAutoDownload;
   final ValueChanged<bool> onPreferLocal;
+  final ValueChanged<PlaybackSource> onPlaybackSource;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final strings = AppStrings.of(context);
 
-    return Container(
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(24),
-      ),
-      child: Column(
-        children: [
-          SwitchListTile(
-            value: autoDownload,
-            onChanged: onAutoDownload,
-            title: Text(strings.downloadAutoTitle),
-            subtitle: Text(strings.downloadAutoBody),
-            secondary: Icon(
-              Icons.download_for_offline_rounded,
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
+    // Выбор источника — главная настройка этого экрана, поэтому он сверху
+    // и в виде понятных вариантов, а не переключателя «да/нет».
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            color: theme.colorScheme.surface,
+            borderRadius: BorderRadius.circular(24),
           ),
-          const Divider(height: 1),
-          SwitchListTile(
-            value: preferLocal,
-            onChanged: onPreferLocal,
-            title: Text(strings.downloadPreferLocalTitle),
-            subtitle: Text(strings.downloadPreferLocalBody),
-            secondary: Icon(
-              Icons.offline_bolt_rounded,
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
+          padding: const EdgeInsets.fromLTRB(18, 16, 18, 8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                strings.playbackSourceTitle,
+                style: theme.textTheme.titleMedium,
+              ),
+              const SizedBox(height: 12),
+              _SourceOption(
+                icon: Icons.download_done_rounded,
+                title: strings.playbackSourceDownloaded,
+                body: strings.playbackSourceDownloadedBody,
+                selected: playbackSource == PlaybackSource.downloaded,
+                onTap: () => onPlaybackSource(PlaybackSource.downloaded),
+              ),
+              const SizedBox(height: 8),
+              _SourceOption(
+                icon: Icons.stream_rounded,
+                title: strings.playbackSourceStream,
+                body: strings.playbackSourceStreamBody,
+                selected: playbackSource == PlaybackSource.stream,
+                onTap: () => onPlaybackSource(PlaybackSource.stream),
+              ),
+              const SizedBox(height: 8),
+            ],
           ),
-        ],
+        ),
+        const SizedBox(height: 12),
+        Container(
+          decoration: BoxDecoration(
+            color: theme.colorScheme.surface,
+            borderRadius: BorderRadius.circular(24),
+          ),
+          child: Column(
+            children: [
+              SwitchListTile(
+                value: autoDownload,
+                onChanged: onAutoDownload,
+                title: Text(strings.downloadAutoTitle),
+                subtitle: Text(strings.downloadAutoBody),
+                secondary: Icon(
+                  Icons.download_for_offline_rounded,
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+              ),
+              const Divider(height: 1),
+              SwitchListTile(
+                value: preferLocal,
+                onChanged: onPreferLocal,
+                title: Text(strings.downloadPreferLocalTitle),
+                subtitle: Text(strings.downloadPreferLocalBody),
+                secondary: Icon(
+                  Icons.offline_bolt_rounded,
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+/// Один из вариантов «откуда играть видео».
+class _SourceOption extends StatelessWidget {
+  const _SourceOption({
+    required this.icon,
+    required this.title,
+    required this.body,
+    required this.selected,
+    required this.onTap,
+  });
+
+  final IconData icon;
+  final String title;
+  final String body;
+  final bool selected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(18),
+      child: Container(
+        padding: const EdgeInsets.all(14),
+        decoration: BoxDecoration(
+          color: selected
+              ? AppColors.greenDark.withValues(alpha: 0.12)
+              : theme.colorScheme.surfaceContainerHighest.withValues(
+                  alpha: 0.35,
+                ),
+          borderRadius: BorderRadius.circular(18),
+          border: Border.all(
+            color: selected ? AppColors.greenDark : Colors.transparent,
+            width: 1.6,
+          ),
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(
+              icon,
+              color: selected
+                  ? AppColors.greenDark
+                  : theme.colorScheme.onSurfaceVariant,
+            ),
+            const SizedBox(width: 14),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: theme.textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(body, style: theme.textTheme.bodySmall),
+                ],
+              ),
+            ),
+            if (selected)
+              const Icon(
+                Icons.check_circle_rounded,
+                color: AppColors.greenDark,
+                size: 22,
+              ),
+          ],
+        ),
       ),
     );
   }
