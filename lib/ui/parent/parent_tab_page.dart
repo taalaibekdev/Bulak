@@ -27,7 +27,14 @@ import 'time_limit_page.dart';
 /// код — показываем только цифровую клавиатуру. И лишь после этого открываем
 /// управление библиотекой.
 class ParentTabPage extends StatefulWidget {
-  const ParentTabPage({super.key});
+  const ParentTabPage({super.key, this.asRoute = false});
+
+  /// Открыт отдельным экраном (с шапки главного экрана), а не вкладкой.
+  final bool asRoute;
+
+  static Route<void> route() => MaterialPageRoute<void>(
+    builder: (_) => const ParentTabPage(asRoute: true),
+  );
 
   @override
   State<ParentTabPage> createState() => _ParentTabPageState();
@@ -38,6 +45,7 @@ class _ParentTabPageState extends State<ParentTabPage> {
 
   @override
   Widget build(BuildContext context) {
+    final strings = AppStrings.of(context);
     final settings = context.watch<SettingsController>();
 
     Widget body;
@@ -50,8 +58,19 @@ class _ParentTabPageState extends State<ParentTabPage> {
     }
 
     return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: SafeArea(bottom: false, child: body),
+      // Отдельным экраном нужен свой фон и кнопка «назад»: вкладка жила
+      // внутри оболочки и брала фон и отступы у неё.
+      backgroundColor: widget.asRoute
+          ? Theme.of(context).scaffoldBackgroundColor
+          : Colors.transparent,
+      appBar: widget.asRoute
+          ? AppBar(
+              title: Text(strings.navParents),
+              centerTitle: false,
+              scrolledUnderElevation: 0,
+            )
+          : null,
+      body: SafeArea(bottom: false, top: !widget.asRoute, child: body),
     );
   }
 }

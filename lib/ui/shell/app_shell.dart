@@ -82,18 +82,18 @@ class _AppShellState extends State<AppShell> {
           label: strings.navHistory,
           page: const HistoryPage(),
         ),
-      _Tab(
-        icon: Icons.lock_rounded,
-        label: strings.navParents,
-        page: const ParentTabPage(),
-      ),
     ];
 
     final index = _index.clamp(0, tabs.length - 1);
-    final parentsIndex = tabs.length - 1;
 
     return AppShellScope(
-      openParents: () => _goTo(parentsIndex),
+      // Родительский раздел открывается только с шапки главного экрана —
+      // отдельной вкладки в нижнем меню нет. Для ребёнка меню остаётся
+      // целиком «детским», а вход к настройкам спрятан за кулпу.
+      openParents: () => Navigator.of(
+        context,
+        rootNavigator: true,
+      ).push(ParentTabPage.route()),
       openTab: _goTo,
       child: Scaffold(
         extendBody: true,

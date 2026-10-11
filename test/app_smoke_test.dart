@@ -155,38 +155,43 @@ void main() {
     await pumpApp(tester);
 
     expect(find.text('Здесь пока пусто'), findsOneWidget);
-    expect(find.text('Родителям'), findsWidgets);
+    // Вкладки «Родителям» в нижнем меню больше нет: вход в родительский
+    // раздел — только кулпу в шапке главного экрана.
+    expect(find.text('Родителям'), findsNothing);
+    expect(find.byTooltip('Родителям'), findsOneWidget);
     expect(find.text('Главная'), findsWidgets);
   });
 
-  testWidgets('вкладка «Родителям» сначала просит PIN, потом открывается', (
-    tester,
-  ) async {
-    seed(onboarding: true, pin: '4821');
-    await pumpApp(tester);
+  testWidgets(
+    'кулпу в шапке сначала просит PIN, потом открывает родительский раздел',
+    (tester) async {
+      seed(onboarding: true, pin: '4821');
+      await pumpApp(tester);
 
-    await tester.tap(find.text('Родителям').last);
-    await tester.pumpAndSettle();
+      await tester.tap(find.byTooltip('Родителям'));
+      await tester.pumpAndSettle();
 
-    expect(find.text('Родительский режим'), findsOneWidget);
+      expect(find.text('Родительский режим'), findsOneWidget);
 
-    // Неверный код — показываем подсказку и не пускаем дальше.
-    await tapDigits(tester, '1111');
-    expect(find.text('Неверный PIN-код. Попробуйте ещё раз.'), findsOneWidget);
+      // Неверный код — показываем подсказку и не пускаем дальше.
+      await tapDigits(tester, '1111');
+      expect(
+        find.text('Неверный PIN-код. Попробуйте ещё раз.'),
+        findsOneWidget,
+      );
 
-    // Верный код — открывается родительский экран.
-    await tapDigits(tester, '4821');
-    expect(find.text('Добавить видео'), findsOneWidget);
-    expect(find.text('Лимит времени'), findsOneWidget);
-  });
+      // Верный код — открывается родительский экран.
+      await tapDigits(tester, '4821');
+      expect(find.text('Добавить видео'), findsOneWidget);
+      expect(find.text('Лимит времени'), findsOneWidget);
+    },
+  );
 
-  testWidgets('без PIN вкладка «Родителям» предлагает его придумать', (
-    tester,
-  ) async {
+  testWidgets('без PIN кулпу в шапке предлагает придумать код', (tester) async {
     seed(onboarding: true);
     await pumpApp(tester);
 
-    await tester.tap(find.text('Родителям').last);
+    await tester.tap(find.byTooltip('Родителям'));
     await tester.pumpAndSettle();
 
     expect(find.text('Придумайте PIN-код'), findsOneWidget);
