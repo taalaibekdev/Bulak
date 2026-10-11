@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<!--
+  Лендинг приложения «Булак» (Bulak) — безопасный видеоплеер для детей.
+  Один самодостаточный файл: весь CSS и JS внутри, внешних библиотек и шрифтов нет.
+  Работает офлайн. Единственные внешние файлы — скриншоты из папки img/ (см. img/README.md).
+
+  ЧТО НУЖНО ЗАПОЛНИТЬ ВЛАДЕЛЬЦУ:
+  1. Ссылку на Google Play — ищите комментарий «заполнить: ссылка на Google Play».
+  2. Ссылку на App Store — комментарий «заполнить: ссылка на App Store».
+  3. Ссылку на условия использования — комментарий «заполнить: ссылка на условия использования».
+  4. Загрузить файл img/og.png (1200×630) — комментарий «заполнить: og:image».
+  5. Положить скриншоты img/phone-1.png … img/phone-6.png (1080×2340).
+
+  Заметка о цветах: лендинг сделан в зелёной палитре (по ТЗ). В самом приложении
+  палитра другая — сине-фиолетовая (lib/core/theme/app_colors.dart). Если решите
+  свести бренд к одному цвету, все цвета страницы собраны в блоке :root ниже.
+-->
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Булак — безопасный видеоплеер для детей: только те видео, которые выбрали вы</title>
+<meta name="description" content="Булак — детский видеоплеер без поиска, рекомендаций и бесконечной ленты. Родитель добавляет ссылки на YouTube, видео скачивается на телефон, ребёнок смотрит его без интернета. Дневной лимит времени, PIN-код, Android и iOS.">
+<link rel="canonical" href="https://bulak.edu.kg/">
+<meta name="theme-color" content="#0B1F16">
+
+<!-- Соцсети и поисковики -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Булак">
+<meta property="og:locale" content="ru_RU">
+<meta property="og:url" content="https://bulak.edu.kg/">
+<meta property="og:title" content="Булак — видеоплеер для детей, где видео выбирает родитель">
+<meta property="og:description" content="Ни поиска, ни рекомендаций, ни бесконечной ленты. Вы добавляете ссылки на YouTube, приложение скачивает видео на телефон, ребёнок смотрит без интернета.">
+<!-- заполнить: загрузить файл img/og.png (1200×630) на хостинг рядом с index.html -->
+<meta property="og:image" content="https://bulak.edu.kg/img/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Логотип Булак и экран детской библиотеки с крупными карточками видео">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Булак — видеоплеер для детей, где видео выбирает родитель">
+<meta name="twitter:description" content="Ни поиска, ни рекомендаций, ни бесконечной ленты. Родитель добавляет ссылки, ребёнок смотрит скачанное видео без интернета.">
+<meta name="twitter:image" content="https://bulak.edu.kg/img/og.png">
+
+<!-- Фавиконка: тот же зелёный квадрат с белым треугольником, inline SVG (без внешних файлов) -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2096%2096'%3E%3Cdefs%3E%3ClinearGradient%20id='g'%20x1='0'%20y1='0'%20x2='1'%20y2='1'%3E%3Cstop%20offset='0'%20stop-color='%234ADE80'/%3E%3Cstop%20offset='1'%20stop-color='%2316A34A'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect%20width='96'%20height='96'%20rx='21'%20fill='url(%23g)'/%3E%3Cpath%20d='M40%2030%2072%2048%2040%2066z'%20fill='%23fff'%20stroke='%23fff'%20stroke-width='7'%20stroke-linejoin='round'/%3E%3C/svg%3E">
+
+<style>
+/* =====================================================================
+   Токены
+   Цвета — по брендбуку лендинга: основной зелёный #16A34A, светлый #4ADE80,
+   тёмный фон секций #0B1F16, светлый фон #F4FBF6.
+   Для текста на светлом фоне берётся более тёмный зелёный #15803D —
+   у #16A34A контраст с белым всего 3.3:1, этого мало для мелкого текста.
+   ===================================================================== */
+:root{
+  --green:#16A34A;
+  --green-light:#4ADE80;
+  --green-deep:#15803D;
+  --green-ink:#14682F;      /* зелёный для текста на светлом фоне: #15803D даёт 4.33:1 на #F4FBF6 */
+  --green-dark:#14532D;
+  --dark:#0B1F16;
+  --dark-soft:#123024;
+  --light:#F4FBF6;
+  --ink:#0F172A;
+  --muted:#5B6B7C;
+  --muted-dark:#A9D6BC;     /* приглушённый текст на тёмном фоне */
+  --white:#fff;
+  --line:rgba(15,23,42,.10);
+  --line-dark:rgba(255,255,255,.14);
+  --radius:18px;
+  --radius-lg:26px;
+  --shadow:0 12px 32px rgba(11,31,22,.10);
+  --shadow-sm:0 4px 14px rgba(11,31,22,.08);
+  --wrap:1120px;
+  --header-h:62px;
+  --focus:#15803D;
+  --font:'Nunito',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans',sans-serif;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-padding-top:calc(var(--header-h) + 12px)}
+body{
+  margin:0;
+  font-family:var(--font);
+  font-size:17px;
+  line-height:1.62;
+  color:var(--ink);
+  background:var(--white);
+  overflow-x:hidden;
+}
+img{max-width:100%;display:block}
+a{color:var(--green-ink);text-underline-offset:3px}
+a:hover{color:var(--green-dark)}
+h1,h2,h3{line-height:1.2;margin:0 0 14px;letter-spacing:-.01em;font-weight:800}
+h1{font-size:clamp(28px,7.4vw,52px)}
+h2{font-size:clamp(23px,4.6vw,36px)}
+h3{font-size:19px;margin-bottom:8px}
+p{margin:0 0 14px}
+ul{margin:0;padding:0;list-style:none}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:6px}
+
+.wrap{width:100%;max-width:var(--wrap);margin:0 auto;padding:0 18px}
+.skip{position:absolute;left:-9999px;top:0;background:var(--white);color:var(--green-dark);padding:10px 14px;border-radius:0 0 10px 0;z-index:100;font-weight:700}
+.skip:focus{left:0}
+.visually-hidden{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+/* --- Кнопки ---------------------------------------------------------- */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  min-height:52px;padding:13px 22px;
+  border:2px solid transparent;border-radius:999px;
+  font:inherit;font-weight:800;font-size:16.5px;line-height:1.2;
+  text-decoration:none;text-align:center;cursor:pointer;
+  transition:transform .16s ease,box-shadow .16s ease,background-color .16s ease,color .16s ease;
+}
+.btn:hover{transform:translateY(-1px)}
+.btn:active{transform:translateY(0)}
+.btn__icon{width:22px;height:22px;flex:0 0 auto}
+.btn--primary{
+  color:var(--white);
+  /* градиент начинается с #15803D, а не с #16A34A: на светлом конце белый текст
+     давал бы 3.3:1, это ниже требуемых 4.5:1 */
+  background-image:linear-gradient(135deg,#15803D,#14532D);
+  box-shadow:0 8px 20px rgba(20,83,45,.28);
+}
+.btn--primary:hover{background-image:linear-gradient(135deg,#14682F,#0F3D22);color:var(--white)}
+.btn--ghost{
+  color:var(--green-dark);background:var(--white);border-color:rgba(21,128,61,.32);
+  box-shadow:var(--shadow-sm);
+}
+.btn--ghost:hover{background:#EAF7EF;border-color:var(--green-deep);color:var(--green-dark)}
+.btn--onDark{
+  color:var(--dark);background:var(--green-light);border-color:transparent;
+}
+.btn--onDark:hover{background:#6EE79A;color:var(--dark)}
+.btn--outlineDark{
+  color:var(--white);background:transparent;border-color:rgba(255,255,255,.42);
+}
+.btn--outlineDark:hover{background:rgba(255,255,255,.12);color:var(--white)}
+.btn--wide{width:100%}
+
+/* --- Шапка ----------------------------------------------------------- */
+.site-header{
+  position:sticky;top:0;z-index:50;
+  background:rgba(255,255,255,.92);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+}
+.site-header__inner{
+  min-height:var(--header-h);
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+}
+.brand{display:inline-flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);font-weight:800}
+.brand .mark{width:34px;height:34px;flex:0 0 auto;display:block}
+.brand__name{font-size:20px;letter-spacing:.01em}
+.nav{display:none}
+.nav a{
+  color:var(--ink);text-decoration:none;font-weight:700;font-size:15.5px;
+  padding:9px 12px;border-radius:999px;
+}
+.nav a:hover{background:#EAF7EF;color:var(--green-dark)}
+.site-header .btn{min-height:44px;padding:9px 18px;font-size:15.5px}
+
+/* --- Переключатель языка --------------------------------------------- */
+.header__right{display:flex;align-items:center;gap:10px;flex:0 0 auto}
+.lang{
+  display:flex;align-items:center;gap:2px;flex:0 0 auto;
+  background:#EAF7EF;border:1px solid rgba(21,128,61,.18);
+  border-radius:999px;padding:3px;
+}
+.lang__link{
+  display:inline-block;padding:5px 10px;border-radius:999px;
+  font-size:13px;font-weight:800;line-height:1.2;
+  color:var(--green-dark);text-decoration:none;white-space:nowrap;
+}
+.lang__link:hover{background:rgba(255,255,255,.8);color:var(--green-dark)}
+.lang__link.is-active{background:var(--white);color:var(--green-dark);box-shadow:0 1px 3px rgba(11,31,22,.14)}
+/* На узких экранах виден только активный язык: с двумя ссылками
+   переключатель не помещается рядом с кнопкой «Скачать». */
+.lang__link:not(.is-active){display:none}
+@media (min-width:400px){
+  .lang__link:not(.is-active){display:inline-block}
+}
+@media (max-width:399px){
+  .site-header__inner{gap:10px}
+  .brand .mark{width:30px;height:30px}
+  .brand__name{font-size:17px}
+  .header__right{gap:7px}
+  .site-header .btn{min-height:40px;padding:8px 13px;font-size:14.5px}
+  .lang{padding:2px}
+  .lang__link{padding:5px 9px;font-size:12.5px}
+}
+
+@media (min-width:780px){
+  .nav{display:flex;gap:4px;align-items:center}
+}
+
+/* --- Секции ---------------------------------------------------------- */
+.section{padding:52px 0}
+.section--light{background:var(--light)}
+.section--dark{background:var(--dark);color:#EAF6EE;--focus:#4ADE80}
+.section--dark h2,.section--dark h3{color:var(--white)}
+.section--dark p{color:#CDE8D8}
+.section--dark .eyebrow{color:var(--green-light)}
+/* на тёмном фоне зелёный для текста должен быть светлым: #15803D даёт всего 3.8:1 */
+.section--dark a:not(.btn),.cta a:not(.btn){color:var(--green-light)}
+.section--dark a:not(.btn):hover,.cta a:not(.btn):hover{color:#86EFAC}
+.section__head{max-width:720px;margin-bottom:30px}
+.eyebrow{
+  display:inline-block;margin:0 0 10px;
+  font-size:13.5px;font-weight:800;letter-spacing:.10em;text-transform:uppercase;
+  color:var(--green-ink);
+}
+.lead{font-size:18px;color:var(--muted)}
+.section--dark .lead{color:#CDE8D8}
+
+@media (min-width:760px){
+  .section{padding:84px 0}
+  .section__head{margin-bottom:44px}
+}
+
+/* --- Первый экран ---------------------------------------------------- */
+.hero{
+  background:
+    radial-gradient(120% 80% at 84% 0%,rgba(74,222,128,.34),rgba(74,222,128,0) 60%),
+    linear-gradient(180deg,#F4FBF6 0%,#FFFFFF 100%);
+  padding:34px 0 46px;
+}
+.hero__grid{display:grid;gap:30px}
+.hero__badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--white);border:1px solid rgba(21,128,61,.24);
+  color:var(--green-dark);font-size:13.5px;font-weight:800;
+  padding:7px 14px;border-radius:999px;margin-bottom:16px;
+  box-shadow:var(--shadow-sm);
+}
+.hero__badge .dot{width:9px;height:9px;border-radius:50%;background:var(--green);flex:0 0 auto}
+.hero h1{max-width:19ch}
+.hero p.lead{font-size:17.5px;max-width:56ch}
+.hero__actions{display:flex;flex-direction:column;gap:12px;margin:22px 0 12px}
+.hero__note{font-size:14.5px;color:var(--muted);margin:0 0 16px}
+.hero__meta{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:14.5px;font-weight:700;color:var(--green-dark);margin:0}
+.hero__meta li{display:flex;align-items:center;gap:8px}
+.hero__meta svg{width:18px;height:18px;flex:0 0 auto}
+
+@media (min-width:560px){
+  .hero__actions{flex-direction:row;flex-wrap:wrap}
+  .hero__actions .btn{flex:1 1 auto;min-width:210px;width:auto}
+}
+@media (min-width:900px){
+  .hero{padding:58px 0 74px}
+  .hero__grid{grid-template-columns:1.05fr .95fr;align-items:center;gap:48px}
+}
+
+/* --- Телефон с скриншотом -------------------------------------------- */
+.phone{
+  width:100%;max-width:284px;margin:0 auto;
+  padding:9px;border-radius:38px;
+  background:linear-gradient(160deg,#16382A,#0B1F16);
+  box-shadow:0 22px 44px rgba(11,31,22,.26);
+}
+.phone__screen{
+  position:relative;overflow:hidden;
+  border-radius:30px;
+  aspect-ratio:9 / 19;
+  /* фон и скругление нужны, чтобы пустое место без картинки не выглядело сломанным */
+  background:linear-gradient(165deg,#E7F6EC 0%,#D3EEDD 100%);
+}
+.phone__screen img{
+  width:100%;height:100%;object-fit:cover;object-position:top center;
+  color:#3E5B4B;font-size:13px;font-weight:700;padding:14px;
+}
+.phone__screen::after{ /* «динамик» телефона */
+  content:"";position:absolute;top:9px;left:50%;transform:translateX(-50%);
+  width:32%;height:5px;border-radius:999px;background:rgba(11,31,22,.28);
+  pointer-events:none;
+}
+.phone--sm{max-width:230px;padding:7px;border-radius:32px}
+.phone--sm .phone__screen{border-radius:26px}
+.hero__phone{position:relative}
+
+/* --- Карточки -------------------------------------------------------- */
+.cards{display:grid;gap:16px}
+.card{
+  background:var(--white);border:1px solid var(--line);border-radius:var(--radius);
+  padding:20px;box-shadow:var(--shadow-sm);
+}
+.card--plain{box-shadow:none;background:#FBFEFC}
+.card__icon{
+  width:44px;height:44px;border-radius:13px;
+  display:flex;align-items:center;justify-content:center;
+  background:#E7F6EC;color:var(--green-dark);margin-bottom:14px;
+}
+.card__icon svg{width:24px;height:24px}
+.card p{margin:0;color:var(--muted);font-size:16px}
+.card p + p{margin-top:10px}
+
+@media (min-width:640px){
+  .cards{grid-template-columns:repeat(2,1fr);gap:20px}
+}
+@media (min-width:1000px){
+  .cards--4{grid-template-columns:repeat(4,1fr)}
+  .cards--3{grid-template-columns:repeat(3,1fr)}
+}
+
+/* --- Возможности (тёмная секция) ------------------------------------- */
+.feature{
+  background:var(--dark-soft);
+  border:1px solid var(--line-dark);
+  border-radius:var(--radius);
+  padding:20px;
+}
+.feature .card__icon{background:rgba(74,222,128,.14);color:var(--green-light)}
+.feature h3{font-size:17.5px}
+.feature p{margin:0;color:#C6E3D3;font-size:15.5px}
+.features{display:grid;gap:16px}
+
+@media (min-width:640px){.features{grid-template-columns:repeat(2,1fr);gap:18px}}
+@media (min-width:1000px){.features{grid-template-columns:repeat(4,1fr)}}
+
+/* --- Как это работает ------------------------------------------------ */
+.steps{display:grid;gap:18px;margin:0;padding:0;list-style:none}
+.step{
+  position:relative;background:var(--white);border:1px solid var(--line);
+  border-radius:var(--radius);padding:22px 20px 20px;box-shadow:var(--shadow-sm);
+}
+.step__num{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:38px;height:38px;border-radius:50%;margin-bottom:12px;
+  background-image:linear-gradient(135deg,#15803D,#14532D);
+  color:var(--white);font-weight:800;font-size:17px;
+}
+.step p{margin:0;color:var(--muted)}
+@media (min-width:760px){.steps{grid-template-columns:repeat(3,1fr);gap:22px}}
+
+/* --- Галерея --------------------------------------------------------- */
+.gallery{display:grid;gap:26px 18px}
+.gallery figure{margin:0;text-align:center}
+.gallery figcaption{margin-top:12px;font-size:15px;font-weight:700;color:var(--ink)}
+.gallery figcaption span{display:block;font-weight:400;font-size:14.5px;color:var(--muted)}
+@media (min-width:560px){.gallery{grid-template-columns:repeat(2,1fr)}}
+@media (min-width:960px){.gallery{grid-template-columns:repeat(3,1fr);gap:32px 22px}}
+
+/* --- Для родителей --------------------------------------------------- */
+.parents{display:grid;gap:26px}
+.parents__list li{
+  display:flex;gap:12px;align-items:flex-start;
+  padding:12px 0;border-bottom:1px solid var(--line-dark);
+}
+.parents__list li:last-child{border-bottom:0}
+.parents__list svg{width:22px;height:22px;flex:0 0 auto;margin-top:3px;color:var(--green-light)}
+.parents__list strong{display:block;color:var(--white);font-size:16.5px}
+.parents__list span{color:#C6E3D3;font-size:15.5px}
+.parents__note{
+  background:rgba(74,222,128,.10);border:1px solid rgba(74,222,128,.32);
+  border-radius:var(--radius);padding:18px 20px;
+}
+.parents__note p:last-child{margin-bottom:0}
+.parents__links{margin-top:18px}
+@media (min-width:900px){
+  .parents{grid-template-columns:1fr 1fr;gap:44px;align-items:start}
+}
+
+/* --- FAQ ------------------------------------------------------------- */
+.faq{display:grid;gap:10px;max-width:820px}
+.faq__item h3{margin:0;font-size:inherit}
+.faq__item{
+  background:var(--white);border:1px solid var(--line);border-radius:var(--radius);
+  overflow:hidden;
+}
+.faq__item.is-open{border-color:rgba(21,128,61,.34);box-shadow:var(--shadow-sm)}
+.faq__q{
+  width:100%;display:flex;align-items:center;justify-content:space-between;gap:14px;
+  padding:16px 18px;margin:0;border:0;background:none;cursor:pointer;
+  font:inherit;font-weight:800;font-size:16.5px;line-height:1.4;text-align:left;color:var(--ink);
+}
+.faq__q:hover{background:#F3FBF6}
+.faq__sign{
+  width:26px;height:26px;flex:0 0 auto;position:relative;border-radius:50%;
+  background:#E7F6EC;
+}
+.faq__sign::before,.faq__sign::after{
+  content:"";position:absolute;top:50%;left:50%;background:var(--green-dark);
+  transform:translate(-50%,-50%);border-radius:2px;
+}
+.faq__sign::before{width:12px;height:2.5px}
+.faq__sign::after{width:2.5px;height:12px;transition:transform .2s ease,opacity .2s ease}
+.faq__item.is-open .faq__sign::after{transform:translate(-50%,-50%) scaleY(0);opacity:0}
+.faq__panel{padding:0 18px 18px;animation:fadeIn .22s ease}
+.faq__panel p{margin:0;color:var(--muted);font-size:16px}
+.faq__panel p + p{margin-top:10px}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-2px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){
+  .faq__panel{animation:none}
+  .btn:hover{transform:none}
+}
+
+/* --- Финальный призыв ------------------------------------------------ */
+.cta{
+  background:
+    radial-gradient(110% 90% at 15% 10%,rgba(74,222,128,.24),rgba(74,222,128,0) 62%),
+    linear-gradient(140deg,#0B1F16 0%,#123024 100%);
+  color:var(--white);text-align:center;
+}
+.cta h2{color:var(--white)}
+.cta p{color:#CDE8D8;max-width:56ch;margin-inline:auto}
+.cta__actions{display:flex;flex-direction:column;gap:12px;margin:24px 0 14px;align-items:stretch;max-width:420px;margin-inline:auto}
+.cta__note{font-size:14.5px;color:var(--muted-dark);margin:0}
+@media (min-width:560px){
+  .cta__actions{flex-direction:row;justify-content:center;max-width:none}
+  .cta__actions .btn{min-width:224px}
+}
+
+/* --- Подвал ---------------------------------------------------------- */
+.site-footer{background:#071510;color:#B9D6C6;padding:40px 0 26px;font-size:15px}
+.site-footer a{color:#CDE8D8}
+.site-footer a:hover{color:var(--green-light)}
+.site-footer .brand{color:var(--white);margin-bottom:10px}
+.site-footer__grid{display:grid;gap:24px}
+.site-footer__links{display:flex;flex-direction:column;gap:8px}
+.site-footer__title{margin:0 0 10px;font-size:16px;color:var(--white)}
+.site-footer__legal{
+  margin-top:28px;padding-top:20px;border-top:1px solid rgba(255,255,255,.12);
+  font-size:13.5px;line-height:1.6;color:#9DBFAE;
+}
+.site-footer__legal p{margin:0 0 8px}
+.site-footer__bottom{
+  margin-top:18px;display:flex;flex-wrap:wrap;gap:8px 18px;
+  font-size:13.5px;color:#9DBFAE;
+}
+@media (min-width:820px){
+  .site-footer__grid{grid-template-columns:1.2fr 1fr 1fr;gap:32px}
+}
+
+/* --- Кнопка «наверх» -------------------------------------------------- */
+.to-top{
+  position:fixed;right:16px;bottom:16px;z-index:60;
+  width:48px;height:48px;border-radius:50%;border:0;cursor:pointer;
+  background-image:linear-gradient(135deg,#15803D,#14532D);color:var(--white);
+  box-shadow:0 10px 24px rgba(11,31,22,.28);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;visibility:hidden;transform:translateY(8px);
+  transition:opacity .2s ease,transform .2s ease,visibility .2s ease;
+}
+.to-top.is-visible{opacity:1;visibility:visible;transform:none}
+.to-top svg{width:22px;height:22px}
+@media print{.to-top,.site-header{display:none}}
+</style>
+</head>
+<body>
+
+<a class="skip" href="#main">Перейти к содержимому</a>
+
+<!-- Спрайт с логотипом: используется в шапке, на первом экране и в подвале -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="bulakGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#4ADE80"/>
+      <stop offset="1" stop-color="#16A34A"/>
+    </linearGradient>
+    <symbol id="bulakMark" viewBox="0 0 96 96">
+      <!-- скруглённый квадрат, радиус 21 ≈ 22% от стороны -->
+      <rect width="96" height="96" rx="21" fill="url(#bulakGrad)"/>
+      <!-- треугольник воспроизведения: скруглённые углы, оптический сдвиг вправо ~3% -->
+      <path d="M40 30 72 48 40 66Z" fill="#fff" stroke="#fff" stroke-width="7" stroke-linejoin="round"/>
+    </symbol>
+  </defs>
+</svg>
+
+<header class="site-header">
+  <div class="wrap site-header__inner">
+    <a class="brand" href="#top">
+      <svg class="mark" aria-hidden="true" focusable="false"><use href="#bulakMark"></use></svg>
+      <span class="brand__name">Булак</span>
+    </a>
+    <nav class="nav" aria-label="Основная навигация">
+      <a href="#features">Возможности</a>
+      <a href="#how">Как это работает</a>
+      <a href="#faq">Вопросы</a>
+    </nav>
+    <div class="header__right">
+      <div class="lang" role="group" aria-label="Выбор языка">
+        <a class="lang__link is-active" href="index.ru.html" aria-current="page" lang="ru">Русский</a>
+        <a class="lang__link" href="index.html" lang="ky">Кыргызча</a>
+      </div>
+      <a class="btn btn--primary" href="#download">Скачать</a>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- 1. Первый экран ------------------------------------------------- -->
+  <section class="hero" id="top">
+    <div class="wrap hero__grid">
+      <div>
+        <p class="hero__badge"><span class="dot" aria-hidden="true"></span>Безопасный видеоплеер для детей</p>
+        <h1>Только те видео, которые выбрали вы</h1>
+        <p class="lead">
+          В «Булаке» нет поиска, рекомендаций и бесконечной ленты. Вы сами копируете ссылки
+          на YouTube, приложение скачивает видео на телефон — и ребёнок смотрит ровно этот
+          список. Даже когда интернета нет.
+        </p>
+        <div class="hero__actions">
+          <!-- заполнить: ссылка на Google Play -->
+          <a class="btn btn--primary" href="#" aria-label="Булак в Google Play — приложение готовится к публикации">
+            <svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 3.6 16.4 12 4 20.4z"/><path d="M16.4 12 20 9.9"/><path d="M16.4 12 20 14.1"/></svg>
+            Скоро в Google Play
+          </a>
+          <!-- заполнить: ссылка на App Store -->
+          <a class="btn btn--ghost" href="#" aria-label="Булак в App Store — приложение готовится к публикации">
+            <svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 6.5c1.6-2 5.2-1 5.2 2.4 0 3-2.6 6.4-4 8.1-.8 1-2.2 1-3 0-1.4-1.7-4-5.1-4-8.1 0-3.4 3.6-4.4 5.2-2.4z"/><path d="M8.4 19.5h7.2"/></svg>
+            Скоро в App Store
+          </a>
+        </div>
+        <p class="hero__note">Приложение готовится к публикации. Сейчас «Булак» не опубликован в магазинах.</p>
+        <ul class="hero__meta">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 12.5 5 5L20 6.5"/></svg>Бесплатно, без подписок и покупок</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 12.5 5 5L20 6.5"/></svg>Android 6.0+ и iOS 13+</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 12.5 5 5L20 6.5"/></svg>Без аккаунтов и аналитики</li>
+        </ul>
+      </div>
+      <div class="hero__phone">
+        <div class="phone">
+          <div class="phone__screen">
+            <img src="img/phone-1.png" alt="Главный экран приложения Булак: коллекции и крупные карточки с видео" width="1080" height="2340" decoding="async">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. Проблема → решение ------------------------------------------- -->
+  <section class="section" id="why">
+    <div class="wrap">
+      <div class="section__head">
+        <p class="eyebrow">Почему не обычный YouTube</p>
+        <h2>Остановиться невозможно, если лента не заканчивается</h2>
+        <p class="lead">
+          После мультика YouTube сам включает следующий, потом ещё один — и вот уже прошёл час.
+          «Булак» устроен наоборот: список короткий, он заканчивается, и это нормально.
+        </p>
+      </div>
+      <div class="cards cards--4">
+        <article class="card">
+          <div class="card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m8.5 9.5 7 5M15.5 9.5l-7 5"/></svg>
+          </div>
+          <h3>Никаких рекомендаций</h3>
+          <p>В приложении нет поиска, подписок, Shorts и «вам может понравиться». Ребёнок видит только то, что добавили вы.</p>
+        </article>
+        <article class="card">
+          <div class="card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v10.5"/><path d="m7.8 9.5 4.2 4.2 4.2-4.2"/><path d="M4.5 17.5v1.5a1.5 1.5 0 0 0 1.5 1.5h12a1.5 1.5 0 0 0 1.5-1.5v-1.5"/></svg>
+          </div>
+          <h3>Скачали — смотрим без интернета</h3>
+          <p>Видео сохраняется в память телефона и играет с устройства. В дороге, на даче, в самолёте — одинаково.</p>
+        </article>
+        <article class="card">
+          <div class="card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.6"/><path d="M12 7.4V12l3.1 2"/></svg>
+          </div>
+          <h3>Лимит времени</h3>
+          <p>От 15 минут до 3 часов в день. Счётчик идёт только во время просмотра, а когда время вышло — спокойный экран «На сегодня всё».</p>
+        </article>
+        <article class="card">
+          <div class="card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="10.3" width="15" height="10.2" rx="2.6"/><path d="M8 10.3V8a4 4 0 0 1 8 0v2.3"/><path d="M12 14.4v2.2"/></svg>
+          </div>
+          <h3>Всё под PIN-кодом</h3>
+          <p>Добавить видео, скачать, удалить или поменять настройки можно только со взрослым четырёхзначным кодом.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Возможности --------------------------------------------------- -->
+  <section class="section section--dark" id="features">
+    <div class="wrap">
+      <div class="section__head">
+        <p class="eyebrow">Возможности</p>
+        <h2>Что умеет «Булак»</h2>
+        <p class="lead">Спокойный плеер для ребёнка и понятные инструменты для родителя. Без лишнего.</p>
+      </div>
+      <div class="features">
+        <article class="feature">
+          <div class="card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7.5" height="7.5" rx="2.2"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="2.2"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="2.2"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="2.2"/></svg>
+          </div>
+          <h3>Библиотека крупными карточками</h3>
+          <p>Превью, название и длительность — как в знакомом ребёнку видеосервисе, только список заканчивается.</p>
+        </article>
+        <article class="feature">
+          <div class="card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7.4A2.4 2.4 0 0 1 5.4 5h3.3c.5 0 1 .24 1.3.65l1.1 1.5h7.5A2.4 2.4 0 0 1 21 9.5v7.1A2.4 2.4 0 0 1 18.6 19H5.4A2.4 2.4 0 0 1 3 16.6z"/></svg>
+          </div>
+          <h3>Коллекции-папки</h3>
+          <p>«Мультики», «Музыка», «Любимое» — у каждой папки свой эмодзи и цвет, чтобы ребёнок находил нужное сам.</p>
+        </article>
+        <article class="feature">
+          <div class="card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v10.5"/><path d="m7.8 9.5 4.2 4.2 4.2-4.2"/><path d="M4.5 17.5v1.5a1.5 1.5 0 0 0 1.5 1.5h12a1.5 1.5 0 0 0 1.5-1.5v-1.5"/></svg>
+          </div>
+          <h3>Офлайн-просмотр</h3>
+          <p>Скачанное видео играет с телефона: просмотр не зависит от того, отдаёт ли YouTube поток прямо сейчас.</p>
+        </article>
+        <article class="feature">
+          <div class="card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.6"/><path d="M12 7.4V12l3.1 2"/></svg>
+          </div>
+          <h3>Дневной лимит времени</h3>
+          <p>От 15 минут до 3 часов. Время вышло — показывается добрый экран «На сегодня всё».</p>
+        </article>
+        <article class="feature">
+          <div class="card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="10.3" width="15" height="10.2" rx="2.6"/><path d="M8 10.3V8a4 4 0 0 1 8 0v2.3"/><path d="M12 14.4v2.2"/></svg>
+          </div>
+          <h3>PIN-код и замочек в плеере</h3>
+          <p>Четыре цифры закрывают добавление, скачивание и настройки. «Замочек» не даёт ребёнку выйти из видео или перемотать вперёд без взрослого.</p>
+        </article>
+        <article class="feature">
+          <div class="card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.4 5 13.4a4.5 4.5 0 0 1 6.4-6.3l.6.6.6-.6A4.5 4.5 0 0 1 19 13.4z"/></svg>
+          </div>
+          <h3>Избранное и история</h3>
+          <p>Сердечко сохраняет любимое видео, а история показывает, что уже смотрели и на каком месте остановились.</p>
+        </article>
+        <article class="feature">
+          <div class="card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="5.8" r="2.6"/><circle cx="18" cy="18.2" r="2.6"/><path d="m8.4 10.8 7.2-3.7M8.4 13.2l7.2 3.7"/></svg>
+          </div>
+          <h3>Обмен подборками</h3>
+          <p>Отправьте другому родителю список ссылок текстом или файлом — он вставит его у себя и получит те же видео. Передаются только ссылки, видеофайлы никуда не уходят.</p>
+        </article>
+        <article class="feature">
+          <div class="card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.6"/><path d="M3.6 9.4h16.8M3.6 14.6h16.8"/><path d="M12 3.4c3.2 3.6 3.2 13.6 0 17.2-3.2-3.6-3.2-13.6 0-17.2z"/></svg>
+          </div>
+          <h3>Русский и английский</h3>
+          <p>Интерфейс переключается на английский — и на светлую или тёмную тему.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Как это работает --------------------------------------------- -->
+  <section class="section section--light" id="how">
+    <div class="wrap">
+      <div class="section__head">
+        <p class="eyebrow">Как это работает</p>
+        <h2>Три шага — и ребёнок смотрит</h2>
+        <p class="lead">Ничего настраивать «по инструкции» не нужно: приложение само подтянет название, автора и длительность.</p>
+      </div>
+      <ol class="steps">
+        <li class="step">
+          <span class="step__num" aria-hidden="true">1</span>
+          <h3>Родитель вставляет ссылку</h3>
+          <p>Скопируйте ссылку на видео с YouTube и вставьте её в приложение — можно сразу несколько. «Булак» проверит ссылки и покажет, что нашёл.</p>
+        </li>
+        <li class="step">
+          <span class="step__num" aria-hidden="true">2</span>
+          <h3>Видео скачивается на телефон</h3>
+          <p>Нажмите «Скачать» — файл сохранится в приватной папке приложения на устройстве. На экране загрузок видно, сколько места занято.</p>
+        </li>
+        <li class="step">
+          <span class="step__num" aria-hidden="true">3</span>
+          <h3>Ребёнок смотрит без интернета</h3>
+          <p>Дальше сеть не нужна: видео играет с телефона, и просмотр не прерывается, даже если поток YouTube перестал работать.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 5. Галерея скриншотов ------------------------------------------- -->
+  <section class="section" id="screens">
+    <div class="wrap">
+      <div class="section__head">
+        <p class="eyebrow">Скриншоты</p>
+        <h2>Как это выглядит</h2>
+        <p class="lead">Кадры с реального приложения: библиотека, коллекции, плеер и родительский раздел.</p>
+      </div>
+      <div class="gallery">
+        <figure>
+          <div class="phone phone--sm">
+            <div class="phone__screen">
+              <img src="img/phone-1.png" alt="Главный экран: коллекции и библиотека крупными карточками" width="1080" height="2340" loading="lazy" decoding="async">
+            </div>
+          </div>
+          <figcaption>Главная<span>Коллекции и вся библиотека</span></figcaption>
+        </figure>
+        <figure>
+          <div class="phone phone--sm">
+            <div class="phone__screen">
+              <img src="img/phone-2.png" alt="Коллекция с эмодзи и цветом: папка с видео" width="1080" height="2340" loading="lazy" decoding="async">
+            </div>
+          </div>
+          <figcaption>Коллекция<span>Папки с эмодзи и цветом</span></figcaption>
+        </figure>
+        <figure>
+          <div class="phone phone--sm">
+            <div class="phone__screen">
+              <img src="img/phone-3.png" alt="Плеер: полоса просмотра и три крупные кнопки — во весь экран, замочек и следующее видео" width="1080" height="2340" loading="lazy" decoding="async">
+            </div>
+          </div>
+          <figcaption>Плеер<span>Крупные кнопки и замочек</span></figcaption>
+        </figure>
+        <figure>
+          <div class="phone phone--sm">
+            <div class="phone__screen">
+              <img src="img/phone-4.png" alt="Экран «На сегодня всё» после окончания дневного лимита" width="1080" height="2340" loading="lazy" decoding="async">
+            </div>
+          </div>
+          <figcaption>Лимит времени<span>Добрый экран «На сегодня всё»</span></figcaption>
+        </figure>
+        <figure>
+          <div class="phone phone--sm">
+            <div class="phone__screen">
+              <img src="img/phone-5.png" alt="Экран загрузок: сколько места занято на телефоне и выбор источника воспроизведения" width="1080" height="2340" loading="lazy" decoding="async">
+            </div>
+          </div>
+          <figcaption>Загрузки<span>Видно, сколько занято на телефоне</span></figcaption>
+        </figure>
+        <figure>
+          <div class="phone phone--sm">
+            <div class="phone__screen">
+              <img src="img/phone-6.png" alt="Родительский раздел: добавление видео, библиотека, загрузки и PIN-код" width="1080" height="2340" loading="lazy" decoding="async">
+            </div>
+          </div>
+          <figcaption>Для родителя<span>Ссылки, PIN-код, настройки</span></figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Для родителей ------------------------------------------------- -->
+  <section class="section section--dark" id="parents">
+    <div class="wrap">
+      <div class="section__head">
+        <p class="eyebrow">Для родителей</p>
+        <h2>Ваши данные остаются у вас</h2>
+        <p class="lead">«Булак» не просит регистрацию и не собирает статистику. Всё, что есть в приложении, лежит на самом телефоне.</p>
+      </div>
+      <div class="parents">
+        <ul class="parents__list">
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 12.5 5 5L20 6.5"/></svg>
+            <div><strong>Нет аккаунтов</strong><span>Ни регистрации, ни входа, ни профиля ребёнка. Приложение не знает ни имени, ни возраста.</span></div>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 12.5 5 5L20 6.5"/></svg>
+            <div><strong>Нет аналитики и трекеров</strong><span>Мы не считаем просмотры и не передаём данные третьим лицам.</span></div>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 12.5 5 5L20 6.5"/></svg>
+            <div><strong>Нашей рекламы нет</strong><span>В приложении нет наших баннеров и «промо». Свою рекламу может показать только сам YouTube, если видео играет встроенным плеером YouTube.</span></div>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 12.5 5 5L20 6.5"/></svg>
+            <div><strong>Всё хранится на устройстве</strong><span>Список ссылок и настройки — в памяти телефона, скачанные видео — в приватной папке приложения. PIN-код хранится в виде хеша, а не открытым текстом. Резервная копия в облако отключена.</span></div>
+          </li>
+        </ul>
+        <div>
+          <div class="parents__note">
+            <h3>Про скачивание — честно</h3>
+            <p>
+              Чтобы смотреть без интернета, приложение сохраняет видеофайл на ваш телефон,
+              в приватную папку приложения. Файл остаётся там, пока вы сами его не удалите;
+              интернет нужен только в момент скачивания.
+            </p>
+            <p>
+              Ответственность за то, какие видео вы добавляете и сохраняете, и за соблюдение
+              условий использования YouTube — на взрослом. «Булак» только сохраняет файл
+              на вашем устройстве и не передаёт его никуда.
+            </p>
+          </div>
+          <p class="parents__links">
+            Подробности — в <a href="https://bulak.edu.kg/privacy">политике конфиденциальности</a>.
+            Вопросы и предложения — на <a href="mailto:support@tlbk.kg">support@tlbk.kg</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. Вопросы и ответы --------------------------------------------- -->
+  <section class="section section--light" id="faq">
+    <div class="wrap">
+      <div class="section__head">
+        <p class="eyebrow">Вопросы</p>
+        <h2>Отвечаем на частые вопросы</h2>
+        <p class="lead">Если чего-то не хватает — напишите на <a href="mailto:support@tlbk.kg">support@tlbk.kg</a>.</p>
+      </div>
+
+      <div class="faq" id="faqList">
+        <div class="faq__item">
+          <h3>
+            <button class="faq__q" type="button" id="faq-q1" aria-expanded="true" aria-controls="faq-a1">
+              Правда ли нет рекламы?
+              <span class="faq__sign" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div class="faq__panel" id="faq-a1" role="region" aria-labelledby="faq-q1">
+            <p>Своей рекламы мы не показываем: в приложении нет наших баннеров, вставок и «промо».</p>
+            <p>Скажем честно и про YouTube: видео воспроизводится через официальные механизмы YouTube, и если ролик играет встроенным плеером YouTube, рекламу может показать сам YouTube. Наше приложение на этом ничего не зарабатывает.</p>
+          </div>
+        </div>
+
+        <div class="faq__item">
+          <h3>
+            <button class="faq__q" type="button" id="faq-q2" aria-expanded="false" aria-controls="faq-a2">
+              Нужен ли интернет, чтобы смотреть?
+              <span class="faq__sign" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div class="faq__panel" id="faq-a2" role="region" aria-labelledby="faq-q2" hidden>
+            <p>Интернет нужен один раз — чтобы добавить ссылку и скачать видео на телефон. Дальше файл лежит в приватной папке приложения, и просмотр работает полностью офлайн: в машине, в самолёте, на даче.</p>
+          </div>
+        </div>
+
+        <div class="faq__item">
+          <h3>
+            <button class="faq__q" type="button" id="faq-q3" aria-expanded="false" aria-controls="faq-a3">
+              Откуда берутся видео?
+              <span class="faq__sign" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div class="faq__panel" id="faq-a3" role="region" aria-labelledby="faq-q3" hidden>
+            <p>Из YouTube. Взрослый копирует ссылку на видео и вставляет её в приложение — оно подтянет название, автора и длительность.</p>
+            <p>Само по себе в библиотеке не появляется ничего: ни рекомендаций, ни «популярного», ни чужого списка.</p>
+          </div>
+        </div>
+
+        <div class="faq__item">
+          <h3>
+            <button class="faq__q" type="button" id="faq-q4" aria-expanded="false" aria-controls="faq-a4">
+              Как добавить видео?
+              <span class="faq__sign" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div class="faq__panel" id="faq-a4" role="region" aria-labelledby="faq-q4" hidden>
+            <p>Откройте родительский раздел, введите четырёхзначный PIN и вставьте ссылки — по одной в строке, можно сразу несколько.</p>
+            <p>Приложение проверит ссылки, покажет название, автора и длительность, добавит выбранное и разложит по коллекциям. Скачать можно сразу или позже.</p>
+          </div>
+        </div>
+
+        <div class="faq__item">
+          <h3>
+            <button class="faq__q" type="button" id="faq-q5" aria-expanded="false" aria-controls="faq-a5">
+              Можно ли ограничить время?
+              <span class="faq__sign" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div class="faq__panel" id="faq-a5" role="region" aria-labelledby="faq-q5" hidden>
+            <p>Да. Дневной лимит настраивается от 15 минут до 3 часов, и счётчик идёт только во время просмотра.</p>
+            <p>Когда время заканчивается, ребёнок видит спокойный экран «На сегодня всё» — без резких сообщений и без кнопки «продолжить».</p>
+          </div>
+        </div>
+
+        <div class="faq__item">
+          <h3>
+            <button class="faq__q" type="button" id="faq-q6" aria-expanded="false" aria-controls="faq-a6">
+              Что видит ребёнок?
+              <span class="faq__sign" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div class="faq__panel" id="faq-a6" role="region" aria-labelledby="faq-q6" hidden>
+            <p>Только библиотеку: крупные карточки с превью, коллекции-папки, избранное и историю. Ни поиска, ни рекомендаций, ни подписок, ни комментариев, ни Shorts.</p>
+            <p>В плеере — большие понятные кнопки и «замочек»: без взрослого из видео не выйти и не перемотать вперёд.</p>
+          </div>
+        </div>
+
+        <div class="faq__item">
+          <h3>
+            <button class="faq__q" type="button" id="faq-q7" aria-expanded="false" aria-controls="faq-a7">
+              Куда уходят данные?
+              <span class="faq__sign" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div class="faq__panel" id="faq-a7" role="region" aria-labelledby="faq-q7" hidden>
+            <p>Никуда. Аккаунтов, регистрации, аналитики и трекеров в приложении нет. Список ссылок и настройки хранятся в памяти телефона, скачанные видео — в приватной папке приложения.</p>
+            <p>В сеть приложение обращается только к серверам YouTube — за превью и видеофайлом. Подробности описаны в <a href="https://bulak.edu.kg/privacy">политике конфиденциальности</a>.</p>
+          </div>
+        </div>
+
+        <div class="faq__item">
+          <h3>
+            <button class="faq__q" type="button" id="faq-q8" aria-expanded="false" aria-controls="faq-a8">
+              Сколько стоит?
+              <span class="faq__sign" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div class="faq__panel" id="faq-a8" role="region" aria-labelledby="faq-q8" hidden>
+            <p>Ничего. Приложение бесплатное: без подписок, без встроенных покупок и без «премиум»-версии.</p>
+          </div>
+        </div>
+
+        <div class="faq__item">
+          <h3>
+            <button class="faq__q" type="button" id="faq-q9" aria-expanded="false" aria-controls="faq-a9">
+              На каких устройствах работает?
+              <span class="faq__sign" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div class="faq__panel" id="faq-a9" role="region" aria-labelledby="faq-q9" hidden>
+            <p>Android 6.0 и новее, а также iPhone и iPad на iOS 13 и новее. Интерфейс переключается между русским и английским.</p>
+          </div>
+        </div>
+
+        <div class="faq__item">
+          <h3>
+            <button class="faq__q" type="button" id="faq-q10" aria-expanded="false" aria-controls="faq-a10">
+              Чем это отличается от YouTube Kids?
+              <span class="faq__sign" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div class="faq__panel" id="faq-a10" role="region" aria-labelledby="faq-q10" hidden>
+            <p>YouTube Kids — это отдельная лента YouTube, где видео подбираются автоматически. «Булак» ничего не подбирает: всё, что видит ребёнок, добавили вы своими руками.</p>
+            <p>Отсюда и разница: нет бесконечной ленты, нет чужих каналов, нет рекомендаций и нет нашей рекламы. И есть дневной лимит времени с PIN-кодом.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. Финальный призыв --------------------------------------------- -->
+  <section class="section cta" id="download">
+    <div class="wrap">
+      <h2>Скоро в Google Play и App Store</h2>
+      <p>«Булак» уже работает и готовится к публикации в магазинах. Хотите узнать о выходе или задать вопрос — напишите нам, ответим лично.</p>
+      <div class="cta__actions">
+        <!-- заполнить: ссылка на Google Play -->
+        <a class="btn btn--onDark" href="#">
+          <svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 3.6 16.4 12 4 20.4z"/><path d="M16.4 12 20 9.9"/><path d="M16.4 12 20 14.1"/></svg>
+          Скоро в Google Play
+        </a>
+        <!-- заполнить: ссылка на App Store -->
+        <a class="btn btn--outlineDark" href="#">
+          <svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 6.5c1.6-2 5.2-1 5.2 2.4 0 3-2.6 6.4-4 8.1-.8 1-2.2 1-3 0-1.4-1.7-4-5.1-4-8.1 0-3.4 3.6-4.4 5.2-2.4z"/><path d="M8.4 19.5h7.2"/></svg>
+          Скоро в App Store
+        </a>
+      </div>
+      <p class="cta__note">приложение готовится к публикации · вопросы и пожелания: <a href="mailto:support@tlbk.kg">support@tlbk.kg</a></p>
+    </div>
+  </section>
+
+</main>
+
+<!-- 9. Подвал --------------------------------------------------------- -->
+<footer class="site-footer">
+  <div class="wrap site-footer__grid">
+    <div>
+      <span class="brand">
+        <svg class="mark" aria-hidden="true" focusable="false"><use href="#bulakMark"></use></svg>
+        <span class="brand__name">Булак</span>
+      </span>
+      <p>Безопасный видеоплеер для детей: только те видео, которые выбрали родители.</p>
+      <p>Почта: <a href="mailto:support@tlbk.kg">support@tlbk.kg</a><br>Сайт: <a href="https://bulak.edu.kg">bulak.edu.kg</a></p>
+    </div>
+    <div>
+      <h3 class="site-footer__title">Документы</h3>
+      <div class="site-footer__links">
+        <a href="https://bulak.edu.kg/privacy">Политика конфиденциальности</a>
+        <!-- заполнить: ссылка на условия использования -->
+        <a href="https://bulak.edu.kg/terms">Условия использования</a>
+        <a href="mailto:support@tlbk.kg">Поддержка</a>
+      </div>
+    </div>
+    <div>
+      <h3 class="site-footer__title">Приложение</h3>
+      <div class="site-footer__links">
+        <a href="#features">Возможности</a>
+        <a href="#how">Как это работает</a>
+        <a href="#faq">Вопросы и ответы</a>
+        <a href="#download">Скачать</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="site-footer__legal">
+      <p>YouTube — товарный знак Google LLC. Приложение «Булак» не связано с Google, не спонсируется и не одобрено ею. Видео воспроизводится через официальные механизмы YouTube.</p>
+      <p>Ответственность за то, какие ссылки добавлены в библиотеку и какие видео сохранены на устройство, несёт родитель. «Булак» не передаёт видеофайлы третьим лицам и не размещает их в сети.</p>
+      <p>Приложение бесплатное, без подписок и встроенных покупок. Сейчас оно готовится к публикации в Google Play и App Store.</p>
+    </div>
+    <div class="site-footer__bottom">
+      <span>© 2026 Булак</span>
+      <span>Android 6.0+ · iOS 13+</span>
+      <span>Русский · English</span>
+    </div>
+  </div>
+</footer>
+
+<button class="to-top" type="button" id="toTop" aria-label="Наверх, к началу страницы">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V6"/><path d="m5.5 12.5 6.5-6.5 6.5 6.5"/></svg>
+</button>
+
+<script>
+(function () {
+  'use strict';
+
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var scrollBehavior = reduceMotion ? 'auto' : 'smooth';
+
+  /* --- Аккордеон FAQ: aria-expanded / aria-controls -------------------- */
+  var items = Array.prototype.slice.call(document.querySelectorAll('.faq__item'));
+
+  function setOpen(item, open) {
+    var button = item.querySelector('.faq__q');
+    var panel = item.querySelector('.faq__panel');
+    if (!button || !panel) return;
+    button.setAttribute('aria-expanded', open ? 'true' : 'false');
+    if (open) {
+      panel.removeAttribute('hidden');
+      item.classList.add('is-open');
+    } else {
+      panel.setAttribute('hidden', '');
+      item.classList.remove('is-open');
+    }
+  }
+
+  items.forEach(function (item, index) {
+    var button = item.querySelector('.faq__q');
+    if (!button) return;
+    // Первый вопрос открыт, остальные закрыты. Без JS открыты все — читать можно.
+    setOpen(item, item.classList.contains('is-open') || index === 0);
+    button.addEventListener('click', function () {
+      setOpen(item, button.getAttribute('aria-expanded') !== 'true');
+    });
+  });
+
+  /* --- Плавная прокрутка по якорям ------------------------------------- */
+  function scrollToTarget(target) {
+    if (!target) return;
+    target.scrollIntoView({ behavior: scrollBehavior, block: 'start' });
+  }
+
+  document.querySelectorAll('a[href^="#"]').forEach(function (link) {
+    link.addEventListener('click', function (event) {
+      var href = link.getAttribute('href');
+      if (!href || href === '#') {
+        // Кнопки магазинов пока ведут на заглушку «#» — не прыгаем в начало страницы.
+        event.preventDefault();
+        return;
+      }
+      var target = document.getElementById(href.slice(1));
+      if (!target) return;
+      event.preventDefault();
+      scrollToTarget(target);
+      // Чтобы после перехода работала клавиатура, а не только мышь.
+      target.setAttribute('tabindex', '-1');
+      target.focus({ preventScroll: true });
+      if (window.history && window.history.pushState) {
+        // На file:// pushState может быть запрещён — это не должно ломать переход.
+        try { window.history.pushState(null, '', href); } catch (e) {}
+      }
+    });
+  });
+
+  /* --- Кнопка «наверх» -------------------------------------------------- */
+  var toTop = document.getElementById('toTop');
+  if (toTop) {
+    var toggleToTop = function () {
+      if (window.pageYOffset > 600) {
+        toTop.classList.add('is-visible');
+      } else {
+        toTop.classList.remove('is-visible');
+      }
+    };
+    toggleToTop();
+    window.addEventListener('scroll', toggleToTop, { passive: true });
+    toTop.addEventListener('click', function () {
+      window.scrollTo({ top: 0, behavior: scrollBehavior });
+      var brand = document.querySelector('.brand');
+      if (brand) brand.focus({ preventScroll: true });
+    });
+  }
+})();
+</script>
+</body>
+</html>

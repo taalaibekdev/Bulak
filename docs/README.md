@@ -28,8 +28,8 @@
 | Категория (App Store) | Education + Kids Category (6–8, 9–11) |
 | Аудитория | Дети 3–10 лет; покупатель и настройщик — родитель |
 | Поддержка | support@tlbk.kg |
-| Сайт | https://bulak.tlbk.kg |
-| Политика конфиденциальности | https://bulak.tlbk.kg/privacy |
+| Сайт | https://bulak.edu.kg |
+| Политика конфиденциальности | https://bulak.edu.kg/privacy |
 | Страна регистрации | Кыргызская Республика |
 
 > **Важно про товарные знаки.** YouTube — товарный знак Google LLC. Приложение Bulak не связано с Google, не спонсируется и не одобрено компанией Google. В сборке для магазинов приложение не скачивает видео и не хранит их копии: оно воспроизводит контент через официальные механизмы YouTube. В личной сборке скачивание включено по умолчанию: видео сохраняется на телефон, а потом играет из файла — это отдельный режим со своими правовыми рисками, см. [docs/legal/youtube-compliance.md](legal/youtube-compliance.md). Ответственность за то, какие ссылки добавлены в приложение, несёт родитель.
@@ -40,7 +40,7 @@
 
 - **Если вы готовите релиз** — начните с `docs/publishing/release-checklist.md`, затем пройдите `build-and-release.md` и `signing.md`.
 - **Если вы заполняете стор** — откройте `docs/store/google-play/listing.ru.md` и `docs/store/app-store/listing.ru.md`.
-- **Если вы публикуете юридические документы** — берите `docs/legal/privacy-policy.html`, он готов к размещению на `https://bulak.tlbk.kg/privacy` без правок.
+- **Если вы публикуете юридические документы** — берите `docs/legal/privacy-policy.html`, он готов к размещению на `https://bulak.edu.kg/privacy` без правок.
 - **Если вы продвигаете приложение** — `docs/marketing/aso.md` и `docs/marketing/launch-plan.md`.
 - **Если вы отвечаете родителям** — `docs/faq.md`.
 
@@ -52,9 +52,11 @@
 |---|---|---|
 | Политика конфиденциальности (RU) | [`legal/privacy-policy.ru.md`](legal/privacy-policy.ru.md) | Основной юридический документ. Какие данные обрабатываются локально, что не собирается, роль YouTube/Google как третьей стороны, дети и COPPA / GDPR-K / Закон КР о персональных данных, права родителя, удаление данных, сроки хранения, контакты. Содержит обязательный раздел о совместимости с программой Designed for Families. |
 | Политика конфиденциальности (EN) | [`legal/privacy-policy.en.md`](legal/privacy-policy.en.md) | Полная английская версия политики конфиденциальности, идентичная по смыслу русской. Для App Store Connect, Google Play и международных пользователей. |
-| Политика конфиденциальности (HTML) | [`legal/privacy-policy.html`](legal/privacy-policy.html) | Та же политика на русском в виде автономного HTML-файла: встроенный CSS, адаптивная вёрстка, без внешних ресурсов и скриптов. Готов к хостингу по адресу `https://bulak.tlbk.kg/privacy`. |
+| Политика конфиденциальности (KY) | [legal/privacy-policy.ky.md](legal/privacy-policy.ky.md) | Кыргызская версия политики — основной язык продукта. Для пользователей в Кыргызстане и для кыргызской локализации листинга. |
+| Политика конфиденциальности (HTML) | [`legal/privacy-policy.html`](legal/privacy-policy.html) | Та же политика на русском в виде автономного HTML-файла: встроенный CSS, адаптивная вёрстка, без внешних ресурсов и скриптов. Готов к хостингу по адресу `https://bulak.edu.kg/privacy`. |
 | Пользовательское соглашение (RU) | [`legal/terms-of-use.ru.md`](legal/terms-of-use.ru.md) | Лицензия на использование, ответственность родителя за добавленный контент, отсутствие гарантий, ограничение ответственности, товарные знаки YouTube/Google, порядок изменения условий, применимое право. |
 | Пользовательское соглашение (EN) | [`legal/terms-of-use.en.md`](legal/terms-of-use.en.md) | Полная английская версия пользовательского соглашения. |
+| Пользовательское соглашение (KY) | [legal/terms-of-use.ky.md](legal/terms-of-use.ky.md) | Кыргызская версия пользовательского соглашения. |
 | Соответствие правилам YouTube | [`legal/youtube-compliance.md`](legal/youtube-compliance.md) | Внутренний документ: как приложение соотносится с YouTube Terms of Service и YouTube Developer Policies, что приложение делает и чего не делает, почему родитель отвечает за подбор ссылок, требования к брендингу, действия при жалобе правообладателя. |
 
 ## 2. Google Play
@@ -63,6 +65,7 @@
 |---|---|---|
 | Листинг (RU) | [`store/google-play/listing.ru.md`](store/google-play/listing.ru.md) | Готовые к копипасту поля: название, краткое и полное описание, теги, категория, целевая аудитория, ответы про рекламу и покупки. |
 | Листинг (EN) | [`store/google-play/listing.en.md`](store/google-play/listing.en.md) | Английская версия листинга для международных рынков. |
+| Листинг (KY) | [store/google-play/listing.ky.md](store/google-play/listing.ky.md) | Кыргызская версия листинга Google Play — язык по умолчанию в Play Console. |
 | Data safety | [`store/google-play/data-safety.md`](store/google-play/data-safety.md) | Пошаговые ответы на форму Data safety в Play Console: сбор, передача, безопасность, удаление, доступ к данным. |
 | Возрастной рейтинг | [`store/google-play/content-rating.md`](store/google-play/content-rating.md) | Ответы на анкету IARC, ожидаемые рейтинги для РФ/Кыргызстана и мира, обоснование для раздела «Приложения для детей». |
 | Графические материалы | [`store/google-play/store-assets.md`](store/google-play/store-assets.md) | Спецификация графики: иконка 512×512, feature graphic 1024×500, скриншоты телефонов и планшетов, промо-видео, требования к скриншотам детских приложений. |
@@ -73,6 +76,7 @@
 |---|---|---|
 | Листинг (RU) | [`store/app-store/listing.ru.md`](store/app-store/listing.ru.md) | Название, подзаголовок, промотекст, описание, ключевые слова, URL, категория, Kids Category. |
 | Листинг (EN) | [`store/app-store/listing.en.md`](store/app-store/listing.en.md) | Английская версия листинга со своим набором ключевых слов. |
+| Листинг (KY) | [store/app-store/listing.ky.md](store/app-store/listing.ky.md) | Кыргызская версия листинга App Store. |
 | Метки приватности | [`store/app-store/privacy-labels.md`](store/app-store/privacy-labels.md) | Ответы для раздела «Конфиденциальность приложения»: все типы данных — «не собираются», отслеживание не используется, parental gate для внешних ссылок. |
 | Заметки для ревьюера | [`store/app-store/review-notes.md`](store/app-store/review-notes.md) | Что делает приложение, как пройти PIN (демо-код `0000`), примеры ссылок, обоснование для Kids Category. |
 | План скриншотов | [`store/screenshots-plan.md`](store/screenshots-plan.md) | 8 экранов с надписями на RU и EN, цвета, порядок кадров, требования обоих сторов. |
@@ -116,6 +120,6 @@
 | Назначение | Контакт |
 |---|---|
 | Поддержка пользователей | support@tlbk.kg |
-| Сайт приложения | https://bulak.tlbk.kg |
-| Политика конфиденциальности | https://bulak.tlbk.kg/privacy |
+| Сайт приложения | https://bulak.edu.kg |
+| Политика конфиденциальности | https://bulak.edu.kg/privacy |
 | Разработчик | tlbk.kg <!-- заполнить перед публикацией: указать юридическое лицо или ИП, юридический адрес и регистрационные данные --> |

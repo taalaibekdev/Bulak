@@ -25,12 +25,14 @@ class Formatters {
 
   /// «5 мин», «1 ч 20 мин» — для списков и лимитов.
   static String shortDuration(Duration value, AppStrings strings) {
-    if (value.inMinutes < 1) return '<1 мин';
+    final units = _Units(strings.locale.languageCode);
+    if (value.inMinutes < 1) return units.lessThanMinute;
+
     final hours = value.inHours;
     final minutes = value.inMinutes.remainder(60);
-    if (hours == 0) return '$minutes мин';
-    if (minutes == 0) return '$hours ч';
-    return '$hours ч $minutes мин';
+    if (hours == 0) return '$minutes ${units.minute}';
+    if (minutes == 0) return '$hours ${units.hour}';
+    return '$hours ${units.hour} $minutes ${units.minute}';
   }
 
   /// Сколько времени ребёнок смотрит прямо сейчас: `0:42`.
@@ -45,22 +47,16 @@ class Formatters {
 
   /// Дата в виде «сегодня», «вчера», «5 октября».
   static String relativeDate(DateTime date, AppStrings strings) {
+    final units = _Units(strings.locale.languageCode);
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
     final target = DateTime(date.year, date.month, date.day);
     final difference = today.difference(target).inDays;
 
-    if (difference <= 0) {
-      return strings.locale.languageCode == 'en' ? 'today' : 'сегодня';
-    }
-    if (difference == 1) {
-      return strings.locale.languageCode == 'en' ? 'yesterday' : 'вчера';
-    }
-    if (difference < 7) {
-      return strings.locale.languageCode == 'en'
-          ? '$difference days ago'
-          : '$difference ${AppStrings.plural(difference, 'день', 'дня', 'дней')} назад';
-    }
+    if (difference <= 0) return units.today;
+    if (difference == 1) return units.yesterday;
+    if (difference < 7) return units.daysAgo(difference);
+
     return '${date.day.toString().padLeft(2, '0')}.'
         '${date.month.toString().padLeft(2, '0')}.${date.year}';
   }
@@ -98,5 +94,37 @@ class Formatters {
     if (width < 340) return base * 0.86;
     if (width > 600) return base * 1.15;
     return base;
+  }
+}
+
+/// Слова, которые зависят от языка, но относятся к форматированию,
+/// а не к экранам: единицы времени и относительные даты.
+///
+/// Живут рядом с форматированием, потому что нужны в каждом списке и в
+/// истории просмотра. Русские формы множественного числа считает
+/// [AppStrings.plural]; в кыргызском после числительного слово не меняется,
+/// поэтому там форма всегда одна.
+class _Units {
+  const _Units(this.code);
+
+  final String code;
+
+  bool get _isEn => code == 'en';
+  bool get _isKy => code == 'ky';
+
+  String get lessThanMinute => _isEn ? '<1 min' : (_isKy ? '<1 мүн' : '<1 мин');
+
+  String get hour => _isEn ? 'h' : (_isKy ? 'саат' : 'ч');
+
+  String get minute => _isEn ? 'min' : (_isKy ? 'мүн' : 'мин');
+
+  String get today => _isEn ? 'today' : (_isKy ? 'бүгүн' : 'сегодня');
+
+  String get yesterday => _isEn ? 'yesterday' : (_isKy ? 'кечээ' : 'вчера');
+
+  String daysAgo(int days) {
+    if (_isEn) return '$days days ago';
+    if (_isKy) return '$days күн мурун';
+    return '$days ${AppStrings.plural(days, 'день', 'дня', 'дней')} назад';
   }
 }

@@ -11,22 +11,38 @@ import 'package:flutter_test/flutter_test.dart';
 /// Источник, который отдаёт файл заданного размера и умеет «подвисать»,
 /// чтобы можно было проверить отмену и очередь.
 class _FakeSource implements VideoDownloadSource {
-  _FakeSource({this.delay = Duration.zero, this.chunks = 2});
+  _FakeSource({
+    this.delay = Duration.zero,
+    this.chunks = 2,
+    this.throwOnInfo = false,
+    this.freeze = false,
+  });
 
   /// Размер «файла» — одинаковый во всех проверках этого файла.
   static const int sizeBytes = 512;
 
   final Duration delay;
   final int chunks;
+
+  /// Бросает исключение при запросе сведений — так ведёт себя библиотека
+  /// для работы с YouTube при сетевых сбоях и проверках на бота.
+  final bool throwOnInfo;
+
+  /// Навсегда «зависает», не отдавая ни байта: проверяем сторожа.
+  final bool freeze;
+
   int calls = 0;
 
   @override
-  Future<DownloadInfo?> fetchDownloadInfo(String videoId) async => DownloadInfo(
-    sizeBytes: sizeBytes,
-    extension: 'mp4',
-    quality: '360p',
-    isThrottled: false,
-  );
+  Future<DownloadInfo?> fetchDownloadInfo(String videoId) async {
+    if (throwOnInfo) throw StateError('сеть недоступна');
+    return DownloadInfo(
+      sizeBytes: sizeBytes,
+      extension: 'mp4',
+      quality: '360p',
+      isThrottled: false,
+    );
+  }
 
   @override
   Future<bool> downloadToFile(
@@ -36,6 +52,13 @@ class _FakeSource implements VideoDownloadSource {
     bool Function()? isCancelled,
   }) async {
     calls++;
+    if (freeze) {
+      // Ждём отмены и не отдаём данных: так выглядит «залипшая» загрузка.
+      while (!(isCancelled?.call() ?? false)) {
+        await Future<void>.delayed(const Duration(milliseconds: 20));
+      }
+      return false;
+    }
     final sink = target.openWrite();
     final chunk = List<int>.filled((sizeBytes / chunks).ceil(), 3);
     var written = 0;
@@ -212,6 +235,60 @@ void main() {
 
     expect(controller.storageBytes, 1024);
   });
+
+  test('исключение в источнике не останавливает очередь целиком', () async {
+    // Раньше исключение вылетало из цикла очереди, и все следующие видео
+    // навсегда оставались «в очереди» — снаружи это выглядело как «висит
+    // и не скачивается».
+    source = _FakeSource(throwOnInfo: true);
+    service = DownloadService(
+      source: source,
+      directoryProvider: () async => tempDir,
+    );
+    controller.dispose();
+    controller = DownloadController(service: service, library: library);
+
+    await addVideos(['aaaaaaaaaaa', 'bbbbbbbbbbb']);
+    controller.enqueueAll(library.videos);
+
+    await waitUntil(
+      () =>
+          controller.taskFor('aaaaaaaaaaa')?.state == DownloadState.failed &&
+          controller.taskFor('bbbbbbbbbbb')?.state == DownloadState.failed,
+    );
+
+    expect(controller.hasActiveDownloads, isFalse);
+    expect(library.byId('aaaaaaaaaaa')!.isDownloaded, isFalse);
+  });
+
+  test(
+    'зависшая загрузка прекращается сторожем и показывается как ошибка',
+    () async {
+      source = _FakeSource(freeze: true);
+      service = DownloadService(
+        source: source,
+        directoryProvider: () async => tempDir,
+      );
+      controller.dispose();
+      controller = DownloadController(
+        service: service,
+        library: library,
+        stallTimeout: const Duration(milliseconds: 120),
+      );
+
+      await addVideos(['aaaaaaaaaaa']);
+      controller.enqueue(library.byId('aaaaaaaaaaa')!);
+
+      await waitUntil(
+        () => controller.taskFor('aaaaaaaaaaa')?.state == DownloadState.failed,
+      );
+
+      // Главное: экран «Готовим видео» не остаётся висеть навсегда —
+      // пользователь видит ошибку и кнопку «Попробовать снова».
+      expect(controller.taskFor('aaaaaaaaaaa')?.state, DownloadState.failed);
+      expect(await service.usedBytes(), 0);
+    },
+  );
 
   test('прогресс показывается во время загрузки', () async {
     source = _FakeSource(delay: const Duration(milliseconds: 40), chunks: 6);

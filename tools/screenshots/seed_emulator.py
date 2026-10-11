@@ -18,8 +18,11 @@ text` невозможно — эта команда понимает тольк
 
 from __future__ import annotations
 
+import base64
+import hashlib
 import json
 import re
+import secrets
 import subprocess
 import sys
 from pathlib import Path
@@ -31,6 +34,10 @@ for stream in (sys.stdout, sys.stderr):
 
 PACKAGE = "kg.tlbk.bulak"
 PREFS = f"/data/data/{PACKAGE}/shared_prefs/FlutterSharedPreferences.xml"
+
+# PIN-код, который скрипт задаёт на чистой установке. Такой же, как в
+# документации по съёмке скриншотов.
+PIN = "4821"
 ADB = str(
     Path.home()
     / "AppData"
@@ -52,16 +59,24 @@ if "--serial" in sys.argv:
 def collections_for(locale: str) -> list[dict]:
     titles = (
         [
-            ("demo-toons", "Мультики", "🧸", 0),
+            ("demo-toons", "Мультфильмдер", "🧸", 0),
             ("demo-music", "Музыка", "🎵", 1),
-            ("demo-favourite", "Любимое", "⭐", 4),
+            ("demo-favourite", "Сүйүктүүлөр", "⭐", 4),
         ]
-        if locale == "ru"
-        else [
-            ("demo-toons", "Cartoons", "🧸", 0),
-            ("demo-music", "Music", "🎵", 1),
-            ("demo-favourite", "Favourites", "⭐", 4),
-        ]
+        if locale == "ky"
+        else (
+            [
+                ("demo-toons", "Мультики", "🧸", 0),
+                ("demo-music", "Музыка", "🎵", 1),
+                ("demo-favourite", "Любимое", "⭐", 4),
+            ]
+            if locale == "ru"
+            else [
+                ("demo-toons", "Cartoons", "🧸", 0),
+                ("demo-music", "Music", "🎵", 1),
+                ("demo-favourite", "Favourites", "⭐", 4),
+            ]
+        )
     )
     return [
         {
@@ -74,6 +89,53 @@ def collections_for(locale: str) -> list[dict]:
         }
         for order, (item_id, title, emoji, color) in enumerate(titles)
     ]
+
+
+# Демонстрационная библиотека для скриншотов.
+#
+# Идентификаторы — настоящие видео YouTube, чтобы на кадрах были живые
+# превью, а не серые заглушки. Прогресс просмотра задан так, чтобы на
+# главной появился блок «Продолжить», а одно видео было досмотрено до конца.
+DEMO_VIDEOS = [
+    # (id, название, автор, длительность, коллекция, просмотрено, избранное)
+    ("hT_nvWreIhg", "OneRepublic - Counting Stars", "OneRepublicVEVO", 283, 1, 96, True),
+    ("jNQXAC9IVRw", "Me at the zoo", "jawed", 19, 0, 19, False),
+    ("9bZkp7q19f0", "PSY - GANGNAM STYLE", "officialpsy", 253, 1, 40, True),
+    ("RgKAFK5djSk", "Wiz Khalifa - See You Again", "Wiz Khalifa", 229, 1, 0, False),
+    ("OPf0YbXqDm0", "Mark Ronson - Uptown Funk", "Mark Ronson", 270, 1, 0, False),
+    ("fJ9rUzIMcZQ", "Queen - Bohemian Rhapsody", "Queen Official", 355, 2, 0, True),
+    ("JGwWNGJdvx8", "Ed Sheeran - Shape of You", "Ed Sheeran", 263, 2, 0, False),
+    ("60ItHLz5WEA", "Alan Walker - Faded", "Alan Walker", 212, 0, 0, False),
+    ("kJQP7kiw5Fk", "Luis Fonsi - Despacito", "Luis Fonsi", 282, 0, 0, False),
+]
+
+
+def videos_for(collections: list[dict]) -> list[dict]:
+    """Собирает JSON библиотеки из [DEMO_VIDEOS]."""
+    ids = [item["id"] for item in collections]
+    videos = []
+    for order, (video_id, title, author, seconds, group, watched, favorite) in enumerate(
+        DEMO_VIDEOS
+    ):
+        videos.append(
+            {
+                "id": video_id,
+                "title": title,
+                "author": author,
+                "durationSeconds": seconds,
+                "collectionId": ids[group % len(ids)],
+                "favorite": favorite,
+                "addedAt": f"2026-09-2{order % 9}T12:00:00.000",
+                "watchedSeconds": watched,
+                **(
+                    {"lastWatchedAt": f"2026-10-0{order % 9 + 1}T18:00:00.000"}
+                    if watched
+                    else {}
+                ),
+            }
+        )
+    return videos
+
 
 # Настройки: дневной лимит, чтобы на главной был виден баннер с остатком.
 SETTINGS_EXTRA = {
@@ -102,21 +164,24 @@ def main() -> int:
     # это нужно, чтобы снять экран приветствия.
     reset_onboarding = "--reset-onboarding" in sys.argv
 
-    # --locale ru|en переключает интерфейс приложения: и русскому, и
-    # английскому листингу нужны снимки на своём языке.
+    # --locale ky|ru|en переключает интерфейс приложения: каждому листингу
+    # нужны снимки на своём языке, а кыргызский — основной язык продукта.
     locale = None
     if "--locale" in sys.argv:
         index = sys.argv.index("--locale")
-        if index + 1 < len(sys.argv) and sys.argv[index + 1] in ("ru", "en"):
+        if index + 1 < len(sys.argv) and sys.argv[index + 1] in ("ky", "ru", "en"):
             locale = sys.argv[index + 1]
 
     adb("root")
     adb("shell", "am", "force-stop", PACKAGE)
 
     raw = adb("shell", "cat", PREFS, check=False).stdout
-    if "<map>" not in raw:
-        print("Не удалось прочитать настройки приложения. Запустите его один раз.")
-        return 1
+    fresh_install = "<map>" not in raw
+    if fresh_install:
+        # Приложение ещё ни разу не запускалось (например, после pm clear).
+        # Это не повод останавливаться: создаём файл настроек сами, вместе
+        # с PIN-кодом, чтобы родительский раздел сразу открывался.
+        print("Настроек нет — создаю файл с нуля.")
 
     def unescape(value: str) -> str:
         return (
@@ -142,11 +207,25 @@ def main() -> int:
     if locale is not None:
         settings["localeCode"] = locale
 
+    # На чистой установке PIN-кода нет — задаём его, иначе родительский
+    # раздел нечем открыть. Хэш считаем так же, как приложение.
+    if fresh_install and "pinHash" not in settings:
+        salt = base64.urlsafe_b64encode(secrets.token_bytes(16)).decode()
+        digest = hashlib.sha256(f"{salt}|{PIN}|bulak".encode()).hexdigest()
+        settings["pinSalt"] = salt
+        settings["pinHash"] = digest
+
     stored["bulak.settings.v1"] = json.dumps(settings, ensure_ascii=False)
-    stored["bulak.collections.v1"] = json.dumps(
-        collections_for(locale or settings.get("localeCode") or "ru"),
-        ensure_ascii=False,
-    )
+
+    collections = collections_for(locale or settings.get("localeCode") or "ky")
+    stored["bulak.collections.v1"] = json.dumps(collections, ensure_ascii=False)
+
+    # Библиотеку заполняем, только если она пустая или её просили обновить:
+    # иначе можно случайно затереть список, собранный руками.
+    if "bulak.videos.v1" not in stored or "--videos" in sys.argv:
+        stored["bulak.videos.v1"] = json.dumps(
+            videos_for(collections), ensure_ascii=False
+        )
 
     xml = "\n".join(
         [
@@ -165,7 +244,6 @@ def main() -> int:
     local.write_text(xml, encoding="utf-8")
 
     adb("push", str(local), "/data/local/tmp/bulak_prefs.xml")
-    adb("shell", "cp", "/data/local/tmp/bulak_prefs.xml", PREFS)
     owner = adb(
         "shell",
         "stat",
@@ -173,9 +251,18 @@ def main() -> int:
         "%u:%g",
         f"/data/data/{PACKAGE}",
     ).stdout.strip()
+
+    # На чистой установке каталога может ещё не быть.
+    prefs_dir = f"/data/data/{PACKAGE}/shared_prefs"
+    adb("shell", "mkdir", "-p", prefs_dir)
+    adb("shell", "chown", owner, prefs_dir)
+    adb("shell", "chmod", "771", prefs_dir)
+
+    adb("shell", "cp", "/data/local/tmp/bulak_prefs.xml", PREFS)
     adb("shell", "chown", owner, PREFS)
     adb("shell", "chmod", "660", PREFS)
     adb("shell", "restorecon", PREFS)
+    adb("shell", "restorecon", "-R", prefs_dir)
     adb("shell", "rm", "-f", f"{PREFS}.bak")
     adb("shell", "rm", "-f", "/data/local/tmp/bulak_prefs.xml")
     local.unlink(missing_ok=True)

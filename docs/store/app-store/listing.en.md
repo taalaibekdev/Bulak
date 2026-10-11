@@ -125,8 +125,8 @@ YouTube is a trademark of Google LLC. The Bulak app is not affiliated with Googl
 Free. No in-app purchases and no subscriptions.
 
 Support: support@tlbk.kg
-Website: https://bulak.tlbk.kg
-Privacy policy: https://bulak.tlbk.kg/privacy
+Website: https://bulak.edu.kg
+Privacy policy: https://bulak.edu.kg/privacy
 ```
 
 **Actual length: 2 932 characters** — within the 4000-character limit.
@@ -159,19 +159,19 @@ Meaning of the primary set: `kids`, `video`, `player` are the core queries; `saf
 
 | Field | Value | Required |
 |---|---|---|
-| Support URL | `https://bulak.tlbk.kg` | **Yes** |
-| Marketing URL | `https://bulak.tlbk.kg` | No |
-| Privacy Policy URL | `https://bulak.tlbk.kg/privacy` | **Yes** |
-| Licence agreement | Apple's standard EULA, or `https://bulak.tlbk.kg/terms` if using a custom one | No |
+| Support URL | `https://bulak.edu.kg` | **Yes** |
+| Marketing URL | `https://bulak.edu.kg` | No |
+| Privacy Policy URL | `https://bulak.edu.kg/privacy` | **Yes** |
+| Licence agreement | Apple's standard EULA, or `https://bulak.edu.kg/terms` if using a custom one | No |
 
 **Page requirements.** The support URL must open a real page where a parent can find contacts: `support@tlbk.kg` and brief answers to common problems. The privacy policy link must point at the policy page itself, not at the site home page — Apple checks this manually.
 
 | Page | Address | Content |
 |---|---|---|
-| Home | `https://bulak.tlbk.kg` | App description, screenshots, store links |
-| Support | `https://bulak.tlbk.kg/support` | FAQ, support email |
-| Privacy policy | `https://bulak.tlbk.kg/privacy` | The ready file `docs/legal/privacy-policy.html` |
-| Terms of use | `https://bulak.tlbk.kg/terms` | `docs/legal/terms-of-use.en.md` published as a page |
+| Home | `https://bulak.edu.kg` | App description, screenshots, store links |
+| Support | `https://bulak.edu.kg/support` | FAQ, support email |
+| Privacy policy | `https://bulak.edu.kg/privacy` | The ready file `docs/legal/privacy-policy.html` |
+| Terms of use | `https://bulak.edu.kg/terms` | `docs/legal/terms-of-use.en.md` published as a page |
 
 ---
 
@@ -246,7 +246,7 @@ These answers must match the App Privacy section (see `privacy-labels.md`).
 | Version | 1.0.0 (build 1) |
 | Price | Free |
 | Availability | Kyrgyzstan, Russia, Kazakhstan and other CIS countries; worldwide once support is ready |
-| Listing languages | `en-US` (this file), `ru` (see `listing.ru.md`) |
+| Listing languages | `ky` (primary, see `listing.ky.md`), `ru` (see `listing.ru.md`), `en-US` (this file) |
 | Seller Name | `tlbk.kg` <!-- fill in before publication: the seller name shown in the App Store --> |
 | Legal entity | <!-- fill in before publication: full entity or sole-proprietor name, registered address --> |
 | Country | Kyrgyz Republic |

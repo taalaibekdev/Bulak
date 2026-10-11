@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
@@ -98,9 +100,24 @@ class BulakApp extends StatelessWidget {
     }
   }
 
+  /// Язык интерфейса.
+  ///
+  /// Кыргызский — основной язык приложения, поэтому по умолчанию открываем
+  /// именно его, независимо от языка телефона: приложение делается для
+  /// кыргызскоязычных детей, и интерфейс должен быть понятен им сразу.
+  /// Кто хочет иначе — выбирает русский, английский или «как в системе»
+  /// в настройках, и этот выбор важнее умолчания.
   static Locale? _locale(String? code) {
-    if (code == null || code.isEmpty) return null;
-    return Locale(code);
+    if (code == 'system') {
+      final device = PlatformDispatcher.instance.locale;
+      final supported = AppStrings.supportedLocales.any(
+        (locale) => locale.languageCode == device.languageCode,
+      );
+      return supported ? Locale(device.languageCode) : AppStrings.defaultLocale;
+    }
+
+    if (code != null && code.isNotEmpty) return Locale(code);
+    return AppStrings.defaultLocale;
   }
 }
 

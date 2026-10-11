@@ -366,15 +366,31 @@ class _PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
     _showControls();
   }
 
-  Future<void> _toggleLock() async {
-    if (!_locked) {
-      setState(() {
-        _locked = true;
-        _controlsVisible = true;
-      });
-      _hideTimer?.cancel();
-      return;
-    }
+  /// Включает «замочек».
+  ///
+  /// Намеренно сделан труднодоступным: нужен **долгий** тап по замку, а потом
+  /// ещё и PIN-код родителя. Ребёнок не заблокирует плеер случайным касанием
+  /// и не окажется заперт в видео, которое не может закрыть.
+  Future<void> _requestLock() async {
+    if (_locked) return;
+    final strings = AppStrings.of(context);
+    final confirmed = await askParentPin(
+      context,
+      title: strings.playerLockConfirmTitle,
+      subtitle: strings.playerLockConfirmBody,
+      emoji: '🔒',
+    );
+    if (!mounted || !confirmed) return;
+    setState(() {
+      _locked = true;
+      _controlsVisible = true;
+    });
+    _hideTimer?.cancel();
+  }
+
+  /// Снимает «замочек» — тоже по PIN-коду.
+  Future<void> _requestUnlock() async {
+    if (!_locked) return;
     final strings = AppStrings.of(context);
     final unlocked = await askParentPin(
       context,
@@ -388,6 +404,12 @@ class _PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
       _controlsVisible = true;
     });
     _scheduleHide();
+  }
+
+  /// Подсказка, если замок нажали коротко: одним касанием он не включается.
+  void _showLockHint() {
+    final strings = AppStrings.of(context);
+    showAppSnack(context, strings.playerLockHoldHint, icon: Icons.lock_rounded);
   }
 
   Future<void> _toggleFullscreen() async {
@@ -651,10 +673,11 @@ class _PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
           onPlayPause: _togglePlay,
           onSeek: _seekTo,
           onSeekBy: _seekBy,
-          onToggleLock: _toggleLock,
+          onToggleLock: _requestLock,
           onExit: () => Navigator.of(context).maybePop(),
           onToggleFullscreen: _toggleFullscreen,
-          onLockedTap: _toggleLock,
+          onLockedTap: _requestUnlock,
+          onLockHoldHint: _showLockHint,
           extraActions: [
             if (_settings.settings.playbackMode == PlaybackMode.auto)
               _MiniAction(
@@ -686,10 +709,13 @@ class _PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
                       child: _PortraitPanel(
                         video: _video,
                         isLocal: _isLocalPlayback,
+                        isLocked: _locked,
                         position: value.position,
                         duration: value.duration,
                         showLock: _settings.settings.kidLockEnabled,
-                        onLock: _toggleLock,
+                        onLock: _requestLock,
+                        onUnlock: _requestUnlock,
+                        onLockHoldHint: _showLockHint,
                         onNext: hasNext ? _playNext : null,
                         onFullscreen: _toggleFullscreen,
                       ),
@@ -767,9 +793,12 @@ class _PortraitPanel extends StatelessWidget {
     required this.onFullscreen,
     required this.position,
     required this.duration,
+    required this.onLock,
+    required this.onUnlock,
+    required this.onLockHoldHint,
     this.onNext,
-    this.onLock,
     this.isLocal = false,
+    this.isLocked = false,
     this.showLock = false,
   });
 
@@ -778,10 +807,21 @@ class _PortraitPanel extends StatelessWidget {
   final Duration position;
   final Duration duration;
   final VoidCallback? onNext;
-  final VoidCallback? onLock;
+
+  /// Включение замка — по долгому нажатию и с PIN-кодом.
+  final VoidCallback onLock;
+
+  /// Снятие замка — по PIN-коду.
+  final VoidCallback onUnlock;
+
+  /// Подсказка при коротком нажатии: замок так не включается.
+  final VoidCallback onLockHoldHint;
 
   /// Играем файл с устройства — можно смотреть без интернета.
   final bool isLocal;
+
+  /// Замок сейчас включён.
+  final bool isLocked;
 
   /// Показывать ли «замочек»: он есть только если родитель его включил.
   final bool showLock;
@@ -894,12 +934,20 @@ class _PortraitPanel extends StatelessWidget {
                         onTap: onFullscreen,
                       ),
                     ),
-                    if (showLock && onLock != null)
+                    if (showLock)
                       Expanded(
+                        // Замок включается долгим нажатием и только с PIN-кодом:
+                        // короткое касание показывает подсказку. Так ребёнок
+                        // не запрёт себя в видео случайным движением.
                         child: _PanelAction(
-                          icon: Icons.lock_outline_rounded,
-                          label: strings.playerLock,
-                          onTap: onLock!,
+                          icon: isLocked
+                              ? Icons.lock_rounded
+                              : Icons.lock_outline_rounded,
+                          label: isLocked
+                              ? strings.playerUnlock
+                              : strings.playerLock,
+                          onTap: isLocked ? onUnlock : onLockHoldHint,
+                          onLongPress: isLocked ? null : onLock,
                         ),
                       ),
                     if (onNext != null)
@@ -928,12 +976,16 @@ class _PanelAction extends StatelessWidget {
     required this.icon,
     required this.label,
     required this.onTap,
+    this.onLongPress,
     this.emphasized = false,
   });
 
   final IconData icon;
   final String label;
   final VoidCallback onTap;
+
+  /// Действие, которое срабатывает только при удержании.
+  final VoidCallback? onLongPress;
 
   /// Главное действие выделяем цветом и плотностью.
   final bool emphasized;
@@ -942,6 +994,7 @@ class _PanelAction extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
+      onLongPress: onLongPress,
       borderRadius: BorderRadius.circular(20),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),

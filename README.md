@@ -339,4 +339,4 @@ YouTube, не скачивает и не распространяет конте
 ## Контакты
 
 - Почта: support@tlbk.kg
-- Сайт: https://bulak.tlbk.kg
+- Сайт: https://bulak.edu.kg

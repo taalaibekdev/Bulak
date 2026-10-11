@@ -4,8 +4,8 @@
 **Last updated:** October 5, 2026
 **Document version:** 1.2
 
-**Location:** https://bulak.tlbk.kg/terms
-**Privacy Policy:** https://bulak.tlbk.kg/privacy
+**Location:** https://bulak.edu.kg/terms
+**Privacy Policy:** https://bulak.edu.kg/privacy
 
 ---
 
@@ -185,7 +185,7 @@ In the **Google Play and App Store build** downloading is absent entirely: it is
 
 ## 9. Changes to the Terms
 
-9.1. We may amend these Terms. The new edition is published at https://bulak.tlbk.kg/terms with the last-updated date and the document version number.
+9.1. We may amend these Terms. The new edition is published at https://bulak.edu.kg/terms with the last-updated date and the document version number.
 
 9.2. If changes are material, we will additionally describe them in the application's release notes in Google Play and the App Store.
 
@@ -238,9 +238,9 @@ In the **Google Play and App Store build** downloading is absent entirely: it is
 | Channel | Details |
 |---|---|
 | Support | support@tlbk.kg |
-| Website | https://bulak.tlbk.kg |
-| Terms | https://bulak.tlbk.kg/terms |
-| Privacy Policy | https://bulak.tlbk.kg/privacy |
+| Website | https://bulak.edu.kg |
+| Terms | https://bulak.edu.kg/terms |
+| Privacy Policy | https://bulak.edu.kg/privacy |
 | Developer | tlbk.kg, Kyrgyz Republic |
 | Legal name and address | <!-- fill in before publication: full entity or sole-proprietor name, registered address, registration number --> |
 

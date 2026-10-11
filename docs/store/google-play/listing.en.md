@@ -110,8 +110,8 @@ YouTube is a trademark of Google LLC. The Bulak app is not affiliated with Googl
 Free. No in-app purchases and no subscriptions.
 
 Support: support@tlbk.kg
-Website: https://bulak.tlbk.kg
-Privacy policy: https://bulak.tlbk.kg/privacy
+Website: https://bulak.edu.kg
+Privacy policy: https://bulak.edu.kg/privacy
 ```
 
 **Actual length: 2 956 characters** — comfortably within the 4000-character limit. Play Console may show a slightly different figure because emoji count as several code units. Watch the remaining-characters counter if you extend the text.
@@ -203,9 +203,9 @@ These answers must **exactly match** the Data safety form and the app's actual b
 | Field | Value |
 |---|---|
 | Support email | `support@tlbk.kg` |
-| Website | `https://bulak.tlbk.kg` |
-| Privacy policy | `https://bulak.tlbk.kg/privacy` |
-| Terms of use (if required) | `https://bulak.tlbk.kg/terms` |
+| Website | `https://bulak.edu.kg` |
+| Privacy policy | `https://bulak.edu.kg/privacy` |
+| Terms of use (if required) | `https://bulak.edu.kg/terms` |
 | Developer (shown in Play) | `tlbk.kg` |
 | Country | Kyrgyz Republic |
 | Legal name and address | <!-- fill in before publication: full entity or sole-proprietor name, registered address, registration number --> |
@@ -216,8 +216,8 @@ These answers must **exactly match** the Data safety form and the app's actual b
 
 | Field | Value |
 |---|---|
-| Default language | `en-US` |
-| Additional languages | `ru-RU` (primary listing, see `listing.ru.md`) |
+| Default language | `ky-KG` (Kyrgyz is the product primary language) |
+| Additional languages | `ru-RU` (see `listing.ru.md`), `en-US` (this file) |
 | Price | Free |
 | Countries | Kyrgyzstan, Russia, Kazakhstan, Uzbekistan, Tajikistan, Belarus, Azerbaijan, Armenia, Moldova and other CIS countries; worldwide once support is ready |
 | Contains advertising (Play classification) | No first-party advertising (see section 7) |

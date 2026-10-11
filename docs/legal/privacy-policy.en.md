@@ -4,7 +4,7 @@
 **Last updated:** October 5, 2026
 **Document version:** 1.2
 
-**Permanent location:** https://bulak.tlbk.kg/privacy
+**Permanent location:** https://bulak.edu.kg/privacy
 
 ---
 
@@ -211,7 +211,7 @@ The application is submitted to Google Play as a child-directed app under the **
 | Provide an accurate age rating | The IARC questionnaire is completed; the application contains no content that would raise the rating |
 | Restrict external links and purchases behind parental control | Every action leading to the external internet, to settings, to downloading a video or to sharing a collection is protected by the parent's four-digit PIN |
 | Ensure all content matches the declared age group | Content is not supplied by the application: the parent selects it manually |
-| Publish a current privacy policy | The policy is published at https://bulak.tlbk.kg/privacy and includes a section on children |
+| Publish a current privacy policy | The policy is published at https://bulak.edu.kg/privacy and includes a section on children |
 | Do not use content that infringes copyright | The application distributes no copies of videos: playback uses official YouTube mechanisms. The Google Play and App Store build creates no copies on the device at all; in the personal build downloaded files remain in the private area of the user's device and are never shared |
 
 The application also complies with Google Play's policy on YouTube content: videos are played through official YouTube mechanisms, no copies are shared or distributed, and responsibility for selecting links and for downloaded files rests with the parent. The Google Play and App Store build has no download feature, so no copies of videos are created on the device. In the personal build downloading is enabled by default, and this Policy describes that openly and without concealment — see sections 2, 3, 5.4 and 9.2.
@@ -327,7 +327,7 @@ We may update this Policy — for example, if we add a new feature or if legal r
 
 1. update the "last updated" date at the top of the document;
 2. increment the document version number;
-3. publish the new edition at https://bulak.tlbk.kg/privacy;
+3. publish the new edition at https://bulak.edu.kg/privacy;
 4. if a change materially affects data processing, additionally describe it in the application's release notes in Google Play and the App Store.
 
 By continuing to use the application after a new edition is published, you confirm that you have reviewed it. Previous editions are available on request at support@tlbk.kg.
@@ -341,8 +341,8 @@ For any questions regarding this Privacy Policy, data processing, use of the app
 | Channel | Details |
 |---|---|
 | Support email | support@tlbk.kg |
-| Application website | https://bulak.tlbk.kg |
-| Policy page | https://bulak.tlbk.kg/privacy |
+| Application website | https://bulak.edu.kg |
+| Policy page | https://bulak.edu.kg/privacy |
 | Developer | tlbk.kg, Kyrgyz Republic |
 | Legal name and address | <!-- fill in before publication: full entity or sole-proprietor name, registered address, registration number --> |
 

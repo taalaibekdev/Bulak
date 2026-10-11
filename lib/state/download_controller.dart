@@ -49,14 +49,25 @@ class DownloadController extends ChangeNotifier {
   DownloadController({
     required DownloadService service,
     required LibraryController library,
+    this.stallTimeout = const Duration(seconds: 45),
   }) : _service = service,
        _library = library;
 
   final DownloadService _service;
   final LibraryController _library;
 
+  /// Сколько ждать без единого байта, прежде чем считать загрузку зависшей.
+  ///
+  /// YouTube иногда просто перестаёт отдавать данные, не разрывая
+  /// соединение. Без такого сторожа «Готовим видео» висело бы бесконечно.
+  /// В тестах значение уменьшают, чтобы не ждать впустую.
+  final Duration stallTimeout;
+
   final Map<String, DownloadTask> _tasks = {};
   final List<String> _queue = [];
+
+  /// Загрузки, которые перестали получать данные и были остановлены сторожем.
+  final Set<String> _stalled = {};
 
   bool _working = false;
   bool _disposed = false;
@@ -151,6 +162,12 @@ class DownloadController extends ChangeNotifier {
     if (changed) _notify();
   }
 
+  /// Сколько ждать без единого байта, прежде чем считать загрузку зависшей.
+  ///
+  /// YouTube иногда просто перестаёт отдавать данные, не разрывая
+  /// соединение. Без такого сторожа «Готовим видео» висело бы бесконечно.
+  static const Duration defaultStallTimeout = Duration(seconds: 45);
+
   Future<void> _pump() async {
     if (_working) return;
     _working = true;
@@ -160,7 +177,15 @@ class DownloadController extends ChangeNotifier {
         final video = _library.byId(videoId);
         if (video == null) continue;
         if (_tasks[videoId]?.state == DownloadState.cancelled) continue;
-        await _run(video);
+
+        // Одна неудачная загрузка не должна останавливать очередь: раньше
+        // исключение вылетало из этого цикла, и все следующие видео навсегда
+        // оставались в состоянии «в очереди».
+        try {
+          await _run(video);
+        } catch (_) {
+          _update(video.id, state: DownloadState.failed);
+        }
       }
     } finally {
       _working = false;
@@ -175,30 +200,53 @@ class DownloadController extends ChangeNotifier {
     // Уведомляем не на каждый байт, а когда меняется процент: иначе
     // интерфейс перерисовывается сотни раз в секунду.
     var lastPercent = -1;
+    var lastDataAt = DateTime.now();
 
-    final result = await _service.download(
-      video,
-      onProgress: (received, total) {
-        final percent = total <= 0 ? 0 : (received * 100 ~/ total);
-        if (percent == lastPercent) {
-          _tasks[video.id] = DownloadTask(
-            videoId: video.id,
+    // Сторож: если данных нет дольше [stallTimeout], прекращаем загрузку
+    // и показываем ошибку с кнопкой «Попробовать снова». Проверяем чаще,
+    // чем истекает срок, иначе реакция запаздывала бы на весь интервал.
+    final checkEvery = Duration(
+      milliseconds: (stallTimeout.inMilliseconds ~/ 4).clamp(200, 5000),
+    );
+    final watchdog = Timer.periodic(checkEvery, (_) {
+      if (DateTime.now().difference(lastDataAt) < stallTimeout) return;
+      _stalled.add(video.id);
+    });
+
+    DownloadResult result;
+    try {
+      result = await _service.download(
+        video,
+        onProgress: (received, total) {
+          lastDataAt = DateTime.now();
+          final percent = total <= 0 ? 0 : (received * 100 ~/ total);
+          if (percent == lastPercent) {
+            _tasks[video.id] = DownloadTask(
+              videoId: video.id,
+              state: DownloadState.running,
+              received: received,
+              total: total,
+            );
+            return;
+          }
+          lastPercent = percent;
+          _update(
+            video.id,
             state: DownloadState.running,
             received: received,
             total: total,
           );
-          return;
-        }
-        lastPercent = percent;
-        _update(
-          video.id,
-          state: DownloadState.running,
-          received: received,
-          total: total,
-        );
-      },
-      isCancelled: () => _tasks[video.id]?.state == DownloadState.cancelled,
-    );
+        },
+        isCancelled: () =>
+            _tasks[video.id]?.state == DownloadState.cancelled ||
+            _stalled.contains(video.id),
+      );
+    } finally {
+      watchdog.cancel();
+      lastDataAt = DateTime.now();
+    }
+
+    final wasStalled = _stalled.remove(video.id);
 
     if (result.success && result.fileName != null) {
       await _library.markDownloaded(
@@ -211,7 +259,7 @@ class DownloadController extends ChangeNotifier {
       return;
     }
 
-    if (result.cancelled) {
+    if (result.cancelled && !wasStalled) {
       _update(video.id, state: DownloadState.cancelled);
       return;
     }

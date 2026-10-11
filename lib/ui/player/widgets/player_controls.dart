@@ -29,6 +29,7 @@ class PlayerControls extends StatelessWidget {
     required this.isFullscreen,
     required this.showLockButton,
     this.onLockedTap,
+    this.onLockHoldHint,
     this.isBuffering = false,
     this.extraActions,
     this.showFullscreenButton = true,
@@ -49,6 +50,10 @@ class PlayerControls extends StatelessWidget {
   final bool isFullscreen;
   final bool showLockButton;
   final VoidCallback? onLockedTap;
+
+  /// Подсказка при коротком тапе по замку: одним касанием он не включается.
+  final VoidCallback? onLockHoldHint;
+
   final bool isBuffering;
   final List<Widget>? extraActions;
   final bool showFullscreenButton;
@@ -94,6 +99,7 @@ class PlayerControls extends StatelessWidget {
                       lockTooltip: isLocked
                           ? strings.playerUnlock
                           : strings.playerLock,
+                      onLockHoldHint: onLockHoldHint,
                     ),
                     Expanded(
                       child: isLocked
@@ -144,6 +150,7 @@ class _TopBar extends StatelessWidget {
     required this.onToggleLock,
     required this.showLockButton,
     required this.lockTooltip,
+    this.onLockHoldHint,
   });
 
   final String title;
@@ -153,6 +160,9 @@ class _TopBar extends StatelessWidget {
   final VoidCallback onToggleLock;
   final bool showLockButton;
   final String lockTooltip;
+
+  /// Подсказка при коротком тапе по замку.
+  final VoidCallback? onLockHoldHint;
 
   @override
   Widget build(BuildContext context) {
@@ -181,11 +191,15 @@ class _TopBar extends StatelessWidget {
           ),
           if (showLockButton) ...[
             const SizedBox(width: 8),
+            // Замок включается только долгим нажатием: короткое касание
+            // лишь подсказывает, что нужно удерживать. Так ребёнок не
+            // запрёт себя в видео случайным движением.
             _CircleAction(
               icon: isLocked ? Icons.lock_rounded : Icons.lock_open_rounded,
               tooltip: lockTooltip,
               size: compact ? 36 : 46,
-              onTap: onToggleLock,
+              onTap: isLocked ? onToggleLock : onLockHoldHint,
+              onLongPress: isLocked ? null : onToggleLock,
               highlighted: isLocked,
             ),
           ],
@@ -199,13 +213,15 @@ class _CircleAction extends StatelessWidget {
   const _CircleAction({
     required this.icon,
     required this.onTap,
+    this.onLongPress,
     this.tooltip,
     this.highlighted = false,
     this.size = 46,
   });
 
   final IconData icon;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
+  final VoidCallback? onLongPress;
   final String? tooltip;
   final bool highlighted;
   final double size;
@@ -220,6 +236,7 @@ class _CircleAction extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: onTap,
+        onLongPress: onLongPress,
         child: SizedBox(
           width: size,
           height: size,

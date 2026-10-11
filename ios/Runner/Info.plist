@@ -5,7 +5,13 @@
 		<key>CADisableMinimumFrameDurationOnPhone</key>
 		<true/>
 		<key>CFBundleDevelopmentRegion</key>
-		<string>ru</string>
+		<string>ky</string>
+		<key>CFBundleLocalizations</key>
+		<array>
+			<string>ky</string>
+			<string>ru</string>
+			<string>en</string>
+		</array>
 		<key>CFBundleDisplayName</key>
 		<string>Булак</string>
 		<key>CFBundleExecutable</key>

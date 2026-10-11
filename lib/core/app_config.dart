@@ -27,13 +27,13 @@ class AppConfig {
   static const String supportEmail = 'support@tlbk.kg';
 
   /// Сайт приложения.
-  static const String website = 'https://bulak.tlbk.kg';
+  static const String website = 'https://bulak.edu.kg';
 
   /// Политика конфиденциальности (размещается на сайте).
-  static const String privacyPolicyUrl = 'https://bulak.tlbk.kg/privacy';
+  static const String privacyPolicyUrl = 'https://bulak.edu.kg/privacy';
 
   /// Условия использования.
-  static const String termsOfUseUrl = 'https://bulak.tlbk.kg/terms';
+  static const String termsOfUseUrl = 'https://bulak.edu.kg/terms';
 
   /// Сколько цифр в родительском PIN-коде.
   static const int pinLength = 4;

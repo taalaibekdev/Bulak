@@ -120,34 +120,48 @@ class DownloadService {
       return const DownloadResult.failure();
     }
 
-    final info = await _source.fetchDownloadInfo(video.id);
-    if (info == null) return const DownloadResult.failure();
+    // Обёртка обязательна: библиотека для работы с YouTube бросает исключения
+    // при сетевых сбоях и проверках на бота. Без неё исключение улетало бы
+    // в очередь загрузок и останавливало её целиком — снаружи это выглядело
+    // как «видео висит и не скачивается».
+    String? fileName;
+    var succeeded = false;
+    try {
+      final info = await _source.fetchDownloadInfo(video.id);
+      if (info == null) return const DownloadResult.failure();
 
-    final fileName = fileNameFor(video.id, info.extension);
-    final file = await fileForName(fileName);
+      fileName = fileNameFor(video.id, info.extension);
+      final file = await fileForName(fileName);
 
-    // Если раньше файл был в другом контейнере, убираем старый.
-    await _deleteSiblings(video.id, keep: fileName);
+      // Если раньше файл был в другом контейнере, убираем старый.
+      await _deleteSiblings(video.id, keep: fileName);
 
-    final ok = await _source.downloadToFile(
-      video.id,
-      file,
-      onProgress: onProgress,
-      isCancelled: isCancelled,
-    );
+      final ok = await _source.downloadToFile(
+        video.id,
+        file,
+        onProgress: onProgress,
+        isCancelled: isCancelled,
+      );
 
-    if (!ok) {
+      if (!ok) {
+        return DownloadResult.failure(cancelled: isCancelled?.call() ?? false);
+      }
+
+      succeeded = true;
+      return DownloadResult.success(
+        fileName: fileName,
+        sizeBytes: await file.length(),
+        quality: info.quality,
+      );
+    } catch (_) {
+      return DownloadResult.failure();
+    } finally {
       // Недописанный файл удаляем здесь, а не только в источнике: сервис —
       // владелец каталога, и «полувидео» не должно пережить неудачу.
-      await delete(fileName);
-      return DownloadResult.failure(cancelled: isCancelled?.call() ?? false);
+      if (!succeeded && fileName != null) {
+        await delete(fileName);
+      }
     }
-
-    return DownloadResult.success(
-      fileName: fileName,
-      sizeBytes: await file.length(),
-      quality: info.quality,
-    );
   }
 
   /// Удаляет файл загрузки. Отсутствие файла ошибкой не считается.

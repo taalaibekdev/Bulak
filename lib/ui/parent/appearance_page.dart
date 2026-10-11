@@ -52,8 +52,15 @@ class AppearancePage extends StatelessWidget {
               child: Column(
                 children: [
                   RadioListTile<String?>(
-                    value: null,
+                    value: 'ky',
+                    title: Text(strings.languageKyrgyz),
+                    subtitle: Text(strings.languageKyrgyzHint),
+                    contentPadding: EdgeInsets.zero,
+                  ),
+                  RadioListTile<String?>(
+                    value: 'system',
                     title: Text(strings.languageSystem),
+                    subtitle: Text(strings.languageSystemHint),
                     contentPadding: EdgeInsets.zero,
                   ),
                   RadioListTile<String?>(
