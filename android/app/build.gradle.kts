@@ -46,7 +46,16 @@ android {
             if (hasReleaseKeystore) {
                 keyAlias = keystoreProperties["keyAlias"] as String
                 keyPassword = keystoreProperties["keyPassword"] as String
-                storeFile = file(keystoreProperties["storeFile"] as String)
+                // Путь указываем от корня проекта: `storeFile` в key.properties
+                // пишут и как `bulak-release.jks` (файл рядом с key.properties
+                // в android/), и как путь от android/app. Иначе Gradle ищет
+                // keystore в android/app/ и сборка падает с «file not found».
+                val rawPath = keystoreProperties["storeFile"] as String
+                val candidates = listOf(
+                    rootProject.file(rawPath),
+                    file(rawPath),
+                )
+                storeFile = candidates.firstOrNull { it.exists() } ?: candidates.first()
                 storePassword = keystoreProperties["storePassword"] as String
             }
         }
