@@ -147,7 +147,8 @@ build\app\intermediates\merged_manifests\release\AndroidManifest.xml
 | `docs/store/google-play/listing.ru.md`, раздел 7 | «Реклама: нет собственной; в резервном плеере YouTube рекламу может показывать сам YouTube» |
 | `docs/store/google-play/listing.en.md`, раздел 7 | То же на английском |
 | `docs/legal/privacy-policy.ru.md`, разделы 3–5 | Перечень локальных данных и отсутствие сбора |
-| `docs/legal/privacy-policy.html` | То же, что в markdown-версии |
+| `docs/legal/bulak.html` | Та же политика в виде автономной HTML-страницы |
+| `docs/legal/bulak-terms.html` | Пользовательское соглашение в виде автономной HTML-страницы |
 | `docs/store/app-store/privacy-labels.md` | «Data Not Collected» по всем типам |
 | `docs/faq.md` | Ответы «куда уходят данные» и «есть ли реклама» |
 | Раздел «App content → Ads» в Play Console | Отсутствие собственной рекламы |

@@ -37,7 +37,7 @@
 | Тип данных | Ответ | Обоснование |
 |---|---|---|
 | Name | Data Not Collected | Регистрации и профиля нет; имя не запрашивается |
-| Email Address | Data Not Collected | E-mail не запрашивается. Адрес `support@tlbk.kg` — это адрес разработчика для обращений, а не собираемые данные приложения |
+| Email Address | Data Not Collected | E-mail не запрашивается. Адрес `info@mits.kg` — это адрес разработчика для обращений, а не собираемые данные приложения |
 | Phone Number | Data Not Collected | Не запрашивается |
 | Physical Address | Data Not Collected | Не запрашивается |
 | Other User Contact Info | Data Not Collected | Не запрашивается |

@@ -4,15 +4,15 @@
 **Last updated:** October 5, 2026
 **Document version:** 1.2
 
-**Location:** https://bulak.edu.kg/terms
-**Privacy Policy:** https://bulak.edu.kg/privacy
+**Location:** https://mits.kg/privacy-policies/bulak-terms.html
+**Privacy Policy:** https://mits.kg/privacy-policies/bulak.html
 
 ---
 
 ## 1. General Provisions
 
-1.1. These Terms of Use (the "Terms") govern the relationship between **tlbk.kg** (the "Developer", "we", "us"), registered in the **Kyrgyz Republic**, and a natural person (the "User", "you") who uses the **Bulak** mobile application (Russian display name «Булак», application identifier `kg.tlbk.bulak`) on Android and iOS platforms.
-<!-- fill in before publication: full legal entity name (LLC / sole proprietor), registered address, registration number -->
+1.1. These Terms of Use (the "Terms") govern the relationship between **MITS LLC** (the "Developer", "we", "us"), registered in the **Kyrgyz Republic**, and a natural person (the "User", "you") who uses the **Bulak** mobile application (Russian display name «Булак», application identifier `kg.tlbk.bulak`) on Android and iOS platforms.
+<!-- fill in before publication: legal address and registration number. Legal name is MITS LLC -->
 
 1.2. By installing, opening or using the application you confirm that you have fully read, understood and accepted these Terms. If you disagree with any provision, please do not use the application and remove it from your device.
 
@@ -125,7 +125,7 @@ In the **Google Play and App Store build** downloading is absent entirely: it is
 
 5.5. The Bulak application is **not affiliated with Google LLC or Apple Inc.** and is not sponsored, supported or endorsed by either company. The names YouTube, Google Play, App Store and other services are used solely for descriptive purposes, to explain honestly which services the application works with.
 
-5.6. If you are a rights holder and believe the application infringes your rights, contact us at support@tlbk.kg. Please note that the application does not host or distribute video content; requests to remove a specific video from YouTube should therefore be addressed to YouTube as the operator of the service hosting that content. If a complaint concerns a downloaded file, note that in the personal build such a file is created by default during ordinary viewing and exists only in the private directory of the device of the User who uses it; the Developer has no access to it and cannot delete it remotely. In the build distributed through the app stores downloaded files never exist: downloading there is disabled at compile time. On receiving such a request we will issue a demand to delete the links and files and will stop distributing the build that downloads.
+5.6. If you are a rights holder and believe the application infringes your rights, contact us at info@mits.kg. Please note that the application does not host or distribute video content; requests to remove a specific video from YouTube should therefore be addressed to YouTube as the operator of the service hosting that content. If a complaint concerns a downloaded file, note that in the personal build such a file is created by default during ordinary viewing and exists only in the private directory of the device of the User who uses it; the Developer has no access to it and cannot delete it remotely. In the build distributed through the app stores downloaded files never exist: downloading there is disabled at compile time. On receiving such a request we will issue a demand to delete the links and files and will stop distributing the build that downloads.
 
 ---
 
@@ -185,13 +185,13 @@ In the **Google Play and App Store build** downloading is absent entirely: it is
 
 ## 9. Changes to the Terms
 
-9.1. We may amend these Terms. The new edition is published at https://bulak.edu.kg/terms with the last-updated date and the document version number.
+9.1. We may amend these Terms. The new edition is published at https://mits.kg/privacy-policies/bulak-terms.html with the last-updated date and the document version number.
 
 9.2. If changes are material, we will additionally describe them in the application's release notes in Google Play and the App Store.
 
 9.3. By continuing to use the application after a new edition is published, you accept the amended terms. If you disagree with the changes, stop using the application and remove it.
 
-9.4. Previous editions of the Terms are available on request at support@tlbk.kg.
+9.4. Previous editions of the Terms are available on request at info@mits.kg.
 
 ---
 
@@ -209,7 +209,7 @@ In the **Google Play and App Store build** downloading is absent entirely: it is
 
 11.1. These Terms are governed by and construed in accordance with the **laws of the Kyrgyz Republic**, without regard to conflict-of-law rules.
 
-11.2. The parties will make good-faith efforts to resolve any dispute through negotiation. Before going to court, the User shall send a written notice to support@tlbk.kg; the response time is up to 30 calendar days.
+11.2. The parties will make good-faith efforts to resolve any dispute through negotiation. Before going to court, the User shall send a written notice to info@mits.kg; the response time is up to 30 calendar days.
 
 11.3. If a dispute cannot be resolved through negotiation, it shall be heard by the competent court of the Kyrgyz Republic, unless mandatory rules of applicable consumer-protection law provide otherwise.
 
@@ -229,7 +229,7 @@ In the **Google Play and App Store build** downloading is absent entirely: it is
 
 12.5. **Language.** The governing language of these Terms is Russian. An English translation is provided for convenience; in case of discrepancy the Russian edition prevails, unless mandatory rules of law require otherwise.
 
-12.6. **Support.** Questions and enquiries are accepted at support@tlbk.kg. The response time is up to 30 calendar days.
+12.6. **Support.** Questions and enquiries are accepted at info@mits.kg. The response time is up to 30 calendar days.
 
 ---
 
@@ -237,12 +237,12 @@ In the **Google Play and App Store build** downloading is absent entirely: it is
 
 | Channel | Details |
 |---|---|
-| Support | support@tlbk.kg |
-| Website | https://bulak.edu.kg |
-| Terms | https://bulak.edu.kg/terms |
-| Privacy Policy | https://bulak.edu.kg/privacy |
-| Developer | tlbk.kg, Kyrgyz Republic |
-| Legal name and address | <!-- fill in before publication: full entity or sole-proprietor name, registered address, registration number --> |
+| Support | info@mits.kg |
+| Website | https://mits.kg/bulak |
+| Terms | https://mits.kg/privacy-policies/bulak-terms.html |
+| Privacy Policy | https://mits.kg/privacy-policies/bulak.html |
+| Developer | MITS LLC, Kyrgyz Republic |
+| Legal name and address | MITS LLC <!-- fill in before publication: legal address and registration number. Legal name is MITS LLC --> |
 
 ---
 

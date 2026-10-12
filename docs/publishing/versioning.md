@@ -245,7 +245,7 @@ aapt2 dump badging build/app/outputs/flutter-apk/app-release.apk | findstr versi
 • Дневной лимит времени с добрым экраном «На сегодня всё».
 • Родительский режим под PIN-кодом.
 
-Спасибо, что выбрали «Булак»! Пишите нам: support@tlbk.kg
+Спасибо, что выбрали «Булак»! Пишите нам: info@mits.kg
 ```
 
 **Английская версия:**
@@ -260,7 +260,7 @@ What's new in version 1.0.0
 • A daily screen-time limit with a kind "That's all for today" screen.
 • Parent mode protected by a PIN.
 
-Thank you for choosing Bulak! Write to us: support@tlbk.kg
+Thank you for choosing Bulak! Write to us: info@mits.kg
 ```
 
 ### 6.4. Текст «Что нового» для App Store (лимит 4000 символов)
@@ -284,7 +284,7 @@ Thank you for choosing Bulak! Write to us: support@tlbk.kg
 Мы не показываем свою рекламу и не собираем персональные данные: всё, что вы
 добавите, хранится только на вашем устройстве.
 
-Есть вопросы или предложения? Напишите нам: support@tlbk.kg
+Есть вопросы или предложения? Напишите нам: info@mits.kg
 ```
 
 **Английская версия:**
@@ -304,7 +304,7 @@ What is already here:
 We do not show our own advertising and we do not collect personal data:
 everything you add stays on your device.
 
-Questions or suggestions? Write to us: support@tlbk.kg
+Questions or suggestions? Write to us: info@mits.kg
 ```
 
 ### 6.5. Правила хорошего changelog

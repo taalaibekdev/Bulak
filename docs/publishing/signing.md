@@ -76,7 +76,7 @@ keytool -genkeypair -v \
 | Re-enter new password | Тот же пароль |
 | What is your first and last name? | Полное имя владельца или название организации |
 | What is the name of your organizational unit? | `Mobile` или название подразделения |
-| What is the name of your organization? | `tlbk.kg` <!-- заполнить перед публикацией: точное юридическое наименование --> |
+| What is the name of your organization? | `MITS LLC` <!-- заполнить перед публикацией: точное юридическое наименование --> |
 | What is the name of your City or Locality? | Город регистрации |
 | What is the name of your State or Province? | Область/регион |
 | What is the two-letter country code for this unit? | `KG` |

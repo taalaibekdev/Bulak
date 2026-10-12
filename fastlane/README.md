@@ -28,9 +28,9 @@ fastlane/
 │       │   ├── promotional_text.txt       промотекст, ≤ 170
 │       │   ├── description.txt            описание, ≤ 4000, чистый текст
 │       │   ├── release_notes.txt          «что нового» в 1.0.0
-│       │   ├── privacy_url.txt            https://bulak.edu.kg/privacy
-│       │   ├── support_url.txt            https://bulak.edu.kg
-│       │   └── marketing_url.txt          https://bulak.edu.kg
+│       │   ├── privacy_url.txt            https://mits.kg/privacy-policies/bulak.html
+│       │   ├── support_url.txt            https://mits.kg/bulak
+│       │   └── marketing_url.txt          https://mits.kg/bulak
 │       └── en-US/                ← то же самое для английской локализации
 └── screenshots/                  ← скриншоты iOS (fastlane snapshot / deliver)
     ├── ru/

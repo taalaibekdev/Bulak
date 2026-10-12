@@ -4,7 +4,7 @@
 **Last updated:** October 5, 2026
 **Document version:** 1.2
 
-**Permanent location:** https://bulak.edu.kg/privacy
+**Permanent location:** https://mits.kg/privacy-policies/bulak.html
 
 ---
 
@@ -12,8 +12,8 @@
 
 This Privacy Policy explains how the **Bulak** mobile application (Russian display name «Булак», application identifier `kg.tlbk.bulak`) handles information when you install and use it on an Android or iOS device.
 
-The application is developed and provided by **tlbk.kg** (referred to below as "we", "us", or the "Developer"), registered in the **Kyrgyz Republic**.
-<!-- fill in before publication: full legal entity name (LLC / sole proprietor), registered address and registration number -->
+The application is developed and provided by **MITS LLC** (referred to below as "we", "us", or the "Developer"), registered in the **Kyrgyz Republic**.
+<!-- fill in before publication: legal address and registration number. Legal name is MITS LLC -->
 
 Please read this document in full. We have deliberately written it in plain language: the application is made for families, and a parent should be able to understand what happens to data without a legal background.
 
@@ -181,7 +181,7 @@ The application is designed for children aged 3 to 10, which places heightened o
 
 ### 7.2. COPPA Compliance (United States)
 
-We do not collect personal information from children under 13 within the meaning of the United States Children's Online Privacy Protection Act (COPPA, 15 U.S.C. § 6501–6506 and the rules at 16 CFR Part 312). Because the application collects no personal information from children or from adults, parental consent for a collection that does not occur is not required. If you believe that a child's personal data has nevertheless reached us, please write to support@tlbk.kg — we will review the request and, if such data is genuinely found, delete it.
+We do not collect personal information from children under 13 within the meaning of the United States Children's Online Privacy Protection Act (COPPA, 15 U.S.C. § 6501–6506 and the rules at 16 CFR Part 312). Because the application collects no personal information from children or from adults, parental consent for a collection that does not occur is not required. If you believe that a child's personal data has nevertheless reached us, please write to info@mits.kg — we will review the request and, if such data is genuinely found, delete it.
 
 ### 7.3. GDPR and GDPR-K Compliance (European Union)
 
@@ -211,7 +211,7 @@ The application is submitted to Google Play as a child-directed app under the **
 | Provide an accurate age rating | The IARC questionnaire is completed; the application contains no content that would raise the rating |
 | Restrict external links and purchases behind parental control | Every action leading to the external internet, to settings, to downloading a video or to sharing a collection is protected by the parent's four-digit PIN |
 | Ensure all content matches the declared age group | Content is not supplied by the application: the parent selects it manually |
-| Publish a current privacy policy | The policy is published at https://bulak.edu.kg/privacy and includes a section on children |
+| Publish a current privacy policy | The policy is published at https://mits.kg/privacy-policies/bulak.html and includes a section on children |
 | Do not use content that infringes copyright | The application distributes no copies of videos: playback uses official YouTube mechanisms. The Google Play and App Store build creates no copies on the device at all; in the personal build downloaded files remain in the private area of the user's device and are never shared |
 
 The application also complies with Google Play's policy on YouTube content: videos are played through official YouTube mechanisms, no copies are shared or distributed, and responsibility for selecting links and for downloaded files rests with the parent. The Google Play and App Store build has no download feature, so no copies of videos are created on the device. In the personal build downloading is enabled by default, and this Policy describes that openly and without concealment — see sections 2, 3, 5.4 and 9.2.
@@ -258,7 +258,7 @@ The Developer holds no backups, no archives, no user database, no accounts and n
 
 ### 9.5. Deletion Requests by Email
 
-If you would like written confirmation that the Developer holds no data about you, or if you have a question about deletion, write to support@tlbk.kg with the subject "Data deletion". We will respond within 30 calendar days. Please note that we cannot "delete" data we have no access to, but we will confirm this in writing.
+If you would like written confirmation that the Developer holds no data about you, or if you have a question about deletion, write to info@mits.kg with the subject "Data deletion". We will respond within 30 calendar days. Please note that we cannot "delete" data we have no access to, but we will confirm this in writing.
 
 ---
 
@@ -304,7 +304,7 @@ As a parent or legal guardian you have the right to:
 4. **Decide what is shared and with whom.** The "Share" feature works only on your direct action and transfers the list of links and nothing else; you can stop using it at any time.
 5. **Delete all data completely** — see section 9.
 6. **Stop using the application** at any time, simply by uninstalling it.
-7. **Obtain an explanation** on any privacy-related matter by writing to support@tlbk.kg.
+7. **Obtain an explanation** on any privacy-related matter by writing to info@mits.kg.
 8. **Not provide data we do not request.** We do not ask you for an email address, a phone number or any information about your child.
 
 ---
@@ -327,10 +327,10 @@ We may update this Policy — for example, if we add a new feature or if legal r
 
 1. update the "last updated" date at the top of the document;
 2. increment the document version number;
-3. publish the new edition at https://bulak.edu.kg/privacy;
+3. publish the new edition at https://mits.kg/privacy-policies/bulak.html;
 4. if a change materially affects data processing, additionally describe it in the application's release notes in Google Play and the App Store.
 
-By continuing to use the application after a new edition is published, you confirm that you have reviewed it. Previous editions are available on request at support@tlbk.kg.
+By continuing to use the application after a new edition is published, you confirm that you have reviewed it. Previous editions are available on request at info@mits.kg.
 
 ---
 
@@ -340,11 +340,11 @@ For any questions regarding this Privacy Policy, data processing, use of the app
 
 | Channel | Details |
 |---|---|
-| Support email | support@tlbk.kg |
-| Application website | https://bulak.edu.kg |
-| Policy page | https://bulak.edu.kg/privacy |
-| Developer | tlbk.kg, Kyrgyz Republic |
-| Legal name and address | <!-- fill in before publication: full entity or sole-proprietor name, registered address, registration number --> |
+| Support email | info@mits.kg |
+| Application website | https://mits.kg/bulak |
+| Policy page | https://mits.kg/privacy-policies/bulak.html |
+| Developer | MITS LLC, Kyrgyz Republic |
+| Legal name and address | MITS LLC <!-- fill in before publication: legal address and registration number. Legal name is MITS LLC --> |
 
 Our response time to any request is no more than 30 calendar days from receipt.
 

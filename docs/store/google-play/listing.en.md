@@ -109,9 +109,9 @@ YouTube is a trademark of Google LLC. The Bulak app is not affiliated with Googl
 
 Free. No in-app purchases and no subscriptions.
 
-Support: support@tlbk.kg
-Website: https://bulak.edu.kg
-Privacy policy: https://bulak.edu.kg/privacy
+Support: info@mits.kg
+Website: https://mits.kg/bulak
+Privacy policy: https://mits.kg/privacy-policies/bulak.html
 ```
 
 **Actual length: 2 956 characters** — comfortably within the 4000-character limit. Play Console may show a slightly different figure because emoji count as several code units. Watch the remaining-characters counter if you extend the text.
@@ -202,11 +202,11 @@ These answers must **exactly match** the Data safety form and the app's actual b
 
 | Field | Value |
 |---|---|
-| Support email | `support@tlbk.kg` |
-| Website | `https://bulak.edu.kg` |
-| Privacy policy | `https://bulak.edu.kg/privacy` |
-| Terms of use (if required) | `https://bulak.edu.kg/terms` |
-| Developer (shown in Play) | `tlbk.kg` |
+| Support email | `info@mits.kg` |
+| Website | `https://mits.kg/bulak` |
+| Privacy policy | `https://mits.kg/privacy-policies/bulak.html` |
+| Terms of use (if required) | `https://mits.kg/privacy-policies/bulak-terms.html` |
+| Developer (shown in Play) | `MITS LLC` |
 | Country | Kyrgyz Republic |
 | Legal name and address | <!-- fill in before publication: full entity or sole-proprietor name, registered address, registration number --> |
 
@@ -239,6 +239,6 @@ These answers must **exactly match** the Data safety form and the app's actual b
 - [ ] The wording is scoped to the store build ("in this build…") and does not contradict the product description on the website.
 - [ ] Advertising and purchase answers match the Data safety section.
 - [ ] The privacy policy URL opens and includes a children's section.
-- [ ] `support@tlbk.kg` is live and monitored.
+- [ ] `info@mits.kg` is live and monitored.
 - [ ] Screenshots match the real application interface (see `docs/store/screenshots-plan.md`).
 - [ ] Every `<!-- fill in before publication -->` placeholder has been replaced.

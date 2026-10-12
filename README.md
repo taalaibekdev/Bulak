@@ -304,8 +304,8 @@ python tools/screenshots/build_store_screenshots.py  # сборка кадров
 | Раздел | Где смотреть |
 |---|---|
 | Оглавление всей документации | [docs/README.md](docs/README.md) |
-| Политика конфиденциальности | [docs/legal/privacy-policy.ru.md](docs/legal/privacy-policy.ru.md) · [HTML для хостинга](docs/legal/privacy-policy.html) |
-| Условия использования | [docs/legal/terms-of-use.ru.md](docs/legal/terms-of-use.ru.md) |
+| Политика конфиденциальности | [docs/legal/privacy-policy.ru.md](docs/legal/privacy-policy.ru.md) · [HTML для хостинга](docs/legal/bulak.html) |
+| Условия использования | [docs/legal/terms-of-use.ru.md](docs/legal/terms-of-use.ru.md) · [HTML для хостинга](docs/legal/bulak-terms.html) |
 | Соответствие правилам YouTube | [docs/legal/youtube-compliance.md](docs/legal/youtube-compliance.md) |
 | Листинг Google Play | [docs/store/google-play/listing.ru.md](docs/store/google-play/listing.ru.md) |
 | Data safety и рейтинг | [docs/store/google-play/data-safety.md](docs/store/google-play/data-safety.md) · [content-rating.md](docs/store/google-play/content-rating.md) |
@@ -338,5 +338,5 @@ YouTube, не скачивает и не распространяет конте
 
 ## Контакты
 
-- Почта: support@tlbk.kg
-- Сайт: https://bulak.edu.kg
+- Почта: info@mits.kg
+- Сайт: https://mits.kg/bulak

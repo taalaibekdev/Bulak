@@ -24,16 +24,16 @@ class AppConfig {
   static const String versionName = '1.2.0';
 
   /// Куда писать родителям.
-  static const String supportEmail = 'support@tlbk.kg';
+  static const String supportEmail = 'info@mits.kg';
 
   /// Сайт приложения.
-  static const String website = 'https://bulak.edu.kg';
+  static const String website = 'https://mits.kg/bulak/';
 
   /// Политика конфиденциальности (размещается на сайте).
-  static const String privacyPolicyUrl = 'https://bulak.edu.kg/privacy';
+  static const String privacyPolicyUrl = 'https://mits.kg/privacy-policies/bulak.html';
 
   /// Условия использования.
-  static const String termsOfUseUrl = 'https://bulak.edu.kg/terms';
+  static const String termsOfUseUrl = 'https://mits.kg/privacy-policies/bulak-terms.html';
 
   /// Сколько цифр в родительском PIN-коде.
   static const int pinLength = 4;
