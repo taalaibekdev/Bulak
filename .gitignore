@@ -80,4 +80,5 @@ __pycache__/
 # готовые скриншоты командой tools/screenshots/build_store_screenshots.py
 /screenshots/raw/
 /screenshots/raw-en/
+/screenshots/raw-ky/
 /.shots/

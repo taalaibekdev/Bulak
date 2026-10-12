@@ -63,10 +63,7 @@ class CollectionCard extends StatelessWidget {
               collection.title,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
-              style: theme.textTheme.titleMedium?.copyWith(
-                color: Colors.white,
-                height: 1.2,
-              ),
+              style: _titleStyle(theme, collection.title),
             ),
             const SizedBox(height: 4),
             Text(
@@ -81,6 +78,21 @@ class CollectionCard extends StatelessWidget {
       ),
     );
   }
+}
+
+/// Стиль названия коллекции.
+///
+/// Кыргызские слова длиннее русских, и «Мультфильмдер» в плитке шириной
+/// в половину экрана разрывался посередине («Мультфильмде-р»). Для длинных
+/// названий берём кегль меньше — слово помещается целиком и не выглядит
+/// сломанным.
+TextStyle? _titleStyle(ThemeData theme, String title) {
+  final base = theme.textTheme.titleMedium?.copyWith(
+    color: Colors.white,
+    height: 1.2,
+  );
+  if (title.length <= 12) return base;
+  return base?.copyWith(fontSize: (base.fontSize ?? 16) * 0.86);
 }
 
 /// Плитка «все видео без коллекции».

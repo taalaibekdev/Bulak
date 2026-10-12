@@ -1,31 +1,34 @@
 # Feature graphic — Google Play (en-US)
 
-Place **one** file here: `featureGraphic.png` (or `featureGraphic.jpg`)
-
-| Parameter | Value |
+| Параметр | Значение |
 |---|---|
-| Size | **1024 × 500 px** |
-| Format | PNG or JPEG, **no alpha channel** |
-| File size | up to 15 MB |
-| File name | `featureGraphic.png` / `featureGraphic.jpg` |
+| Файл | `featureGraphic.png` |
+| Размер | **1024 × 500 px** |
+| Формат | PNG, **без альфа-канала** |
+| Размер файла | до 15 МБ |
 
-## Composition
+## Что на ней
 
-- Keep critical elements at least **40 px** away from the edges and out of the centre.
-- **Centre:** leave a horizontal band roughly **120 px** high free — Play overlays the promo video play button there.
-- **Left (~45% of the width):** three receding video cards "in perspective", real thumbnails from the app.
-- **Right (~30%):** a large silhouette or soft illustration of a child in headphones with a tablet
-  (no real photographs of children).
-- **Background:** the brand gradient `#2AD1FF` → `#2A6BFF` → `#6C4BFF`, or the dark base `#0E1B3A`
-  with the same gradient in the accents.
-
-## Caption (en-US)
+Фирменный зелёный градиент, слева — знак приложения, справа — название «Булак»
+и подпись:
 
 ```
-Videos you picked yourself
+Only videos picked by parents
 ```
 
-Top left, **Nunito ExtraBold**, at least **44 px**, with enough contrast against the background.
-Never use the word YouTube in the caption.
+## Про безопасные зоны
 
-Source: `docs/store/google-play/store-assets.md`, section 4.
+Play накладывает кнопку воспроизведения промо-видео в центр картинки, поэтому
+центр держим свободным: знак стоит слева, текст — справа от него, между ними
+и по краям остаётся запас. Критичные элементы не ближе 40 px к краям.
+
+## Как пересобрать
+
+```bash
+python tools/icon/build_assets.py
+```
+
+Подпись для каждой локали задаётся в `tools/icon/build_assets.py`
+(словарь `store_variants`).
+
+Источник: `docs/store/google-play/store-assets.md`, раздел 4.
