@@ -5,7 +5,7 @@ publish_to: "none"
 # Версия приложения. Для Android это versionName/versionCode,
 # для iOS — CFBundleShortVersionString/CFBundleVersion.
 # Подробности в docs/publishing/versioning.md
-version: 1.2.0+3
+version: 1.2.0+4
 
 environment:
   sdk: ^3.13.0
