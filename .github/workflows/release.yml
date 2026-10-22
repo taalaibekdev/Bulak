@@ -7,7 +7,7 @@ name: Release
 #   ANDROID_KEYSTORE_PASSWORD
 #   ANDROID_KEY_ALIAS
 #   ANDROID_KEY_PASSWORD
-#   PLAY_STORE_JSON_KEY      — JSON сервисного аккаунта Google Play (для автозагрузки)
+#   PLAY_STORE_JSON_KEY      — JSON сервисного аккаунта магазина приложений (для автозагрузки)
 #   APPSTORE_API_KEY_ID / APPSTORE_API_ISSUER_ID / APPSTORE_API_PRIVATE_KEY
 #                            — ключ App Store Connect API (для TestFlight)
 #

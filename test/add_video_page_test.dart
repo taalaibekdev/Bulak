@@ -104,7 +104,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(
-      find.textContaining('Это не похоже на ссылку YouTube'),
+      find.textContaining('Это не похоже на ссылку на видео'),
       findsOneWidget,
     );
   });

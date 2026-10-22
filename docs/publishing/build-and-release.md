@@ -1,6 +1,6 @@
 # Сборка и релиз приложения «Булак»
 
-Пошаговая инструкция: от чистого окружения до готовых артефактов для Google Play и App Store.
+Пошаговая инструкция: от чистого окружения до готовых артефактов для магазинов Play и App Store.
 
 **Параметры проекта:** Flutter-приложение `bulak`, Application ID / Bundle ID `kg.tlbk.bulak`, версия 1.0.0 (build 1), Android minSdk 23 / targetSdk 35, iOS 13.0+. **Флейворов в проекте нет** — все команды сборки выполняются без `--flavor`.
 
@@ -81,7 +81,7 @@ Select-String '^version:' pubspec.yaml   # Windows PowerShell
 signingConfig = signingConfigs.getByName("debug")
 ```
 
-Загрузить такую сборку в Google Play нельзя. Перед первым релизом:
+Загрузить такую сборку в магазин Play нельзя. Перед первым релизом:
 
 1. Создайте keystore — см. `docs/publishing/signing.md`, раздел 2.
 2. Создайте файл `android/key.properties` — он **не должен попадать в git**.
@@ -96,8 +96,8 @@ signingConfig = signingConfigs.getByName("debug")
 
 ### 4.0. Для сборки в магазин отключите скачивание видео
 
-> ⚠️ Google Play и App Store отклоняют приложения, которые скачивают видео
-> с YouTube. В приложении есть такой режим, и по умолчанию он **включён**.
+> ⚠️ Магазины Play и App Store отклоняют приложения, которые скачивают видео
+> из внешнего видеосервиса. В приложении есть такой режим, и по умолчанию он **включён**.
 
 Для сборки, которая пойдёт в магазин, функцию нужно выключить одним флагом:
 
@@ -110,10 +110,10 @@ flutter build appbundle --release --dart-define=BULAK_DISABLE_DOWNLOADS=true
 Проверьте это на устройстве перед отправкой.
 
 Личная сборка (для себя, семьи, знакомых) собирается как обычно, без флага.
-Подробнее о рисках — в [docs/legal/youtube-compliance.md](../legal/youtube-compliance.md)
+Подробнее о рисках — в [docs/legal/third-party-services.md](../legal/third-party-services.md)
 и в разделе 0 [чек-листа релиза](release-checklist.md).
 
-### 4.1. App Bundle для Google Play (основной артефакт)
+### 4.1. App Bundle для магазина Play (основной артефакт)
 
 ```bash
 flutter build appbundle --release
@@ -121,7 +121,7 @@ flutter build appbundle --release
 
 Артефакт: `build/app/outputs/bundle/release/app-release.aab`
 
-Именно этот файл загружается в Play Console. Google Play сам формирует APK под конкретные устройства (в этом и смысл App Bundle), поэтому размер установки будет меньше, чем у универсального APK.
+Именно этот файл загружается в Play Console. Магазин Play сам формирует APK под конкретные устройства (в этом и смысл App Bundle), поэтому размер установки будет меньше, чем у универсального APK.
 
 С явным указанием версии (если нужно переопределить pubspec):
 
@@ -320,7 +320,7 @@ flutter build appbundle --release --build-name=1.0.1 --build-number=2
 flutter build ipa --release --build-name=1.0.1 --build-number=2
 ```
 
-> Номер сборки (`build number`) должен **строго увеличиваться** при каждой загрузке в стор. Повторная загрузка того же номера будет отклонена: Google Play — «Version code already used», App Store — «The bundle version must be higher». Подробнее — `docs/publishing/versioning.md`.
+> Номер сборки (`build number`) должен **строго увеличиваться** при каждой загрузке в стор. Повторная загрузка того же номера будет отклонена: Play — «Version code already used», App Store — «The bundle version must be higher». Подробнее — `docs/publishing/versioning.md`.
 
 Проверка того, что попало в сборку:
 
@@ -417,7 +417,7 @@ flutter pub global run devtools
 
 | Платформа | Где смотреть |
 |---|---|
-| Google Play | Play Console → **Test and release → App bundle explorer** → выбрать версию → размеры по устройствам |
+| Play | Play Console → **Test and release → App bundle explorer** → выбрать версию → размеры по устройствам |
 | App Store | App Store Connect → **TestFlight** → выбрать сборку → раздел с размером; либо Xcode Organizer |
 
 ### 9.3. Как уменьшать размер

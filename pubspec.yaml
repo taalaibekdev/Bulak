@@ -23,7 +23,7 @@ dependencies:
   shared_preferences: ^2.5.5
   path_provider: ^2.1.6
 
-  # Сеть и разбор ссылок YouTube.
+  # Сеть и разбор ссылок видеосервиса.
   http: ^1.6.0
   youtube_explode_dart: ^3.1.0
 

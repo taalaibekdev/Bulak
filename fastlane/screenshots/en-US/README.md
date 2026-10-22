@@ -47,7 +47,7 @@ before uploading**.
 | 8 | Viewing history | `See what your child watched` |
 
 Headlines use **Nunito ExtraBold** (Comfortaa Bold is allowed for the name "Bulak"), at least
-72 px on a 1080 px wide canvas. The YouTube/Google logos, real faces of children, personal data
+72 px on a 1080 px wide canvas. The logos of third-party video services, real faces of children, personal data
 and "working" buttons drawn on top of a frame are all forbidden.
 
 Source: `docs/store/screenshots-plan.md`, sections 2.2, 2.3, 3, 4, 5.

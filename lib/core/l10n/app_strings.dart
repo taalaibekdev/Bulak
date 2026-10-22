@@ -104,11 +104,11 @@ class AppStrings {
   String get homeEmptyTitle =>
       _pick('Здесь пока пусто', 'Nothing here yet', 'Азырынча бош');
   String get homeEmptyBody => _pick(
-    'Попросите взрослых добавить видео: они вставят ссылку с YouTube, '
+    'Попросите взрослых добавить видео: они вставят ссылку на видео, '
         'и оно появится на этой странице.',
-    'Ask a grown-up to add a video: they paste a YouTube link and it '
+    'Ask a grown-up to add a video: they paste a video link and it '
         'shows up right here.',
-    'Чоңдордон видео кошуусун сураңыз: алар YouTube шилтемесин коюшат, '
+    'Чоңдордон видео кошуусун сураңыз: алар шилтеме коюшат, '
         'ошондо видео ушул жерде пайда болот.',
   );
   String get homeEmptyForParent => _pick(
@@ -360,16 +360,16 @@ class AppStrings {
   );
   String get playerErrorBody => _pick(
     'Проверьте интернет и попробуйте ещё раз. Если не помогло — '
-        'включите встроенный плеер YouTube.',
+        'включите встроенный плеер.',
     'Check your connection and try again. If that fails, switch to the '
-        'built-in YouTube player.',
+        'built-in player.',
     'Интернетти текшерип, дагы бир жолу аракет кылыңыз. Жардам бербесе — '
-        'YouTube плеерин күйгүзүңүз.',
+        'курулган плеерди күйгүзүңүз.',
   );
   String get playerUseEmbed => _pick(
-    'Включить плеер YouTube',
-    'Use the YouTube player',
-    'YouTube плеерин күйгүзүү',
+    'Включить встроенный плеер',
+    'Use the built-in player',
+    'Курулган плеерди күйгүзүү',
   );
   String get playerUseDirect => _pick(
     'Вернуться к режиму без рекламы',
@@ -595,9 +595,9 @@ class AppStrings {
   String get parentAddVideo =>
       _pick('Добавить видео', 'Add a video', 'Видео кошуу');
   String get parentAddVideoSubtitle => _pick(
-    'Вставьте ссылку с YouTube',
-    'Paste a YouTube link',
-    'YouTube шилтемесин чаптаңыз',
+    'Вставьте ссылку на видео',
+    'Paste a video link',
+    'Шилтеме чаптаңыз',
   );
   String get parentMyVideos =>
       _pick('Мои видео', 'My videos', 'Менин видеолорум');
@@ -654,9 +654,9 @@ class AppStrings {
   String get addVideoTitle =>
       _pick('Добавить видео', 'Add a video', 'Видео кошуу');
   String get addVideoHint => _pick(
-    'Вставьте ссылку на YouTube',
-    'Paste a YouTube link',
-    'YouTube шилтемесин чаптаңыз',
+    'Вставьте ссылку на видео',
+    'Paste a video link',
+    'Шилтеме чаптаңыз',
   );
   String get addVideoPaste => _pick('Вставить', 'Paste', 'Чаптоо');
   String get addVideoCheck =>
@@ -667,11 +667,11 @@ class AppStrings {
     'Видеонун аталышын алып жатабыз…',
   );
   String get addVideoInvalid => _pick(
-    'Это не похоже на ссылку YouTube. Скопируйте ссылку из приложения '
-        'YouTube или из браузера.',
-    'This does not look like a YouTube link. Copy it from the YouTube app '
-        'or a browser.',
-    'Бул YouTube шилтемесине окшобойт. Шилтемени YouTube колдонмосунан же '
+    'Это не похоже на ссылку на видео. Скопируйте ссылку из приложения, '
+        'где вы смотрите видео, или из браузера.',
+    'This does not look like a video link. Copy it from the app where you '
+        'watch videos or from a browser.',
+    'Бул шилтемеге окшобойт. Шилтемени видео көргөн колдонмодон же '
         'браузерден көчүрүңүз.',
   );
   String get addVideoDuplicate => _pick(
@@ -690,9 +690,9 @@ class AppStrings {
     'Бала көрө турган аталыш',
   );
   String get addVideoTitleHint => _pick(
-    'Оставьте пустым — возьмём из YouTube',
-    'Leave empty to use YouTube’s',
-    'Бош калтырсаңыз — YouTube кызматынан алабыз',
+    'Оставьте пустым — название подставим сами',
+    'Leave empty and we will fill it in',
+    'Бош калтырсаңыз — аталышын өзүбүз алабыз',
   );
   String get addVideoCollectionLabel =>
       _pick('Коллекция', 'Playlist', 'Топтом');
@@ -847,20 +847,20 @@ class AppStrings {
       _pick('Режим воспроизведения', 'Playback mode', 'Ойнотуу режими');
   String get playbackAuto => _pick('Автоматически', 'Automatic', 'Автоматтык');
   String get playbackDirect =>
-      _pick('Без рекламы YouTube', 'Ad-free stream', 'YouTube жарнамасыз');
+      _pick('Без рекламы', 'Ad-free', 'Жарнамасыз');
   String get playbackEmbed =>
-      _pick('Плеер YouTube', 'YouTube player', 'YouTube плеери');
+      _pick('Встроенный плеер', 'Built-in player', 'Курулган плеер');
   String get playbackNote => _pick(
-    'В режиме «Без рекламы» видео играет без интерфейса YouTube, но '
-        'качество ограничено 360p. В режиме «Плеер YouTube» показывается '
-        'официальный плеер — качество выше, но YouTube может показать '
+    'В режиме «Без рекламы» видео играет без интерфейса сервиса, но '
+        'качество ограничено 360p. В режиме «Встроенный плеер» показывается '
+        'официальный плеер — качество выше, но сервис может показать '
         'свою рекламу.',
-    'In the ad-free mode the video plays without YouTube’s interface, but '
-        'quality is capped at 360p. The YouTube player gives you higher '
-        'quality and may show YouTube’s own ads.',
-    '«Жарнамасыз» режиминде видео YouTube интерфейсинсиз ойнойт, бирок '
-        'сапаты 360p менен чектелген. «YouTube плеери» режиминде расмий '
-        'плеер көрсөтүлөт — сапаты жогору, бирок YouTube өзүнүн жарнамасын '
+    'In the ad-free mode the video plays without the service interface, but '
+        'quality is capped at 360p. The built-in player gives you higher '
+        'quality and the service may show its own ads.',
+    '«Жарнамасыз» режиминде видео сервистин интерфейсинсиз ойнойт, бирок '
+        'сапаты 360p менен чектелген. «Курулган плеер» режиминде расмий '
+        'плеер көрсөтүлөт — сапаты жогору, бирок сервис өзүнүн жарнамасын '
         'көрсөтүшү мүмкүн.',
   );
 
@@ -892,14 +892,21 @@ class AppStrings {
         'маалыматтарды чогултпайбыз, аналитика колдонбойбуз жана '
         'өзүбүздүн жарнамабызды көрсөтпөйбүз.',
   );
-  String get aboutYouTubeNotice => _pick(
-    'Видео загружаются с YouTube. YouTube — товарный знак Google LLC. '
-        'Приложение не связано с Google и не одобрено ею.',
-    'Videos are streamed from YouTube. YouTube is a trademark of Google '
-        'LLC. This app is not affiliated with or endorsed by Google.',
-    'Видеолор YouTube кызматынан алынат. YouTube — Google LLC '
-        'компаниясынын соода белгиси. Колдонмо Google менен байланышпайт '
-        'жана ал тарабынан жактырылган эмес.',
+  String get aboutSourceTitle => _pick(
+    'Источник видео',
+    'Video source',
+    'Видео булагы',
+  );
+  String get aboutSourceNotice => _pick(
+    'Видео воспроизводятся из внешнего видеосервиса по ссылке, которую '
+        'добавил родитель. Приложение не связано с этим сервисом, '
+        'не спонсируется и не одобрено им.',
+    'Videos are played from an external video service by a link the parent '
+        'added. This app is not affiliated with that service, is not '
+        'sponsored by it and is not endorsed by it.',
+    'Видеолор ата-эне кошкон шилтеме боюнча сырткы видео кызматынан '
+        'ойнотулат. Колдонмо бул кызмат менен байланышпайт, аны менен '
+        'каржыланбайт жана ал тарабынан жактырылган эмес.',
   );
   String get aboutReset => _pick(
     'Удалить все данные',

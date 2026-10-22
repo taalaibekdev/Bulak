@@ -23,9 +23,9 @@ Please read this document in full. We have deliberately written it in plain lang
 
 **The application does not collect your personal data.** Bulak has no user accounts, no sign-up, no Developer-operated servers, no analytics, no advertising SDKs and no trackers. Everything you create in the application — the list of video links, titles, collections, viewing history, settings, the PIN hash and **downloaded video files** — is stored **only in your device's local storage** and is never transmitted anywhere.
 
-**The only network activity** is downloading thumbnail images and video streams from YouTube servers (Google LLC), plus loading the youtube.com page inside the built-in player in fallback mode. If a video has already been **saved to the device**, it is played back from device storage without any request to YouTube for the video stream. This exchange happens directly between your device and Google; the Developer does not participate in it, cannot observe it and does not retain its results.
+**The only network activity** is downloading thumbnail images and video streams from the servers of an external video service, plus loading a page of that service inside the built-in player in fallback mode. If a video has already been **saved to the device**, it is played back from device storage without any request to the video service for the video stream. This exchange happens directly between your device and the video service operator; the Developer does not participate in it, cannot observe it and does not retain its results.
 
-**The application has two builds, and whether video is saved to the device depends on which one you have.** In the personal build a video is **saved to the device first and only then played**: a copy is created when a link is added, when the download button is used, and automatically when a child opens a video that is not yet on the phone (at that moment the application shows the "Preparing video" screen). In the Google Play and App Store build downloading is disabled entirely: that build stores no copies and streams video from YouTube servers. The build obtained from Google Play or the App Store always streams; in the personal build video is saved to the device by default, and streaming is enabled manually in the settings. See section 3 for details.
+**The application has two builds, and whether video is saved to the device depends on which one you have.** In the personal build a video is **saved to the device first and only then played**: a copy is created when a link is added, when the download button is used, and automatically when a child opens a video that is not yet on the phone (at that moment the application shows the "Preparing video" screen). In the store build downloading is disabled entirely: that build stores no copies and streams video from the video service's servers. The build obtained from the app stores always streams; in the personal build video is saved to the device by default, and streaming is enabled manually in the settings. See section 3 for details.
 
 **The application can also pass a list of links to another person** — through the system "Share" menu, at your choice and only as plain text or a `.bulak` file containing links and captions. Video files are never sent anywhere in the process. See section 5.4 for details.
 
@@ -37,7 +37,7 @@ Every item listed below is created by you or your child directly inside the appl
 
 | Data category | What exactly is stored | Where it is stored | Who can see it |
 |---|---|---|---|
-| Video list | Links to YouTube videos added by the parent | Locally on the device | Device only |
+| Video list | Links to videos added by the parent | Locally on the device | Device only |
 | Video titles | Custom names typed by the parent | Locally on the device | Device only |
 | Collections | Folder names, selected emoji and colours, assignment of videos to collections | Locally on the device | Device only |
 | Favourites | "Heart" marks on video cards | Locally on the device | Device only |
@@ -47,15 +47,15 @@ Every item listed below is created by you or your child directly inside the appl
 | **Downloaded video files** | **Copies of videos that the application saves to the device: when a link is added, when the download button is used, with the "Download all" button, and automatically the first time a video not yet on the phone is opened (personal build only)** | **The application's private directory `Application Support/media` on the device** | **Device only** |
 | Parental PIN | **Not the PIN itself**, but an irreversible cryptographic hash of the four-digit PIN | Locally on the device | Device only |
 
-> **About the thumbnail cache.** So that cards do not flicker and do not reload on every visit, the application stores preview images in a local device cache. These are ordinary, publicly available images from `i.ytimg.com`; they contain no information about you and are removed together with the application data when "Reset everything" is used or when the application is uninstalled. Preview images are not video files and do not make offline viewing possible.
+> **About the thumbnail cache.** So that cards do not flicker and do not reload on every visit, the application stores preview images in a local device cache. These are ordinary images that are publicly available on the internet; they contain no information about you and are removed together with the application data when "Reset everything" is used or when the application is uninstalled. Preview images are not video files and do not make offline viewing possible.
 
-> **About downloaded video files.** In the personal build the application saves a video to the device **before** it is played, so copies of videos are present on the phone — that is the normal behaviour of the personal build, not an optional extra. The application writes YouTube's "muxed" video stream (video and audio in a single file) at the highest quality available — **360p**; YouTube does not serve such streams at higher quality, and that is a limitation of the service itself. A copy is created in three cases: when the parent adds a link with the "Download as soon as added" setting enabled, when the download button on a video or the "Download all" button is used, and when a child opens a video that is not yet on the phone — in that case the application shows the **"Preparing video"** screen, downloads the file with a progress indicator and starts the player itself once the file is ready. The file is stored in the **application's private directory** (`Application Support/media`), which is inaccessible to other applications; it does not appear in the device's shared storage, gallery or Downloads folder, and the application requests no permission to access your files. Downloaded files are not included in Android backups, because the application sets `allowBackup="false"`. Downloaded files are never shared with anyone: not with the Developer, not with Google, not with third parties. For how to delete them, see section 9.2.
+> **About downloaded video files.** In the personal build the application saves a video to the device **before** it is played, so copies of videos are present on the phone — that is the normal behaviour of the personal build, not an optional extra. The application writes the video service's "muxed" video stream (video and audio in a single file) at the highest quality available — **360p**; the video service does not serve such streams at higher quality, and that is a limitation of the service itself. A copy is created in three cases: when the parent adds a link with the "Download as soon as added" setting enabled, when the download button on a video or the "Download all" button is used, and when a child opens a video that is not yet on the phone — in that case the application shows the **"Preparing video"** screen, downloads the file with a progress indicator and starts the player itself once the file is ready. The file is stored in the **application's private directory** (`Application Support/media`), which is inaccessible to other applications; it does not appear in the device's shared storage, gallery or Downloads folder, and the application requests no permission to access your files. Downloaded files are not included in Android backups, because the application sets `allowBackup="false"`. Downloaded files are never shared with anyone: not with the Developer, not with the service operator, not with third parties. For how to delete them, see section 9.2.
 >
-> **The Google Play and App Store build has no downloading at all.** It is compiled with the `BULAK_DISABLE_DOWNLOADS=true` flag, so it has no download buttons, no "Downloads" screen, no automatic downloading and no "Preparing video" screen: it does not save videos to the device and streams everything from YouTube servers. Everything this Policy says about downloaded video files applies to the personal build.
+> **The store build has no downloading at all.** It is compiled with the `BULAK_DISABLE_DOWNLOADS=true` flag, so it has no download buttons, no "Downloads" screen, no automatic downloading and no "Preparing video" screen: it does not save videos to the device and streams everything from the video service's servers. Everything this Policy says about downloaded video files applies to the personal build.
 
-> **About download settings.** In the personal build the application stores the on/off value of the "Download as soon as added" setting and the selected "Where to play video" mode: "Downloaded only" is the default, and the "Stream if not downloaded" option can be enabled manually by the parent. These are ordinary local values that are never transmitted. They contain no information about you and are deleted together with the rest of the application data. In the Google Play and App Store build these settings do not exist.
+> **About download settings.** In the personal build the application stores the on/off value of the "Download as soon as added" setting and the selected "Where to play video" mode: "Downloaded only" is the default, and the "Stream if not downloaded" option can be enabled manually by the parent. These are ordinary local values that are never transmitted. They contain no information about you and are deleted together with the rest of the application data. In the store build these settings do not exist.
 
-> **About the PIN.** We deliberately do not store the PIN in plain text. Only a hash is kept in device memory — a value from which the original four digits cannot be recovered. The PIN is never sent to the Developer's servers, to Google, or to anyone else. If the PIN is forgotten, it cannot be recovered; the only option is to reset the application data and configure the application again.
+> **About the PIN.** We deliberately do not store the PIN in plain text. Only a hash is kept in device memory — a value from which the original four digits cannot be recovered. The PIN is never sent to the Developer's servers, to the service operator, or to anyone else. If the PIN is forgotten, it cannot be recovered; the only option is to reset the application data and configure the application again.
 
 None of this data leaves the device. We cannot read it, because we have no access to it: the application does not send it to any server.
 
@@ -83,7 +83,7 @@ To leave no room for ambiguity, here is an explicit list. The application **does
 The application contains no:
 
 - account registration or sign-in;
-- third-party analytics (Google Analytics, Firebase Analytics, AppsFlyer, Amplitude or similar);
+- third-party analytics (external analytics and statistics services, analytics SDKs or similar);
 - advertising networks or monetisation SDKs;
 - trackers, pixels or attribution systems;
 - chat, comments, forums or any user-to-user communication features;
@@ -96,24 +96,22 @@ The application contains no:
 
 ## 5. Network Activity and Third Parties
 
-### 5.1. YouTube (Google LLC)
+### 5.1. External Video Service
 
-The application works with YouTube video content, and without contacting Google's servers some features cannot function. Such requests include:
+The application works with video content from an external video service, and without contacting the video service's servers some features cannot function. Such requests include:
 
-1. **Thumbnail loading.** To display a card with a large preview image, the application requests the preview image from the `i.ytimg.com` server.
-2. **Direct video stream loading.** During playback the application requests the video stream from YouTube servers (including `googlevideo.com`) in order to show the video inside our own player, without YouTube's interface or advertising. In the Google Play and App Store build this is the only way to play anything: that build always streams. In the personal build the video is first **saved to the device** (see section 3), so playback uses the local file and no request is made to YouTube for the video stream; the thumbnail is still loaded from `i.ytimg.com`.
-3. **Fallback mode — the embedded YouTube player.** If the direct video stream is unavailable (for example, the creator disabled embedding or changed access settings), the application opens the official embedded YouTube player by loading a page from the `youtube-nocookie.com` domain — YouTube's **privacy-enhanced mode**, in which YouTube does not set its cookies before playback begins. In this mode the video is played by Google's official player.
-4. **Domain restrictions.** The embedded player is configured to allow navigation only to YouTube and Google domains (`youtube-nocookie.com`, `youtube.com`, `ytimg.com`, `googlevideo.com`). Navigating to an arbitrary third-party site from inside the player is impossible: the application provides no free browsing.
+1. **Thumbnail loading.** To display a card with a large preview image, the application requests the preview image from the video service's server.
+2. **Direct video stream loading.** During playback the application requests the video stream from the video service's servers in order to show the video inside our own player, without the service's interface or advertising. In the store build this is the only way to play anything: that build always streams. In the personal build the video is first **saved to the device** (see section 3), so playback uses the local file and no request is made to the video service for the video stream; the thumbnail is still loaded from the video service's server.
+3. **Fallback mode — the service's embedded player.** If the direct video stream is unavailable (for example, the creator disabled embedding or changed access settings), the application opens the service's official embedded player by loading a page from the video service's domain — the service's **privacy-enhanced mode**, in which the service does not set its cookies before playback begins. In this mode the video is played by the service operator's official player.
+4. **Domain restrictions.** The embedded player is configured to allow navigation only to the video service's domains. Navigating to an arbitrary third-party site from inside the player is impossible: the application provides no free browsing.
 
-On each such request, Google receives the technical information that any program transmits when contacting a website — in particular the device IP address, operating system type and version, client type and the time of the request. **The Developer does not receive, store or process this data.** This interaction occurs directly between your device and Google LLC and is governed by Google's policies:
+On each such request the video service operator receives the technical information that any program transmits when contacting a website — in particular the device IP address, operating system type and version, client type and the time of the request. **The Developer does not receive, store or process this data.** This interaction occurs directly between your device and the video service operator and is governed by the video service's policies:
 
-- Google Privacy Policy: https://policies.google.com/privacy
-- YouTube Terms of Service: https://www.youtube.com/t/terms
-- YouTube family safety resources: https://support.google.com/youtube/answer/9528076
+- the video service privacy policy;
+- the video service terms of use;
+- the video service's family safety rules and resources.
 
-> **Advertising.** We do not display our own advertising and we do not include any advertising SDKs in the application. However, the **fallback embedded YouTube player** may display advertising served by YouTube itself — that is Google's advertising, not ours, and we do not control whether it appears. When playback uses the direct link, YouTube's interface and advertising are not displayed.
-
-> **Trademarks.** YouTube is a trademark of Google LLC. The Bulak application is not affiliated with, sponsored by, endorsed by or otherwise associated with Google LLC. We use the name YouTube solely to describe honestly where the application obtains its video content.
+> **Advertising.** We do not display our own advertising and we do not include any advertising SDKs in the application. However, the **fallback embedded player** may display advertising served by the video service itself — that is the service operator's advertising, not ours, and we do not control whether it appears. When playback uses the direct link, the service's interface and advertising are not displayed.
 
 ### 5.2. Other Third Parties
 
@@ -123,11 +121,11 @@ The only exception arises **through your own deliberate choice**: if you use the
 
 ### 5.3. Cross-Border Transfers
 
-The Developer does not transfer data outside the Kyrgyz Republic, because the Developer does not receive any data from the application at all. The technical requests to YouTube servers described in section 5.1 may be processed on Google servers in various countries; that processing is governed by Google's privacy policy, not by this Policy.
+The Developer does not transfer data outside the Kyrgyz Republic, because the Developer does not receive any data from the application at all. The technical requests to the video service's servers described in section 5.1 may be processed on the video service operator's servers in various countries; that processing is governed by the video service's privacy policy, not by this Policy.
 
 ### 5.4. Sharing Collections: What Exactly Is Transferred
 
-The application includes a collection-sharing feature. A parent can send another person a list of video links, and the recipient can paste that list into their own application, after which the videos are added to their library (in the personal build they are also saved to the device immediately, because downloading is enabled by default there; in the Google Play and App Store build there is no downloading, so the videos are simply added to the list).
+The application includes a collection-sharing feature. A parent can send another person a list of video links, and the recipient can paste that list into their own application, after which the videos are added to their library (in the personal build they are also saved to the device immediately, because downloading is enabled by default there; in the store build there is no downloading, so the videos are simply added to the list).
 
 What you need to understand about this feature:
 
@@ -151,14 +149,14 @@ The application requests the smallest possible set of permissions.
 
 | Platform | Permission | Why it is needed | What happens if you decline |
 |---|---|---|---|
-| Android | `INTERNET` | Downloading thumbnails and the video stream from YouTube servers; loading the embedded player page | Video and thumbnails will not load; the rest of the interface remains usable |
+| Android | `INTERNET` | Downloading thumbnails and the video stream from the video service's servers; loading the embedded player page | Video and thumbnails will not load; the rest of the interface remains usable |
 | Android | `WAKE_LOCK` | Preventing the screen from sleeping while a child is watching a video | The screen may sleep on the system timeout during playback |
 | iOS | Network access (default) | The same as `INTERNET` on Android | Video and thumbnails will not load |
 | iOS | No separate permission required | Keeping the screen awake uses the system `isIdleTimerDisabled` mechanism, which grants no access to personal data | — |
 
 These are the only permissions the application requests on Android. `INTERNET` and `WAKE_LOCK` are declared by the video-playback libraries rather than by the application's own code; `WAKE_LOCK` grants no access to any data and only controls the screen timeout during playback.
 
-**Downloading videos requires no additional permissions.** In the personal build the application writes downloaded files to its own private directory rather than to shared device storage, so it requests no storage permissions (`READ_MEDIA_VIDEO`, `WRITE_EXTERNAL_STORAGE`, gallery access) on either Android or iOS. That is precisely why downloaded videos are invisible to other applications and never appear in your gallery. The Google Play and App Store build does not download at all, so it needs storage permissions even less.
+**Downloading videos requires no additional permissions.** In the personal build the application writes downloaded files to its own private directory rather than to shared device storage, so it requests no storage permissions (`READ_MEDIA_VIDEO`, `WRITE_EXTERNAL_STORAGE`, gallery access) on either Android or iOS. That is precisely why downloaded videos are invisible to other applications and never appear in your gallery. The store build does not download at all, so it needs storage permissions even less.
 
 The application **does not request** access to the camera, microphone, location, contacts, calendar, photo library, Bluetooth, notifications or the advertising identifier. On iOS the application does not display an App Tracking Transparency (ATT) prompt, because no tracking takes place.
 
@@ -175,7 +173,7 @@ The application is designed for children aged 3 to 10, which places heightened o
 - the application has no search, no recommendations, no infinite feed, no Shorts, no comments, no subscriptions and no channels — a child cannot drift into an uncontrolled stream of content;
 - the application contains no Developer advertising and no advertising SDKs that could profile a child;
 - the application contains no chats or any form of communication with other people;
-- access to the external internet (opening the youtube.com page in the embedded player and adding links) is protected by the parental PIN;
+- access to the external internet (opening the video service page in the embedded player and adding links) is protected by the parental PIN;
 - downloading videos and sharing collections sit in parental mode, behind the PIN: a child cannot open the "Downloads" screen, change download settings or send a list of links to anyone. If the personal build is left in the "Downloaded only" mode (which is the default), a video the child opens for the first time is saved to the device by the application itself — but what triggers that is the setting chosen by the adult, not an action of the child;
 - downloaded video files live in the application's private area, inaccessible to other applications, and are not shown in the device gallery.
 
@@ -197,24 +195,24 @@ The parent (or other legal guardian) installs the application, configures the pa
 
 ---
 
-## 8. Compliance with the Designed for Families Programme (Google Play)
+## 8. Compliance with the Designed for Families Programme
 
-The application is submitted to Google Play as a child-directed app under the **Designed for Families** programme and the **Families / Child-Directed Apps** policy. Below is a direct mapping to the programme's requirements.
+The application is submitted to the app stores as a child-directed app under the **Designed for Families** programme and the **Families / Child-Directed Apps** policy. Below is a direct mapping to the programme's requirements.
 
-| Google Play requirement | How Bulak satisfies it |
+| Programme requirement | How Bulak satisfies it |
 |---|---|
 | Collect the minimum data needed to operate | No personal data is collected at all; the application is fully local |
-| Do not share children's personal data with third parties | No sharing occurs; the only network requests are thumbnail and video-stream downloads from YouTube, without user identifiers |
+| Do not share children's personal data with third parties | No sharing occurs; the only network requests are thumbnail and video-stream downloads from the video service, without user identifiers |
 | Do not use advertising SDKs directed at children | Advertising SDKs are entirely absent; no first-party advertising is shown |
 | Do not use third-party analytics to profile children | Analytics SDKs are entirely absent |
-| Provide an accurate Data safety declaration | Completed as "no data collected" and "no data shared" — see `docs/store/google-play/data-safety.md` |
+| Provide an accurate Data safety declaration | Completed as "no data collected" and "no data shared" — see the internal Data safety documentation |
 | Provide an accurate age rating | The IARC questionnaire is completed; the application contains no content that would raise the rating |
 | Restrict external links and purchases behind parental control | Every action leading to the external internet, to settings, to downloading a video or to sharing a collection is protected by the parent's four-digit PIN |
 | Ensure all content matches the declared age group | Content is not supplied by the application: the parent selects it manually |
 | Publish a current privacy policy | The policy is published at https://mits.kg/privacy-policies/bulak.html and includes a section on children |
-| Do not use content that infringes copyright | The application distributes no copies of videos: playback uses official YouTube mechanisms. The Google Play and App Store build creates no copies on the device at all; in the personal build downloaded files remain in the private area of the user's device and are never shared |
+| Do not use content that infringes copyright | The application distributes no copies of videos: playback uses the video service's official mechanisms. The store build creates no copies on the device at all; in the personal build downloaded files remain in the private area of the user's device and are never shared |
 
-The application also complies with Google Play's policy on YouTube content: videos are played through official YouTube mechanisms, no copies are shared or distributed, and responsibility for selecting links and for downloaded files rests with the parent. The Google Play and App Store build has no download feature, so no copies of videos are created on the device. In the personal build downloading is enabled by default, and this Policy describes that openly and without concealment — see sections 2, 3, 5.4 and 9.2.
+The application also complies with the app stores' policy on video content: videos are played through the video service's official mechanisms, no copies are shared or distributed, and responsibility for selecting links and for downloaded files rests with the parent. The store build has no download feature, so no copies of videos are created on the device. In the personal build downloading is enabled by default, and this Policy describes that openly and without concealment — see sections 2, 3, 5.4 and 9.2.
 
 ---
 
@@ -234,7 +232,7 @@ The following will then be permanently deleted: the list of video links, custom 
 
 ### 9.2. Deleting Downloaded Videos
 
-This section applies to the **personal build**: the Google Play and App Store build never contains downloaded files, so there is nothing to delete there. In the personal build downloaded video files are the only application data that takes up noticeable space on the device, so they can be deleted selectively without affecting anything else.
+This section applies to the **personal build**: the store build never contains downloaded files, so there is nothing to delete there. In the personal build downloaded video files are the only application data that takes up noticeable space on the device, so they can be deleted selectively without affecting anything else.
 
 | What you need | How to do it |
 |---|---|
@@ -243,7 +241,7 @@ This section applies to the **personal build**: the Google Play and App Store bu
 | Delete everything, including downloads | Parental mode → settings → **"Reset everything"** (see section 9.1) |
 | Delete everything along with the application | Uninstall the application from the device (see section 9.3): the application's private directory with the downloaded files is removed with it |
 
-The files are deleted from the application's private directory on the device and cannot be restored: we hold no copies of them, because they never left your device. A deleted video can only be recovered by downloading it again, if it is still available on YouTube.
+The files are deleted from the application's private directory on the device and cannot be restored: we hold no copies of them, because they never left your device. A deleted video can only be recovered by downloading it again, if it is still available on the video service.
 
 ### 9.3. Deleting the Application
 
@@ -273,7 +271,7 @@ If you would like written confirmation that the Developer holds no data about yo
 | A list of links composed for sending via "Share" | Exists only at the moment of transfer and is not stored by the application as a separate record; the recipient controls the text they receive | The user and the recipient |
 | PIN hash | Same as above | The user |
 | Data held by the Developer | **Not retained** | — |
-| Data held by Google (technical request logs for YouTube) | Determined by Google LLC's privacy policy | Google LLC |
+| Data held by the video service operator (technical request logs for the video service) | Determined by the video service operator's privacy policy | The video service operator |
 
 We do not set our own retention periods, because we do not retain anything. Data exists for exactly as long as you choose to keep it.
 
@@ -286,7 +284,7 @@ Because all data remains on the device, its security depends primarily on how we
 - **PIN hashing.** The PIN is never stored in plain text; only an irreversible hash is saved.
 - **Storage isolation.** Data is written to the application's private storage area and, under normal operating-system behaviour, is inaccessible to other applications. This also applies to downloaded video files: they sit in the `Application Support/media` directory inside the application's area, never appear in shared storage or the device gallery, and are excluded from Android backups because the application sets `allowBackup="false"`.
 - **No external attack surface.** The application has no server component, no accounts, no externally loaded scripts and no third-party SDKs through which data commonly leaks.
-- **Transport encryption.** All requests to YouTube servers use HTTPS; the application does not disable App Transport Security on iOS and does not permit cleartext traffic on Android.
+- **Transport encryption.** All requests to the video service's servers use HTTPS; the application does not disable App Transport Security on iOS and does not permit cleartext traffic on Android.
 - **Limited functionality on the open internet.** External links and settings are protected by the parental PIN, which prevents a child from accidentally leaving the curated content. The "Downloads" screen, download settings and collection sharing are likewise behind the PIN and available only to an adult. If the personal build is set to "Downloaded only", saving a file when a video is opened for the first time is triggered by the setting chosen by the adult, not by an action of the child.
 - **Control over sharing the link list.** The "Share" feature transfers text with links only and has no access to downloaded files — sending a video file through the application is technically impossible.
 
@@ -328,7 +326,7 @@ We may update this Policy — for example, if we add a new feature or if legal r
 1. update the "last updated" date at the top of the document;
 2. increment the document version number;
 3. publish the new edition at https://mits.kg/privacy-policies/bulak.html;
-4. if a change materially affects data processing, additionally describe it in the application's release notes in Google Play and the App Store.
+4. if a change materially affects data processing, additionally describe it in the application's release notes in the app stores.
 
 By continuing to use the application after a new edition is published, you confirm that you have reviewed it. Previous editions are available on request at info@mits.kg.
 
@@ -358,8 +356,7 @@ By installing and using the Bulak application you confirm that you:
 - are the parent or legal guardian of the child who will use the application, or are using the application for your own purposes;
 - understand that no personal data is collected in the application and that all data you create is stored locally on your device;
 - understand that in the **personal build** a video is saved to the device **before** it is played: a copy is created when a link is added, when the download button is used, and automatically when a child opens a video that is not yet on the phone for the first time. The files are stored in the application's private area on your device, are never shared with anyone and are deleted by you;
-- understand that in the **Google Play and App Store build** there is no downloading, and video is streamed from YouTube servers without any copies being saved;
+- understand that in the **store build** there is no downloading, and video is streamed from the video service's servers without any copies being saved;
 - understand that the "Share" feature sends another person only a list of links and captions, only at your choice, and that video files are not transferred in the process;
-- understand that video playback is impossible without requests to YouTube servers (Google LLC) and is additionally governed by Google's policies.
+- understand that video playback is impossible without requests to the video service's servers and is additionally governed by the video service's policies.
 
-*The Bulak application is not affiliated with, sponsored by or endorsed by Google LLC. YouTube is a trademark of Google LLC.*

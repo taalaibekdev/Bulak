@@ -2,7 +2,7 @@
 
 Документ содержит готовый текст, который вставляется в поле **App Review Information → Notes** в App Store Connect, а также русские пояснения для команды: как подготовить ревью-сборку, что показать и как отвечать на вопросы.
 
-Приложение: «Булак» (Bulak), Bundle ID `kg.tlbk.bulak`, версия 1.0.0 (build 1).
+Приложение: «Булак» (Bulak), Bundle ID `kg.tlbk.bulak`, версия 1.2.0.
 
 ---
 
@@ -25,34 +25,36 @@
 <!-- НАЧАЛО ТЕКСТА ДЛЯ APP STORE CONNECT -->
 
 ```
-BULAK — REVIEW NOTES (v1.0.0, build 1)
+BULAK — REVIEW NOTES (v1.2.0)
 
 WHAT THIS APP DOES
 
 Bulak is a video player for children. There is no catalogue, no search and
-no recommendations inside the app. A parent finds a video on YouTube, copies
-its link and saves it in the app after entering a 4-digit parental PIN. The
-child then sees a grid of large cards and can watch only the videos the
-parent has selected.
+no recommendations inside the app. A parent adds a video by pasting its link
+and confirming with a 4-digit parental PIN. The child then sees a grid of
+large cards and can watch only the videos the parent has added.
 
 The app contains no accounts, no sign-up, no analytics, no advertising SDKs
 and no trackers. All user-created data is stored only in local storage on
 the device.
+
+The app does not provide, host or distribute video content. The parent is
+the only source of links, and responsibility for the added links rests with
+the parent as stated in the Terms of Use.
 
 NO SIGN-IN IS REQUIRED. There is no demo account because the app has no
 accounts at all.
 
 DOWNLOADING IS DISABLED IN THIS BUILD (MOST IMPORTANT POINT)
 
-The build submitted for review is compiled with
---dart-define=BULAK_DISABLE_DOWNLOADS=true. In this build the download
-feature does not exist at all: there are no download buttons, no
-"Downloads" screen, no automatic downloading and no "Preparing video"
-screen, and the "Downloaded only" mode is unavailable. Because this
-configuration has no other way to play anything, the app is
-force-switched to streaming: video is always played as a stream from
-YouTube servers through official YouTube mechanisms, and no copies of
-videos are created or stored on the device.
+The build submitted for review is compiled with the download feature
+disabled. In this build the download function does not exist at all: there
+are no download buttons, no "Downloads" screen, no automatic downloading
+and no "Preparing video" screen, and the "Downloaded only" mode is
+unavailable. Because this configuration has no other way to play anything,
+the app is force-switched to streaming: video is always played as a stream
+from the video service, and no copies of videos are created or stored on
+the device.
 
 You can verify this directly in the app: parental mode contains no
 "Downloads" section, no video card shows a download control or a
@@ -81,7 +83,7 @@ Child experience:
 Parent experience:
  1. Open parental mode (lock icon / settings entry).
  2. Enter 0000.
- 3. Add a video by pasting a YouTube link, then give it a title.
+ 3. Add a video by pasting a public video link, then give it a title.
  4. Optionally create a collection ("Cartoons", "Learning", "Music") and move
     the video into it.
  5. Set the daily screen-time limit to 1 minute, then watch the kind
@@ -91,15 +93,10 @@ Parent experience:
 
 EXAMPLE VIDEO LINKS FOR TESTING
 
-Please use any public YouTube video link. The app accepts standard link
-formats such as:
-    https://www.youtube.com/watch?v=XXXXXXXXXXX
-    https://youtu.be/XXXXXXXXXXX
-    https://m.youtube.com/watch?v=XXXXXXXXXXX
-
-We have listed a few suggested public links below that are appropriate for
-testing. Any other public YouTube link will work equally well:
-<list 3-5 public YouTube links appropriate for children here before submitting>
+Please use any public video link that plays in a browser. The app accepts
+both full and short link formats. We will provide a few suggested public
+links below before submitting; any other public link will work equally well:
+<list 3-5 public video links appropriate for children here before submitting>
 
 WHY THE APP REQUIRES A PIN FOR ADULT FEATURES
 
@@ -107,28 +104,27 @@ Guideline 1.3 and Guideline 5.1.4 require a parental gate before a child can
 reach the open internet, external links or any adult-facing functionality.
 In Bulak the following are behind the PIN: adding a video by link, renaming
 and deleting videos, managing collections, setting the daily time limit,
-changing the PIN, resetting data, opening the fallback youtube.com page, and
-leaving the full-screen player.
+changing the PIN, resetting data, and leaving the full-screen player.
 
 PARENTAL GATE FOR EXTERNAL LINKS
 
 When a video cannot be played through a direct stream (for example, the
-creator disabled embedding), the app opens the official YouTube embedded
-player, loaded from the youtube-nocookie.com domain (YouTube's
-privacy-enhanced mode). Access to that page requires the parental PIN.
+author disabled embedding), the app opens the service's official embedded
+player, loaded in privacy-enhanced mode. Access to that page requires the
+parental PIN.
 
-Inside the embedded player, navigation is restricted to YouTube and Google
-domains only (youtube-nocookie.com, youtube.com, ytimg.com, googlevideo.com).
-There is no address bar, no free browsing and no way to reach an arbitrary
-third-party site from inside the app. The app does not launch an external
-browser. Any informational link inside the app sits behind parental mode.
+Inside the embedded player, navigation is restricted to the video service's
+domains only. There is no address bar, no free browsing and no way to reach
+an arbitrary third-party site from inside the app. The app does not launch
+an external browser. Any informational link inside the app sits behind
+parental mode.
 
 WHY THE APP COMPLIES WITH THE KIDS CATEGORY REQUIREMENTS
 
  - No third-party analytics and no analytics that profile a child.
  - No advertising SDKs and no first-party advertising. Please note: the
-   fallback embedded YouTube player may display advertising served by YouTube
-   itself. That advertising is Google's and is not controlled by us.
+   fallback embedded player may display advertising served by the video
+   service itself. That advertising is not controlled by us.
  - No in-app purchases and no subscriptions.
  - No chat, comments, user-generated content or user-to-user communication.
  - No collection of personal data; see the App Privacy section, which is
@@ -136,26 +132,24 @@ WHY THE APP COMPLIES WITH THE KIDS CATEGORY REQUIREMENTS
  - A parental gate protects every path to the open internet.
  - All content is selected in advance by the parent.
 
-ABOUT YOUTUBE AND THIRD-PARTY CONTENT
+THIRD-PARTY CONTENT
 
-YouTube is a trademark of Google LLC. Bulak is not affiliated with, sponsored
-by or endorsed by Google. As stated above, in the build submitted for review
-video downloading is disabled at compile time
-(`--dart-define=BULAK_DISABLE_DOWNLOADS=true`): the app does not download
-videos and does not store copies of them. Playback uses official YouTube
-mechanisms (a direct video stream, or the official embedded YouTube player
-loaded from youtube-nocookie.com as a fallback). The app is not a distributor
-of video content. Responsibility for which links are added rests with the
-parent, as stated in the Terms of Use.
+The app is not affiliated with, sponsored by or endorsed by any third-party
+video service. In the build submitted for review, downloading is disabled
+at compile time: the app does not download videos and does not store copies
+of them. Playback uses the service's official mechanisms (a direct video
+stream, or the official embedded player as a fallback). The app is not a
+distributor of video content. Responsibility for which links are added rests
+with the parent, as stated in the Terms of Use.
 
 Thumbnails are cached locally on the device so the grid loads quickly. Video
-files are never cached and never downloaded in this build: playback is always
-streamed.
+files are never cached and never downloaded in this build: playback is
+always streamed.
 
 INTERNET CONNECTION
 
 The app requires an internet connection to load thumbnails and video streams
-from YouTube servers. Without a connection, videos and thumbnails will not
+from the video service. Without a connection, videos and thumbnails will not
 load; the rest of the interface remains functional.
 
 DATA AND PRIVACY
@@ -187,7 +181,7 @@ https://mits.kg/bulak
 | Есть ли сбор данных | App Privacy заполнен как «Data Not Collected», SDK аналитики нет |
 | Есть ли реклама | Собственной рекламы нет, рекламных SDK нет |
 | Есть ли parental gate | Все внешние переходы и взрослые функции закрыты PIN |
-| Есть ли в отправляемой сборке скачивание видео | **Нет.** Сборка собрана с `--dart-define=BULAK_DISABLE_DOWNLOADS=true`: функции скачивания в ней не существует, а воспроизведение принудительно идёт потоком. Это главный пункт заметок для ревьюера |
+| Есть ли в отправляемой сборке скачивание видео | **Нет, если сборка сделана по чек-листу.** Проверьте на устройстве, что раздела «Загрузки», кнопок скачивания и экрана «Готовим видео» нет, а видео играет потоком. Это главный пункт заметок для ревьюера |
 | Соответствуют ли скриншоты приложению | Скриншоты делаются с той же сборки, что отправляется на ревью; на них нет раздела «Загрузки», кнопок скачивания, значка «скачано» и экрана «Готовим видео» |
 | Работает ли приложение без сети | Показывает понятное состояние вместо пустого экрана; видео не загружаются |
 
@@ -196,15 +190,17 @@ https://mits.kg/bulak
 1. Соберите релизную сборку **с флагом `--dart-define=BULAK_DISABLE_DOWNLOADS=true`** и **демонстрационным PIN `0000`**, затем добавьте в неё 4–6 видео, чтобы главный экран не был пустым при первом запуске. Пустой первый экран часто воспринимается ревьюером как неработающее приложение.
 2. Проверьте на устройстве, что в отправляемой сборке скачивания нет: в родительском режиме отсутствует раздел «Загрузки», на карточках нет кнопок скачивания и значка «скачано», нет экрана «Готовим видео» и настройки «Откуда играть видео», а все видео играют потоком. Это самая важная проверка: именно о ней говорится в заметках для ревьюера.
 3. Проверьте, что при удалении тестовых данных (через «Сбросить всё») приложение остаётся работоспособным и предлагает задать новый PIN.
-4. Убедитесь, что запасной режим с официальным встроенным плеером YouTube действительно срабатывает: добавьте видео, которое обычно недоступно для встраивания, и проверьте переход.
+4. Убедитесь, что запасной режим с официальным встроенным плеером действительно срабатывает: добавьте видео, которое обычно недоступно для встраивания, и проверьте переход.
 5. Пройдите весь сценарий из раздела 2 на реальном устройстве **с интернетом** перед отправкой.
 6. Заполните список примеров ссылок: ревьюер должен иметь готовые ссылки, чтобы не тратить время на поиск. Используйте только публичные ссылки; не добавляйте ссылки на закрытые, удалённые или платные видео.
 
+> **Важно перед отправкой.** Утверждение о том, что скачивание отключено, верно только для сборки, собранной с флагом `BULAK_DISABLE_DOWNLOADS=true`. Если отправляется сборка без флага, этот абзац из заметок нужно убрать: описание не должно расходиться с фактическим поведением приложения.
+
 ### 3.3. Как заполнить список примеров ссылок
 
-Перед отправкой замените строку `<list 3-5 public YouTube links appropriate for children here before submitting>` на реальные ссылки. Требования к примерам:
+Перед отправкой замените строку `<list 3-5 public video links appropriate for children here before submitting>` на реальные ссылки. Требования к примерам:
 
-- видео должно быть **публичным** и доступным без входа в аккаунт Google;
+- видео должно быть **публичным** и доступным без входа в аккаунт;
 - видео должно быть **уместным для детей** (мультфильм, детская песня, обучающий ролик);
 - желательно, чтобы хотя бы одно видео **не поддерживало встраивание** — так ревьюер увидит резервный режим;
 - ссылки должны открываться в регионе ревьюера (проверьте доступность, если ревью проходит в США).
@@ -212,21 +208,21 @@ https://mits.kg/bulak
 Рекомендуемый формат блока:
 
 ```
- 1. https://www.youtube.com/watch?v=<ID_1>  — cartoon, embedding allowed
- 2. https://www.youtube.com/watch?v=<ID_2>  — children's song
- 3. https://www.youtube.com/watch?v=<ID_3>  — educational clip
- 4. https://youtu.be/<ID_4>                  — short link format check
+ 1. <полная публичная ссылка>  — cartoon, embedding allowed
+ 2. <полная публичная ссылка>  — children's song
+ 3. <полная публичная ссылка>  — educational clip
+ 4. <короткая публичная ссылка> — short link format check
 ```
 
-<!-- заполнить перед публикацией: подставить 3–5 реальных публичных ссылок на детские видео вместо <ID_N> -->
+<!-- заполнить перед публикацией: подставить 3–5 реальных публичных ссылок на детские видео -->
 
 ### 3.4. Стратегия ответа на вопросы ревьюера
 
 | Возможный вопрос | Рекомендуемый ответ |
 |---|---|
-| «Приложение использует YouTube. Есть ли у вас разрешение?» | В отправленной на ревью сборке скачивание видео отключено на этапе компиляции (`--dart-define=BULAK_DISABLE_DOWNLOADS=true`): функции скачивания в ней нет, приложение не сохраняет копии видео и не является распространителем контента. Поскольку играть иначе эта сборка не может, воспроизведение принудительно выполняется потоком через официальные механизмы YouTube. Ответственность за выбор ссылок закреплена за родителем в Пользовательском соглашении |
-| «Почему в детском приложении есть доступ к youtube.com?» | Доступ закрыт родительским PIN-кодом и нужен только как резервный способ воспроизведения, когда прямое воспроизведение недоступно. Используется домен `youtube-nocookie.com` (режим повышенной приватности), а навигация внутри плеера ограничена доменами YouTube и Google. Свободного браузинга нет: открывается конкретное видео, без адресной строки. Приложение не запускает внешний браузер |
-| «Показывается ли реклама детям?» | Собственной рекламы и рекламных SDK нет. Рекламу может показывать только официальный встроенный плеер YouTube, и этот режим закрыт родительским PIN-кодом |
+| «Приложение использует сторонний видеосервис. Есть ли у вас разрешение?» | Содержимое добавляет сам пользователь: приложение не предоставляет каталог, поиск или рекомендации и не распространяет контент. В сборке, отправленной на ревью, скачивание отключено на этапе компиляции, поэтому копии видео не создаются. Ответственность за выбор ссылок закреплена за родителем в Пользовательском соглашении |
+| «Почему в детском приложении есть доступ к внешнему сервису?» | Доступ закрыт родительским PIN-кодом и нужен только как резервный способ воспроизведения, когда прямое воспроизведение недоступно. Используется режим повышенной приватности, а навигация внутри плеера ограничена доменами сервиса. Свободного браузинга нет: открывается конкретное видео, без адресной строки. Приложение не запускает внешний браузер |
+| «Показывается ли реклама детям?» | Собственной рекламы и рекламных SDK нет. Рекламу может показывать только официальный встроенный плеер сервиса, и этот режим закрыт родительским PIN-кодом |
 | «Собираете ли вы данные о детях?» | Нет. Раздел App Privacy заполнен как Data Not Collected для всех категорий. Все данные хранятся локально и удаляются пользователем |
 | «Что произойдёт, если родитель не добавит видео?» | Приложение покажет пустое состояние с подсказкой, как добавить видео через родительский режим. Функциональность при этом корректна |
 | «Есть ли покупки?» | Нет ни покупок, ни подписок |
@@ -235,12 +231,12 @@ https://mits.kg/bulak
 
 | Нельзя | Почему |
 |---|---|
-| Сборку без флага `--dart-define=BULAK_DISABLE_DOWNLOADS=true` | В такой сборке скачивание включено по умолчанию: видео сохраняется на устройство, и это прямое нарушение Условий использования YouTube и почти гарантированное отклонение по правилам о правах интеллектуальной собственности |
+| Сборку без флага `--dart-define=BULAK_DISABLE_DOWNLOADS=true`, если в заметках сказано об отключённом скачивании | Описание разойдётся с фактическим поведением приложения — это отдельное основание для отклонения |
 | Сборку с зашитым реальным PIN родителя | Ревьюер не сможет войти в родительский режим и проверить функции |
 | Сборку с пустым главным экраном | Может быть воспринята как неработающее приложение |
 | Сборку без интернета на тестовом устройстве | Видео не загрузятся, ревьюер увидит неработающее приложение |
 | Скриншоты, не совпадающие с интерфейсом | Отклонение по правилам о вводящих в заблуждение материалах |
-| Упоминание в тексте заметок «одобрено YouTube» | Недопустимое заявление о партнёрстве с Google |
+| Заявления об одобрении или партнёрстве с видеосервисом | Недопустимое заявление о партнёрстве |
 | Реальные ссылки на видео с сомнительным содержанием | Нарушение требований Kids Category |
 
 ### 3.6. Частые причины отклонения и как их избежать
@@ -251,8 +247,8 @@ https://mits.kg/bulak
 | Guideline 2.1 — ревьюер не смог войти в функциональность | Указать демонстрационный PIN `0000` явным текстом в заметках |
 | Guideline 2.3 — скрытая функциональность | Не добавлять скрытых экранов; всё, что есть, должно быть описано в заметках |
 | Guideline 5.1.1 — сбор данных без раскрытия | App Privacy = Data Not Collected; в приложении нет аналитики |
-| Guideline 5.2.1 — использование чужого контента | Никаких логотипов YouTube, дисклеймер об отсутствии связи с Google |
-| Guideline 5.2.1 / 5.2.5 — сохранение видео с YouTube | Отправлять только сборку с `--dart-define=BULAK_DISABLE_DOWNLOADS=true`; явно сказать об этом в заметках; проверить на устройстве, что раздела «Загрузки», кнопок скачивания, автоскачивания и экрана «Готовим видео» в сборке нет |
+| Guideline 5.2.1 — использование чужого контента | Не использовать чужие логотипы и названия в оформлении и описании |
+| Guideline 5.2.3 — сохранение видео из стороннего сервиса | Отправлять только сборку с `--dart-define=BULAK_DISABLE_DOWNLOADS=true`, если в заметках заявлено об отключённом скачивании; проверить на устройстве, что раздела «Загрузки», кнопок скачивания, автоскачивания и экрана «Готовим видео» в сборке нет |
 | Guideline 4.3 — недостаточная ценность | В заметках подчеркнуть уникальность: ручной отбор контента родителем, отсутствие ленты и поиска |
 | Guideline 2.1 — неработающие ссылки на политику/поддержку | Проверить, что `https://mits.kg/bulak` и `https://mits.kg/privacy-policies/bulak.html` открываются публично без авторизации |
 
@@ -261,17 +257,16 @@ https://mits.kg/bulak
 ## 4. Чек-лист перед отправкой на ревью
 
 - [ ] Заметки для ревьюера вставлены в App Store Connect на английском языке.
-- [ ] Ревью-сборка собрана с `--dart-define=BULAK_DISABLE_DOWNLOADS=true`.
+- [ ] Если в заметках сказано, что скачивание отключено, ревью-сборка действительно собрана с `--dart-define=BULAK_DISABLE_DOWNLOADS=true`.
 - [ ] Проверено на устройстве: в отправляемой сборке нет раздела «Загрузки», кнопок скачивания, значка «скачано», экрана «Готовим видео» и настройки «Откуда играть видео», а видео играет потоком.
-- [ ] В заметках для ревьюера явно сказано, что скачивание отключено на этапе компиляции и приложение только воспроизводит поток.
 - [ ] Демонстрационный PIN `0000` указан явно и проверен на ревью-сборке.
 - [ ] В сборке добавлены 4–6 тестовых видео, главный экран не пустой.
 - [ ] Список 3–5 публичных ссылок заполнен вместо плейсхолдера.
-- [ ] Проверено, что хотя бы одно видео демонстрирует резервный режим с встроенным плеером YouTube.
+- [ ] Проверено, что хотя бы одно видео демонстрирует резервный режим с встроенным плеером.
 - [ ] Проверена работа без интернета: понятное сообщение вместо пустого экрана.
 - [ ] Проверена кнопка «Сбросить всё».
 - [ ] Проверена смена PIN-кода и блокировка выхода из плеера.
 - [ ] Ссылки `https://mits.kg/bulak` и `https://mits.kg/privacy-policies/bulak.html` открываются без авторизации.
 - [ ] Скриншоты совпадают с интерфейсом отправляемой сборки.
-- [ ] В заметках нет утверждений о партнёрстве с Google или YouTube.
+- [ ] В заметках нет названий сторонних видеосервисов и заявлений о партнёрстве с ними.
 - [ ] Указан контакт `info@mits.kg`, по которому есть возможность ответить в течение суток.

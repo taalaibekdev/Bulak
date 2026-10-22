@@ -69,8 +69,8 @@ class AboutPage extends StatelessWidget {
           const SizedBox(height: 12),
           _InfoCard(
             icon: Icons.play_circle_outline_rounded,
-            title: 'YouTube',
-            body: strings.aboutYouTubeNotice,
+            title: strings.aboutSourceTitle,
+            body: strings.aboutSourceNotice,
           ),
           const SizedBox(height: 20),
           _LinkTile(

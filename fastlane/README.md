@@ -1,14 +1,14 @@
 # fastlane — метаданные магазинов «Булак»
 
-Эта папка содержит **готовые к загрузке** метаданные для Google Play и App Store в формате fastlane.
+Эта папка содержит **готовые к загрузке** метаданные для магазина приложений Android и App Store в формате fastlane.
 Тексты взяты из документации в `docs/store/` — там они написаны и вычитаны; здесь они разложены
-по файлам с именами, которых ждут `fastlane supply` (Google Play) и `fastlane deliver` (App Store).
+по файлам с именами, которых ждут `fastlane supply` (магазин приложений Android) и `fastlane deliver` (App Store).
 
 ```
 fastlane/
 ├── README.md                     ← этот файл
 ├── metadata/
-│   ├── android/                  ← Google Play (fastlane supply)
+│   ├── android/                  ← магазин приложений Android (fastlane supply)
 │   │   ├── ru-RU/
 │   │   │   ├── title.txt                  название, ≤ 30 символов
 │   │   │   ├── short_description.txt      краткое описание, ≤ 80 символов
@@ -41,11 +41,11 @@ fastlane/
 
 | Откуда взят текст | Куда он попал |
 |---|---|
-| `docs/store/google-play/listing.ru.md` | `fastlane/metadata/android/ru-RU/{title,short_description,full_description}.txt` |
-| `docs/store/google-play/listing.en.md` | `fastlane/metadata/android/en-US/{title,short_description,full_description}.txt` |
+| `docs/store/` — листинг для Android (ru) | `fastlane/metadata/android/ru-RU/{title,short_description,full_description}.txt` |
+| `docs/store/` — листинг для Android (en) | `fastlane/metadata/android/en-US/{title,short_description,full_description}.txt` |
 | `docs/store/app-store/listing.ru.md` | `fastlane/metadata/ios/ru/*.txt` |
 | `docs/store/app-store/listing.en.md` | `fastlane/metadata/ios/en-US/*.txt` |
-| `docs/store/google-play/store-assets.md` | `fastlane/metadata/android/*/images/*/README.md` |
+| `docs/store/` — инструкция по графике для Android | `fastlane/metadata/android/*/images/*/README.md` |
 | `docs/store/screenshots-plan.md` | `fastlane/metadata/android/*/images/*/README.md`, `fastlane/screenshots/*/README.md` |
 
 Поля, которые **не имеют** отдельного файла в fastlane, заполняются руками в консоли магазина:
@@ -63,7 +63,7 @@ fastlane/
 
 | Что | Куда | Готово? |
 |---|---|---|
-| Иконка Play | `metadata/android/<locale>/images/icon/icon.png` | ✅ 512 × 512, без альфа-канала, собирается скриптом `tools/icon/build_assets.py` |
+| Иконка магазина | `metadata/android/<locale>/images/icon/icon.png` | ✅ 512 × 512, без альфа-канала, собирается скриптом `tools/icon/build_assets.py` |
 | Feature graphic | `metadata/android/<locale>/images/featureGraphic/featureGraphic.png` | ✅ 1024 × 500, тот же скрипт |
 | Скриншоты телефона | `metadata/android/<locale>/images/phoneScreenshots/01..08.png` | ✅ 1080 × 1920, сняты с реальной сборки, собираются из сырых снимков скриптом `tools/screenshots/build_store_screenshots.py` |
 | Скриншоты iOS | `fastlane/screenshots/<locale>/01..08.png` | ✅ 1290 × 2796 (6,7″), из тех же снимков |
@@ -77,7 +77,7 @@ fastlane/
 `tools/screenshots/seed_emulator.py`.
 
 Полный план кадров, подписи RU/EN, палитра и список запрещённого — в `docs/store/screenshots-plan.md`
-и `docs/store/google-play/store-assets.md`.
+и документация по графике в `docs/store/`.
 
 ## Проверка перед загрузкой
 

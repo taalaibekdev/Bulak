@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Единственное разрешение: доступ в интернет для загрузки превью и
-         видеопотока с серверов YouTube. Никакой аналитики, рекламы и
+         видеопотока с серверов видеосервиса. Никакой аналитики, рекламы и
          доступа к личным данным приложение не запрашивает. -->
     <uses-permission android:name="android.permission.INTERNET"/>
 

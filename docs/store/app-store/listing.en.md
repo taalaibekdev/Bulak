@@ -22,7 +22,7 @@ Bulak — videos for kids
 | B | `Bulak — safe kids video` | 23 |
 | C | `Bulak: Kids Video Player` | 24 |
 
-> The name contains no reference to YouTube: it is a trademark of Google LLC and must not form part of the app's own brand.
+> The name contains no third-party trademarks or other services' names.
 
 ---
 
@@ -74,7 +74,7 @@ Bulak is a player where you, the parent, choose the videos.
 No algorithms and no recommendations: only the cartoons, songs and lessons you have added yourself. Your child opens the app and sees large, friendly cards — exactly your videos.
 
 HOW IT WORKS
-1. You find a suitable video on YouTube and copy the link.
+1. You find a suitable video in the video service and copy the link.
 2. You enter the parental PIN and save the link in the app.
 3. Your child opens Bulak and watches only what you selected.
 
@@ -111,7 +111,7 @@ YOUR DATA STAYS WITH YOU
 The app does not collect personal data. The link list, titles, collections, favourites, viewing history and settings are stored only on your device. There are no accounts, no developer servers, no analytics, no trackers and no advertising SDKs. The PIN is stored as an irreversible hash. At any time you can tap "Reset everything" and delete all data.
 
 INTERNET IS REQUIRED
-In this build videos and thumbnails are loaded from YouTube servers, so watching is not possible without a network connection: downloading videos and offline viewing are disabled here, and video is always streamed.
+In this build videos and thumbnails are loaded from the video service's servers, so watching is not possible without a network connection: downloading videos and offline viewing are disabled here, and video is always streamed.
 
 FOR PARENTS
 Responsibility for which videos are added to the app rests with the parent. The app does not check, assess or filter video content — it shows exactly what you selected. Please review videos before making them available to your child.
@@ -119,8 +119,8 @@ Responsibility for which videos are added to the app rests with the parent. The 
 WHO IT IS FOR
 For children roughly 3 to 10 years old, and for parents who want calm viewing without accidental content.
 
-IMPORTANT INFORMATION ABOUT YOUTUBE
-YouTube is a trademark of Google LLC. The Bulak app is not affiliated with Google, is not sponsored by Google and is not endorsed by Google. In this build the app does not download videos and does not store copies of them: downloading is disabled at build time and playback is always streamed through official YouTube mechanisms. We do not show our own advertising and we do not include advertising SDKs in the app; however, the fallback embedded YouTube player may display advertising served by YouTube itself.
+IMPORTANT TO KNOW
+The Bulak app is not affiliated with any video service, is not sponsored by it and is not endorsed by its operator. In this build the app does not download videos and does not store copies of them: downloading is disabled at build time and playback is always streamed through the video service's official mechanisms. We do not show our own advertising and we do not include advertising SDKs in the app; however, the fallback embedded player may display advertising served by the video service itself.
 
 Free. No in-app purchases and no subscriptions.
 
@@ -129,7 +129,7 @@ Website: https://mits.kg/bulak
 Privacy policy: https://mits.kg/privacy-policies/bulak.html
 ```
 
-**Actual length: 2 932 characters** — within the 4000-character limit.
+**Actual length: 2 950 characters** — within the 4000-character limit.
 
 ---
 
@@ -151,7 +151,7 @@ kids,video,player,safe,parental,control,screen,time,limit,cartoon,toddler,child,
 
 Meaning of the primary set: `kids`, `video`, `player` are the core queries; `safe`, `parental`, `control` cover parental-control intent; `screen`, `time`, `limit` cover screen-time intent; `cartoon`, `toddler`, `child`, `family` are qualifying terms.
 
-> Never put third-party trademarks in the keywords field: `youtube`, `youtube kids`, `google` — this is a direct breach of Apple's rules and will almost certainly cause rejection.
+> Never put third-party trademarks or other services' names in the keywords field: this is a direct breach of Apple's rules and will almost certainly cause rejection.
 
 ---
 
@@ -216,7 +216,7 @@ Complete in **App Store Connect → Age Rating**.
 
 **Expected rating: 4+.**
 
-Pay particular attention to **Unrestricted Web Access** — the answer must be **No**. Although the app opens the youtube.com page in the embedded fallback player, access to the open internet is **not unrestricted**: it sits behind the parental PIN, and the page loads only for the specific video a parent selected. Be ready to explain this to the reviewer; see `docs/store/app-store/review-notes.md`.
+Pay particular attention to **Unrestricted Web Access** — the answer must be **No**. Although the app opens the video service's page in the embedded fallback player, access to the open internet is **not unrestricted**: it sits behind the parental PIN, and the page loads only for the specific video a parent selected. Be ready to explain this to the reviewer; see `docs/store/app-store/review-notes.md`.
 
 ---
 
@@ -226,10 +226,10 @@ These answers must match the App Privacy section (see `privacy-labels.md`).
 
 | Question | Answer |
 |---|---|
-| Does the app contain advertising? | **No** first-party advertising. The app contains no advertising SDKs. The fallback embedded YouTube player may display advertising served by YouTube itself |
+| Does the app contain advertising? | **No** first-party advertising. The app contains no advertising SDKs. The fallback embedded player may display advertising served by the video service itself |
 | In-app purchases? | **No** |
 | Subscriptions? | **No** |
-| Third-party content? | **Yes** — video is streamed from YouTube servers (Google LLC). In this build the app stores no copies of videos and is not a distributor of them |
+| Third-party content? | **Yes** — video is streamed from the video service's servers. In this build the app stores no copies of videos and is not a distributor of them |
 | User-generated content? | **No** — the app is not a publishing platform |
 | User-to-user data sharing? | **No** |
 | Unrestricted web access? | **No** — external navigation sits behind the parental PIN |
@@ -251,7 +251,7 @@ These answers must match the App Privacy section (see `privacy-labels.md`).
 | Legal entity | <!-- fill in before publication: full entity or sole-proprietor name, registered address --> |
 | Country | Kyrgyz Republic |
 | Export Compliance | Standard HTTPS encryption only — qualifies for the exemption; see `docs/store/app-store/privacy-labels.md` |
-| Content Rights | This build contains no third-party content whose rights are unaddressed: video is streamed from YouTube servers, downloading is disabled and no copies are created |
+| Content Rights | This build contains no third-party content whose rights are unaddressed: video is streamed from the video service's servers, downloading is disabled and no copies are created |
 | TestFlight | Review build uses demonstration PIN `0000` — see `review-notes.md` |
 
 ---
@@ -261,10 +261,10 @@ These answers must match the App Privacy section (see `privacy-labels.md`).
 - [ ] Name is 30 characters or fewer and contains no third-party trademarks.
 - [ ] Subtitle is 30 characters or fewer.
 - [ ] Promotional text is 170 characters or fewer.
-- [ ] Description is 4000 characters or fewer, with no "TODO", and includes the YouTube disclaimer.
+- [ ] Description is 4000 characters or fewer, with no "TODO" and no third-party brand names.
 - [ ] The description promises no downloading, no offline mode, no "Downloads" screen and no "downloaded" badges: this build has none of them.
 - [ ] The wording is scoped to the store build ("in this build…") and does not contradict the product description on the website.
-- [ ] Keywords are 100 characters or fewer, comma-separated with no spaces, and contain no `youtube` or `google`.
+- [ ] Keywords are 100 characters or fewer, comma-separated with no spaces, and contain no third-party trademarks.
 - [ ] Support URL opens and shows a support contact.
 - [ ] Privacy Policy URL points at the policy page.
 - [ ] Categories Education + Entertainment selected.

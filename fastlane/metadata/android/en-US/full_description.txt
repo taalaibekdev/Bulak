@@ -3,12 +3,12 @@
 Bulak is a player where you, the parent, choose the videos. No algorithms, no recommendations: only the cartoons, songs and lessons you have added yourself.
 
 How it works:
-1. You find a suitable video on YouTube and copy the link.
+1. You find a suitable video in an external video service and copy the link.
 2. You enter the parental PIN and save the link in the app.
 3. Your child opens Bulak and sees large, friendly cards — only your videos.
 
 👶 What your child sees
-• Large thumbnails and clear cards in a YouTube-style grid
+• Large thumbnails and clear cards in a familiar grid layout
 • A full-screen player with big, child-friendly buttons
 • Collections with emoji and colour: Cartoons, Learning, Music
 • Favourites — a heart on a favourite video
@@ -39,7 +39,7 @@ How it works:
 The app does not collect personal data. The link list, titles, collections, favourites, viewing history and settings are stored only on your device. There are no accounts, no developer servers, no analytics, no trackers and no advertising SDKs. The PIN is stored as an irreversible hash. At any time you can tap "Reset everything" and delete all data.
 
 📶 Internet is required
-Videos and thumbnails are loaded from YouTube servers, so watching is not possible without a network connection.
+Videos and thumbnails are loaded from the video service's servers, so watching is not possible without a network connection.
 
 👨‍👩‍👧 For parents
 Responsibility for which videos are added to the app rests with the parent. The app does not check, assess or filter video content — it shows exactly what you selected. Please review videos before making them available to your child.
@@ -47,8 +47,8 @@ Responsibility for which videos are added to the app rests with the parent. The 
 💛 Who it is for
 For children roughly 3 to 10 years old, and for parents who want calm viewing without accidental content.
 
-ℹ️ Important information about YouTube
-YouTube is a trademark of Google LLC. The Bulak app is not affiliated with Google, is not sponsored by Google and is not endorsed by Google. In this build the app does not download videos and does not store copies of them: playback uses official YouTube mechanisms. We do not show our own advertising and we do not include advertising SDKs in the app; however, the fallback embedded YouTube player may display advertising served by YouTube itself.
+ℹ️ Good to know
+In this build the app does not download videos and does not store copies of them: playback uses the built-in player of the video service. We do not show our own advertising and we do not include advertising SDKs in the app; however, the fallback built-in player may display advertising served by the video service itself.
 
 Free. No in-app purchases and no subscriptions.
 

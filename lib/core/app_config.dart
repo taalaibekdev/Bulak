@@ -38,7 +38,7 @@ class AppConfig {
   /// Сколько цифр в родительском PIN-коде.
   static const int pinLength = 4;
 
-  /// Демонстрационный PIN для ревьюеров App Store и Google Play.
+  /// Демонстрационный PIN для ревьюеров магазинов приложений.
   /// Меняется родителем при первом запуске, значение приведено в
   /// `docs/store/app-store/review-notes.md`.
   static const String reviewDemoPin = '0000';
@@ -57,9 +57,9 @@ class AppConfig {
   ///     flutter build appbundle --release \
   ///       --dart-define=BULAK_DISABLE_DOWNLOADS=true
   ///
-  /// Это важно для публикации: Google Play и App Store считают скачивание
-  /// видео с YouTube нарушением своих правил и могут отклонить приложение.
-  /// Подробности — в `docs/legal/youtube-compliance.md`.
+  /// Это важно для публикации: магазины приложений считают скачивание
+  /// видео из сторонних сервисов нарушением своих правил и могут отклонить
+  /// приложение. Подробности — в `docs/legal/third-party-services.md`.
   static const bool downloadsEnabled = !bool.fromEnvironment(
     'BULAK_DISABLE_DOWNLOADS',
   );

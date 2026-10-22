@@ -81,7 +81,7 @@
 | Тип данных | Ответ | Обоснование |
 |---|---|---|
 | Emails or Text Messages | Data Not Collected | Переписки в приложении нет |
-| Photos or Videos | Data Not Collected | Видео воспроизводится потоково с серверов YouTube и не сохраняется; доступ к галерее не запрашивается |
+| Photos or Videos | Data Not Collected | Видео воспроизводится потоково с серверов видеосервиса и не сохраняется; доступ к галерее не запрашивается |
 | Audio Data | Data Not Collected | Микрофон не используется |
 | Gameplay Content | Data Not Collected | Игровых механик и сохранений нет |
 | Customer Support | Data Not Collected | Встроенной формы поддержки нет: обращения идут по обычной электронной почте за пределами приложения |
@@ -156,11 +156,11 @@
 
 ---
 
-## 4. YouTube как сторонний сервис
+## 4. Внешний видеосервис как третья сторона
 
 ### 4.1. Что происходит технически
 
-Приложение загружает публичные превью с `i.ytimg.com` и видеопоток с серверов YouTube, а также может открывать страницу встроенного плеера с домена `youtube-nocookie.com` (режим повышенной приватности YouTube). Это взаимодействие «клиент — публичный веб-сервис».
+Приложение загружает публичные превью с серверов превью видеосервиса и видеопоток с его серверов, а также может открывать страницу встроенного плеера в режиме повышенной приватности. Это взаимодействие «клиент — публичный веб-сервис».
 
 ### 4.2. Почему это не «сбор данных приложением»
 
@@ -172,16 +172,13 @@
 | Приложение использует данные для рекламы или аналитики? | Нет |
 | Приложение делится данными с третьими лицами? | Нет |
 
-Запросы к серверам YouTube порождает сам факт воспроизведения видео, выбранного родителем. Разработчик не получает, не хранит и не обрабатывает результаты этих запросов. Техническую информацию, которую получает Google как оператор сервиса (в частности IP-адрес и сведения о клиенте), обрабатывает Google в соответствии со своей политикой:
-
-- Политика конфиденциальности Google: https://policies.google.com/privacy
-- Условия использования YouTube: https://www.youtube.com/t/terms
+Запросы к серверам видеосервиса порождает сам факт воспроизведения видео, выбранного родителем. Разработчик не получает, не хранит и не обрабатывает результаты этих запросов. Техническую информацию, которую получает владелец видеосервиса как оператор сервиса (в частности IP-адрес и сведения о клиенте), он обрабатывает в соответствии со своей политикой конфиденциальности и условиями использования сервиса.
 
 ### 4.3. Как отвечать, если ревьюер спросит
 
 Готовая формулировка:
 
-> The app collects no personal data and includes no analytics, advertising or crash-reporting SDKs. It performs only two kinds of network request: loading publicly available thumbnail images from `i.ytimg.com` and video streams from YouTube (Google LLC), and opening the public embedded player page from `youtube-nocookie.com` (YouTube's privacy-enhanced mode, in which YouTube sets no cookies before playback begins). Navigation inside the embedded player is restricted to YouTube and Google domains (`youtube-nocookie.com`, `youtube.com`, `ytimg.com`, `googlevideo.com`), so there is no free browsing. The app creates no identifiers, keeps no request logs and transmits nothing to the developer. All user-created data (video link list, titles, collections, viewing history, settings and the PIN hash) is stored only in the app's local storage on the device and can be erased by the user at any time using the "Reset everything" button or by deleting the app.
+> The app collects no personal data and includes no analytics, advertising or crash-reporting SDKs. It performs only two kinds of network request: loading publicly available thumbnail images from the video service's preview servers and video streams from the video service's servers, and opening the public embedded player page in its privacy-enhanced mode, in which the service sets no cookies before playback begins. Navigation inside the embedded player is restricted to the service's own domains, so there is no free browsing. The app creates no identifiers, keeps no request logs and transmits nothing to the developer. All user-created data (video link list, titles, collections, viewing history, settings and the PIN hash) is stored only in the app's local storage on the device and can be erased by the user at any time using the "Reset everything" button or by deleting the app.
 
 ---
 
@@ -212,7 +209,7 @@ Guideline 1.3 (Kids Category) и 5.1.4 (Kids) требуют, чтобы в де
 
 | Действие, ведущее за пределы детского интерфейса | Как закрыто |
 |---|---|
-| Открытие страницы встроенного плеера со домена `youtube-nocookie.com` | Требуется ввод четырёхзначного PIN-кода родителя; навигация внутри плеера ограничена доменами YouTube и Google |
+| Открытие страницы встроенного плеера сервиса | Требуется ввод четырёхзначного PIN-кода родителя; навигация внутри плеера ограничена доменами видеосервиса |
 | Добавление нового видео по ссылке | Родительский режим, вход по PIN |
 | Переименование, удаление видео | Родительский режим, вход по PIN |
 | Управление коллекциями | Родительский режим, вход по PIN |
@@ -235,7 +232,7 @@ Guideline 1.3 (Kids Category) и 5.1.4 (Kids) требуют, чтобы в де
 
 | Где | Что должно совпадать |
 |---|---|
-| `docs/store/google-play/data-safety.md` | «Данные не собираются / не передаются» |
+| Data safety в магазине приложений Android | «Данные не собираются / не передаются» |
 | `docs/legal/privacy-policy.ru.md` и `.en.md` | Разделы 3–5 и 13 |
 | `docs/store/app-store/listing.ru.md`, раздел 9 | Ответы про рекламу, покупки, ATT, Kids Category |
 | `docs/store/app-store/review-notes.md` | Описание parental gate и отсутствия сбора данных |
@@ -255,5 +252,5 @@ Guideline 1.3 (Kids Category) и 5.1.4 (Kids) требуют, чтобы в де
 - [ ] В сборке есть `PrivacyInfo.xcprivacy` с `NSPrivacyTracking = false` и пустыми списками данных.
 - [ ] Сторонних SDK в проекте нет либо у всех есть собственные privacy manifest.
 - [ ] Parental gate закрывает все внешние переходы, проверено на устройстве.
-- [ ] Ответы согласованы с Data safety в Google Play.
+- [ ] Ответы согласованы с Data safety в магазине приложений.
 - [ ] Ссылка на политику конфиденциальности в App Store Connect заполнена.
